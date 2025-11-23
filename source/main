@@ -1,0 +1,1746 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Menu, X, ArrowRight, Smartphone, Globe, Database, Shield, ChevronRight, ChevronDown, ChevronLeft, Check, Layers, Users, Play, Activity, BarChart3, Lock, Server, CreditCard, Truck, TrendingUp, Clock, Target, Code2, Terminal, Calendar, Box, Briefcase, Zap, ArrowUpRight, Send, AlertCircle, CheckCircle2, Heart, Upload, Paperclip, Mail, Linkedin, Instagram, Facebook, Cpu, Cloud, Layout, GitBranch, Lightbulb, Search, PenTool } from 'lucide-react';
+
+// =============================================================================
+// 1. STYLES & ANIMATION HELPERS (Global)
+// =============================================================================
+
+/**
+ * Global Styles Component for Tailwind Animations and Utility Classes.
+ */
+const GlobalStyles = () => (
+  <style>{`
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+    .animate-blob {
+      animation: blob 7s infinite;
+    }
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+    .animation-delay-4000 {
+      animation-delay: 4s;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes grow-up {
+      from { height: 0%; opacity: 0; }
+      to { opacity: 0.8; }
+    }
+    .animate-bar {
+      animation: grow-up 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      transform-origin: bottom;
+    }
+    @keyframes scan {
+      0% { top: 0%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+    .animate-scan {
+      animation: scan 3s linear infinite;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .animate-slide-down {
+      animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  `}</style>
+);
+
+/**
+ * Hook to determine if an element is currently visible on screen.
+ * @param {React.MutableRefObject} ref - The ref of the DOM element to observe.
+ * @param {number} threshold - The percentage of the target element visible to trigger the intersection.
+ * @returns {boolean} True if the element has become visible.
+ */
+const useOnScreen = (ref, threshold = 0.1) => {
+  const [isIntersecting, setIntersecting] = useState(false);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIntersecting(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => {
+      if (ref.current) observer.unobserve(ref.current);
+    };
+  }, [ref, threshold]);
+  return isIntersecting;
+};
+
+/**
+ * Component for fade-in and slide animations on scroll.
+ */
+const FadeIn = ({ children, delay = 0, className = "", direction = "up" }) => {
+  const ref = useRef(null);
+  const isVisible = useOnScreen(ref);
+  const translateClass = {
+    up: "translate-y-10",
+    down: "-translate-y-10",
+    left: "translate-x-10",
+    right: "-translate-x-10",
+    none: ""
+  };
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-1000 ease-out transform ${
+        isVisible ? "opacity-100 translate-y-0 translate-x-0" : `opacity-0 ${translateClass[direction]}`
+      } ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
+
+/**
+ * Animated counter component.
+ */
+const Counter = ({ end, duration = 2000, suffix = "" }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isVisible = useOnScreen(ref);
+  useEffect(() => {
+    if (!isVisible) return;
+    let startTimestamp = null;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      setCount(Math.floor(progress * end));
+      if (progress < 1) window.requestAnimationFrame(step);
+    };
+    window.requestAnimationFrame(step);
+  }, [isVisible, end, duration]);
+  return <span ref={ref}>{count}{suffix}</span>;
+};
+
+// =============================================================================
+// 2. MOCK DATA (Cases & Posts)
+// =============================================================================
+
+/**
+ * Mock data for Case Studies.
+ */
+const ALL_CASES = [
+  { 
+    id: 'neobank',
+    client: "NeoBank Corp", 
+    industry: "Fintech",
+    title: "Banking Ecosystem Transformation", 
+    desc: "Complete re-engineering of a legacy banking core to a microservices architecture.", 
+    aboutClient: "NeoBank Corp is a leading Tier-1 financial institution serving over 5 million customers across Europe. They provide comprehensive retail and commercial banking services but were held back by a 15-year-old monolithic core that slowed down innovation.",
+    challenge: "The client's monolithic architecture was stifling innovation. New feature deployment took weeks, and high-traffic events caused downtime. They needed a scalable, secure solution compliant with PSD2 and open banking standards, capable of handling 10x the current transaction load.",
+    solution: "We migrated the core to a microservices architecture using Java Spring Boot and Kubernetes. Implemented a real-time event streaming architecture with Kafka for transaction processing. Developed a new native mobile app layout with Flutter for cross-platform consistency.",
+    process: [
+        { title: "Discovery & Audit", desc: "Analyzed 2M+ lines of legacy code and mapped critical dependencies.", icon: Search },
+        { title: "Architecture Design", desc: "Designed a domain-driven microservices layout with breakdown by business capability.", icon: Layers },
+        { title: "Migration", desc: "Executed a strangler-fig pattern migration with zero downtime for users.", icon: GitBranch },
+        { title: "Optimization", desc: "Implemented AI-based fraud detection and real-time analytics.", icon: Activity }
+    ],
+    gallery: [
+        "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1600", // Main Dashboard
+        "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&q=80&w=1600", // Mobile App View
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1600"  // Analytics
+    ],
+    techStack: ["Java", "Spring Boot", "Kubernetes", "Kafka", "Flutter", "AWS", "PostgreSQL"],
+    tags: ['Fintech', 'Mobile', 'Security'], 
+    metrics: [{ label: "User Growth", value: "+240%" }, { label: "Uptime", value: "99.99%" }, { label: "Tx/Second", value: "15k+" }], 
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1600",
+    testimonial: {
+      text: "Gimmir transformed our technical debt into a competitive advantage. Their engineering culture is unmatched.",
+      author: "Alex V., CTO at NeoBank Corp"
+    }
+  },
+  { 
+    id: 'fitpulse',
+    client: "FitPulse Inc.", 
+    industry: "Wellness",
+    title: "Holistic Wellness App", 
+    desc: "Developed a comprehensive fitness ecosystem integrating real-time wearable data with AI-personalized nutrition and workout plans.", 
+    aboutClient: "FitPulse is a rapidly growing startup focused on data-driven health.",
+    challenge: "FitPulse struggled to retain users due to generic workout plans. They wanted to leverage data from wearables (Apple Watch, Garmin) to provide hyper-personalized real-time coaching.",
+    solution: "We built a data ingestion pipeline to normalize data from various wearables APIs. Integrated OpenAI's API to analyze user vitals and generate dynamic daily workout plans. Built a social challenge feature to boost retention.",
+    process: [
+        { title: "UX Research", desc: "User interviews with fitness enthusiasts.", icon: Lightbulb },
+        { title: "Prototyping", desc: "High-fidelity clickable prototypes.", icon: PenTool },
+        { title: "Development", desc: "React Native implementation.", icon: Code2 }
+    ],
+    techStack: ["React Native", "Node.js", "TensorFlow", "HealthKit", "MongoDB"],
+    tags: ['Wellness', 'Mobile', 'AI/ML'], 
+    metrics: [{ label: "User Retention", value: "+45%" }, { label: "Daily Active", value: "1.2M" }, { label: "Data Points", value: "50M/day" }], 
+    image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1600",
+    testimonial: {
+      text: "The AI integration is seamless. Our users feel like they have a personal trainer in their pocket.",
+      author: "Sarah J., Product Lead"
+    }
+  },
+  { 
+    id: 'medconnect',
+    client: "MedConnect", 
+    industry: "Healthcare",
+    title: "Telehealth Portal", 
+    desc: "Secure, HIPAA-compliant platform connecting patients with specialists worldwide. Seamless EHR integration and video streaming.", 
+    aboutClient: "A network of 30+ clinics aiming to digitize patient interactions.",
+    challenge: "Scaling secure video consultations while maintaining strict HIPAA compliance and integrating with legacy Electronic Health Record (EHR) systems.",
+    solution: "Developed a WebRTC-based video platform with end-to-end encryption. Created a custom middleware layer to securely sync data between the modern cloud app and on-premise hospital legacy systems using HL7 standards.",
+    process: [],
+    gallery: [],
+    techStack: ["React", "WebRTC", "Python/Django", "Redis", "Azure"],
+    tags: ['Healthcare', 'Web', 'Cloud'], 
+    metrics: [{ label: "Consultations", value: "10k/Day" }, { label: "Compliance", value: "100%" }, { label: "Avg Wait", value: "<2min" }], 
+    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1000",
+    testimonial: {
+      text: "Reliability was our #1 concern. Gimmir delivered a platform that simply never fails.",
+      author: "Dr. Mark R., Medical Director"
+    }
+  },
+  { 
+    id: 'logichain',
+    client: "LogiChain Solutions", 
+    industry: "Logistics",
+    title: "Supply Chain AI", 
+    desc: "AI-driven logistics dashboard for real-time fleet tracking.", 
+    challenge: "Optimizing delivery routes in real-time.",
+    solution: "Implemented a custom routing algorithm.",
+    techStack: ["Vue.js", "Go", "PostGIS", "Docker"],
+    tags: ['Logistics', 'Web', 'IoT'], 
+    metrics: [{ label: "Cost Saving", value: "-18%" }, { label: "Efficiency", value: "+35%" }], 
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1000" 
+  },
+  { 
+    id: 'edumaster',
+    client: "EduMaster Global", 
+    industry: "EdTech",
+    title: "LMS Platform", 
+    desc: "Cloud-native learning management system.", 
+    challenge: "Handling massive spikes in traffic.",
+    solution: "Built a serverless architecture on AWS Lambda.",
+    techStack: ["Next.js", "AWS Lambda", "DynamoDB"],
+    tags: ['EdTech', 'Cloud', 'React'], 
+    metrics: [{ label: "Students", value: "50k+" }, { label: "Load Time", value: "<1s" }], 
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=1000" 
+  },
+  { 
+    id: 'shopifyplus',
+    client: "ShopifyPlus Partner", 
+    industry: "Retail",
+    title: "E-Commerce Headless", 
+    desc: "High-performance headless storefront.", 
+    challenge: "Standard Shopify theme was too limiting.",
+    solution: "Developed a headless storefront using Next.js.",
+    techStack: ["Next.js", "Shopify API", "Vercel"],
+    tags: ['Retail', 'E-Commerce', 'Next.js'], 
+    metrics: [{ label: "Conversion", value: "+12%" }, { label: "Sales", value: "$4M/mo" }], 
+    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1000" 
+  }
+];
+
+/**
+ * Mock data for Insights posts.
+ */
+const ALL_POSTS = [
+  { id: 'migrating-legacy', date: 'OCT 24, 2024', category: 'ENGINEERING', title: 'Migrating Legacy Banking Systems to Microservices', image: 'https://images.unsplash.com/photo-1549692520-2228af135760?auto=format&fit=crop&q=80&w=800', summary: 'A detailed technical breakdown of using the Strangler Fig pattern to refactor monolithic banking systems into a scalable microservices architecture using Java and Kubernetes.' },
+  { id: 'llms-support', date: 'OCT 12, 2024', category: 'AI TECH', title: 'Implementing LLMs in Customer Support: A Technical Guide', image: 'https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?auto=format&fit=crop&q=80&w=800', summary: 'How to deploy large language models (LLMs) to automate 80% of tier-1 customer support requests while maintaining high user satisfaction scores.' },
+  { id: 'top-b2b', date: 'SEP 28, 2024', category: 'COMPANY', title: 'Gimmir Ranked Top B2B Developer in Eastern Europe', image: 'https://images.unsplash.com/photo-1543286386-713bdd533429?auto=format&fit=crop&q=80&w=800', summary: 'Analysis of the 2024 B2B rankings and the strategic decisions that led Gimmir to be recognized as a leader in enterprise software development.' },
+  { id: 'mobile-flutter', date: 'SEP 10, 2024', category: 'MOBILE', title: 'Flutter vs. Native: The Cost-Effectiveness of Cross-Platform Development', image: 'https://images.unsplash.com/photo-1528698827571-4c52c668b584?auto=format&fit=crop&q=80&w=800', summary: 'A deep comparison of development speed, maintenance costs, and performance trade-offs between Flutter and native iOS/Android development.' },
+  { id: 'devops-scaling', date: 'AUG 15, 2024', category: 'DEVOPS', title: 'Achieving 99.999% Uptime: DevOps Strategies for Hyper-Scale', image: 'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?auto=format&fit=crop&q=80&w=800', summary: 'Advanced techniques in Kubernetes, service mesh, and CI/CD pipelines to ensure maximum system reliability and minimal downtime.' },
+  { id: 'ui-design', date: 'JUL 01, 2024', category: 'DESIGN', title: 'The Next Generation of Enterprise UI Design Systems', image: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&q=80&w=800', summary: 'Exploring the shift towards token-based and dynamic design systems that adapt to user behavior and brand requirements instantly.' },
+];
+const ALL_CATEGORIES = ['All', ...new Set(ALL_POSTS.map(p => p.category))];
+
+
+// =============================================================================
+// 3. UI UTILITY COMPONENTS
+// =============================================================================
+
+/**
+ * Standard Button component with defined variants.
+ */
+const Button = ({ children, variant = 'primary', className = '', onClick, ...props }) => {
+  const base = "relative px-8 py-3 rounded-lg font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden group active:scale-95 cursor-pointer border";
+  const variants = {
+    primary: "bg-[#0062D1] border-[#0062D1] text-white hover:bg-[#0050aa] shadow-lg shadow-blue-900/20 hover:shadow-blue-900/40 disabled:opacity-70 disabled:cursor-not-allowed",
+    secondary: "bg-white text-[#0062D1] border border-[#0062D1] hover:bg-blue-50",
+    dark: "bg-[#0F172A] border-[#0F172A] text-white hover:bg-[#1e293b] shadow-lg",
+    outline: "border-gray-300 text-gray-700 hover:border-[#0062D1] hover:text-[#0062D1] bg-transparent",
+    ghost: "border-transparent text-[#0062D1] hover:bg-blue-50 font-semibold px-4"
+  };
+  return (
+    <button className={`${base} ${variants[variant]} ${className}`} onClick={onClick} {...props}>
+      <span className="relative z-10 flex items-center gap-2">{children}</span>
+    </button>
+  );
+};
+
+/**
+ * Common Heading structure for sections.
+ */
+const SectionHeading = ({ label, title, subtitle, center = false, light = false }) => (
+  <FadeIn className={`mb-12 md:mb-16 ${center ? 'text-center mx-auto max-w-3xl' : 'max-w-3xl'}`}>
+    {label && (
+      <div className={`text-xs font-bold uppercase tracking-widest mb-3 md:mb-4 flex items-center gap-2 ${center ? 'justify-center' : ''} ${light ? 'text-blue-300' : 'text-[#0062D1]'}`}>
+        <div className={`w-6 h-0.5 md:w-8 md:h-1 rounded-full ${light ? 'bg-blue-400' : 'bg-[#0062D1]'}`} />
+        {label}
+      </div>
+    )}
+    <h2 className={`text-3xl md:text-5xl font-bold mb-4 md:mb-6 leading-tight tracking-tight ${light ? 'text-white' : 'text-[#0F172A]'}`}>
+      {title}
+    </h2>
+    {subtitle && (
+      <p className={`text-base md:text-lg leading-relaxed ${light ? 'text-blue-100/80' : 'text-gray-500'}`}>
+        {subtitle}
+      </p>
+    )}
+  </FadeIn>
+);
+
+/**
+ * Helper function for email validation.
+ */
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
+/**
+ * Helper function for phone number validation.
+ */
+const validatePhone = (phone) => {
+  return String(phone).match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im);
+};
+
+
+// =============================================================================
+// 4. NAVIGATION & LAYOUT COMPONENTS
+// =============================================================================
+
+/**
+ * Main Navigation Bar Component.
+ */
+const Navbar = ({ onNavigate, currentPage }) => {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [expandedItem, setExpandedItem] = useState(null); 
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+      setExpandedItem(null); 
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [menuOpen]);
+
+  const handleNavClick = (page, subPage = null) => {
+    onNavigate(page, subPage);
+    setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const toggleAccordion = (title) => {
+    setExpandedItem(expandedItem === title ? null : title);
+  };
+
+  const navItems = [
+    {
+      title: 'Services',
+      type: 'dropdown',
+      items: [
+        { label: 'Mobile Development', id: 'service-mobile' },
+        { label: 'Web Platforms', id: 'service-web' },
+        { label: 'Cloud & DevOps', id: 'service-cloud' },
+        { label: 'Dedicated Teams', id: 'service-teams' },
+        { label: 'Product Design', id: 'service-design' },
+        { label: 'Quality Assurance', id: 'service-qa' }
+      ]
+    },
+    {
+      title: 'Success Stories',
+      type: 'link',
+      page: 'cases'
+    },
+    {
+      title: 'Insights',
+      type: 'link',
+      page: 'insights'
+    },
+    {
+      title: 'Company',
+      type: 'dropdown',
+      items: [
+        { label: 'About Us', id: 'company-about' },
+        { label: 'How We Work', id: 'company-process' },
+        { label: 'Careers', id: 'company-careers' }
+      ]
+    },
+    {
+      title: 'Contact',
+      type: 'link',
+      page: 'contact'
+    }
+  ];
+
+  const isHome = currentPage === 'home';
+  const isCaseDetail = typeof currentPage === 'string' && currentPage.startsWith('case:');
+  const isTransparentHeader = isHome || isCaseDetail;
+  const isDarkNav = scrolled || !isTransparentHeader;
+
+  const containerClasses = scrolled 
+    ? 'py-3 px-4 md:px-6 max-w-7xl mx-2 md:mx-4 lg:mx-auto mt-2 md:mt-4 rounded-xl md:rounded-2xl bg-white/90 backdrop-blur-xl border border-white/20 shadow-2xl shadow-black/5' 
+    : 'py-4 md:py-6 px-4 md:px-6 max-w-7xl mx-auto bg-transparent border-none shadow-none';
+    
+  const logoColor = (menuOpen || isDarkNav) ? 'text-[#0F172A]' : 'text-white';
+  const logoBg = (menuOpen || isDarkNav) ? 'bg-[#0062D1] text-white' : 'bg-white text-[#0062D1]';
+  const linkColor = isDarkNav ? 'text-gray-600 hover:text-[#0062D1]' : 'text-blue-100 hover:text-white';
+  const hamburgerColor = (menuOpen || isDarkNav) ? 'text-[#0F172A]' : 'text-white';
+
+  const bookBtnClass = `!py-2.5 !px-5 !text-xs !rounded-lg border ${
+    isDarkNav 
+      ? 'border-gray-200 text-gray-700 hover:border-[#0062D1]' 
+      : 'border-white/20 text-white hover:bg-white/10'
+  }`;
+  const projectBtnVariant = isDarkNav ? "primary" : "secondary";
+
+  const CAL_LINK = "nazar-moroz/first-touch"; 
+  const CAL_CONFIG = '{"layout":"month_view"}';
+
+  return (
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 animate-slide-down">
+        <div className={`${containerClasses} transition-all duration-500 ease-out flex justify-between items-center relative z-50`}>
+          <div className={`flex items-center gap-2.5 font-bold text-xl tracking-tight ${logoColor} cursor-pointer group relative z-50`} onClick={() => handleNavClick('home')}>
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shadow-lg transition-transform duration-500 group-hover:rotate-12 ${logoBg}`}><Zap size={18} fill="currentColor" /></div>
+            <span className="font-black tracking-tighter">GIMMIR</span>
+          </div>
+          <nav className="hidden lg:flex items-center gap-1">
+            {navItems.map((item) => (
+              item.type === 'dropdown' ? (
+                <div key={item.title} className="relative group">
+                  <button className={`relative px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all duration-300 rounded-lg flex items-center gap-1 ${linkColor}`}>
+                    <span className="relative z-10 flex items-center gap-1 group-hover:text-[#0062D1] transition-colors">{item.title}<ChevronDown size={12} className="group-hover:rotate-180 transition-transform duration-300 opacity-70" /></span>
+                  </button>
+                  <div className="absolute top-full left-0 w-full h-6 bg-transparent"></div>
+                  <div className="absolute top-[calc(100%+10px)] left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top scale-95 group-hover:scale-100 w-60">
+                    <div className="bg-white rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden p-2 ring-1 ring-black/5">
+                      {item.items.map((subItem) => (
+                        <button key={subItem.id} onClick={() => handleNavClick(subItem.id)} className="w-full text-left group/item flex items-center justify-between px-4 py-3 rounded-lg hover:bg-gray-50 transition-all duration-200">
+                          <span className="text-sm font-medium text-gray-600 group-hover/item:text-[#0F172A] transition-all duration-200">{subItem.label}</span>
+                          <ChevronRight size={14} className="text-[#0062D1] opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <button key={item.title} onClick={() => handleNavClick(item.page)} className={`relative px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all duration-300 group overflow-hidden rounded-lg ${linkColor}`}>
+                  <span className="relative z-10 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#0062D1] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />{item.title}
+                  </span>
+                  <span className={`absolute inset-0 bg-[#0062D1]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${!isDarkNav ? 'bg-white/10' : ''}`} />
+                </button>
+              )
+            ))}
+          </nav>
+          <div className="hidden lg:flex items-center gap-3">
+            <Button variant="ghost" className={bookBtnClass} data-cal-link={CAL_LINK} data-cal-config={CAL_CONFIG}>Book a Meet</Button>
+            <Button variant="primary" className="!py-2.5 !px-6 !text-xs !rounded-lg shadow-md hover:shadow-xl" onClick={() => handleNavClick('contact')}>Start Project</Button>
+          </div>
+          <button className={`lg:hidden p-2 relative z-50 transition-colors ${hamburgerColor}`} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={28} /> : <Menu size={28} />}</button>
+        </div>
+      </header>
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed inset-0 z-40 bg-white transition-all duration-500 flex flex-col lg:hidden ${menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
+        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 shrink-0"><div className="w-full h-9"></div></div>
+        <div className="flex-1 overflow-y-auto px-6 py-8">
+           <div className="flex flex-col gap-2">
+             {navItems.map((item) => (
+                <div key={item.title} className="border-b border-gray-100 pb-4 mb-4 last:border-0 last:mb-0 last:pb-0">
+                   {item.type === 'dropdown' ? (
+                      <div>
+                         <button onClick={() => toggleAccordion(item.title)} className="flex items-center justify-between w-full text-left group">
+                            <span className={`text-xl font-bold transition-colors duration-300 ${expandedItem === item.title ? 'text-[#0062D1]' : 'text-[#0F172A]'}`}>{item.title}</span>
+                            <ChevronDown size={20} className={`text-gray-300 transition-transform duration-300 ${expandedItem === item.title ? 'rotate-180 text-[#0062D1]' : ''}`} />
+                         </button>
+                         <div className={`grid transition-all duration-300 ease-[cubic-bezier(0.04,0.62,0.23,0.98)] ${expandedItem === item.title ? 'grid-rows-[1fr] mt-4 opacity-100' : 'grid-rows-[0fr] mt-0 opacity-0'}`}>
+                            <div className="overflow-hidden flex flex-col mt-2">
+                               {item.items.map((subItem) => (
+                                  <button key={subItem.id} onClick={() => handleNavClick(subItem.id)} className="text-base font-medium text-gray-500 hover:text-[#0062D1] hover:bg-blue-50/50 transition-all text-left py-3 px-4 rounded-lg -ml-2">{subItem.label}</button>
+                               ))}
+                            </div>
+                         </div>
+                      </div>
+                   ) : (
+                      <button onClick={() => handleNavClick(item.page)} className="text-xl font-bold text-[#0F172A] hover:text-[#0062D1] transition-colors text-left w-full flex items-center justify-between group">
+                         {item.title}<ArrowRight size={20} className="text-gray-300 -translate-x-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#0062D1] transition-all duration-300" />
+                      </button>
+                   )}
+                </div>
+             ))}
+           </div>
+        </div>
+        <div className="p-6 bg-gray-50 border-t border-gray-100 shrink-0 pb-safe grid grid-cols-2 gap-3">
+            <Button variant="outline" className="w-full justify-center py-4 text-base font-bold border-gray-200 text-gray-700" data-cal-link={CAL_LINK} data-cal-config={CAL_CONFIG}>Book a Meet</Button>
+            <Button variant="primary" className="w-full justify-center py-4 text-base font-bold shadow-lg shadow-blue-900/20" onClick={() => handleNavClick('contact')}>Get in Touch</Button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+/**
+ * Common layout structure for simple pages.
+ */
+const PageLayout = ({ title, subtitle, children }) => (
+  <div className="pt-40 pb-20 min-h-screen bg-gray-50">
+    <div className="container mx-auto px-6">
+      <SectionHeading title={title} subtitle={subtitle} />
+      <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm min-h-[400px]">
+        {children || <div className="text-gray-400 flex items-center justify-center h-64">Content for {title} is under construction.</div>}
+      </div>
+    </div>
+  </div>
+);
+
+
+// =============================================================================
+// 5. FORM COMPONENTS
+// =============================================================================
+
+/**
+ * The main Contact Form section/component.
+ */
+const Contact = () => {
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', phone: '', project: '', crm: false, nda: false });
+  const [files, setFiles] = useState([]);
+  const fileInputRef = useRef(null);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const validateContactForm = () => {
+    let isValid = true, errors = {};
+    if (!formData.firstName.trim()) { errors.firstName = 'First name required'; isValid = false; }
+    if (!formData.lastName.trim()) { errors.lastName = 'Last name required'; isValid = false; }
+    if (!formData.email.trim()) { errors.email = 'Email required'; isValid = false; } else if (!validateEmail(formData.email)) { errors.email = 'Invalid email format'; isValid = false; }
+    if (formData.phone && !validatePhone(formData.phone)) { errors.phone = 'Invalid phone format'; isValid = false; }
+    if (!formData.crm) { errors.crm = 'Required'; isValid = false; }
+    setFormErrors(errors);
+    return isValid;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    if (formErrors[name]) setFormErrors(prev => ({ ...prev, [name]: '' }));
+  };
+  const handleFileChange = (e) => { if (e.target.files && e.target.files.length > 0) setFiles(prev => [...prev, ...Array.from(e.target.files)]); };
+  const removeFile = (index) => { setFiles(prev => prev.filter((_, i) => i !== index)); };
+  const handleSubmit = (e) => { e.preventDefault(); if (validateContactForm()) { setIsSubmitting(true); setTimeout(() => { setIsSubmitting(false); setIsSuccess(true); }, 1500); } };
+
+  return (
+  <section id="contact" className="py-24 bg-gray-50 relative overflow-hidden">
+    <div className="absolute inset-0 bg-[linear-gradient(rgba(0,98,209,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,98,209,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+    <div className="container mx-auto px-6 relative z-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        <div className="lg:col-span-5 pt-8">
+          <div className="lg:sticky lg:top-24">
+            <FadeIn direction="right">
+              <div className="mb-10">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-blue-200 text-[#0062D1] text-[10px] font-mono font-bold uppercase tracking-widest mb-6 shadow-sm">
+                   <span className="w-2 h-2 rounded-full bg-[#0062D1] animate-pulse" />
+                   INITIATE_PROTOCOL
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold text-[#0F172A] mb-6 leading-tight">Let's Start Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0062D1] to-cyan-500">Project</span></h2>
+                <p className="text-gray-600 text-lg leading-relaxed">Leave your project details. Our technical director will prepare a preliminary estimation and roadmap within 24 hours.</p>
+              </div>
+              <div className="space-y-8 border-t border-gray-200 pt-8">
+                <div className="flex items-start gap-4 group"><div className="w-12 h-12 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-[#0062D1] shadow-sm group-hover:scale-110 transition-transform duration-300"><Globe size={22} /></div><div><h4 className="text-base font-bold text-[#0F172A]">Global Delivery</h4><p className="text-gray-500 text-sm">Distributed teams across US, EU, and UA.</p></div></div>
+                <div className="flex items-start gap-4 group"><div className="w-12 h-12 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-[#0062D1] shadow-sm group-hover:scale-110 transition-transform duration-300"><Shield size={22} /></div><div><h4 className="text-base font-bold text-[#0F172A]">NDA Protected</h4><p className="text-gray-500 text-sm">Your intellectual property is safe from day one.</p></div></div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+        <div className="lg:col-span-7">
+          <FadeIn direction="left" delay={200}>
+            <div className="bg-[#0B101B] rounded-2xl p-1 border border-white/10 shadow-2xl shadow-blue-900/10 relative overflow-hidden">
+              <div className="h-10 bg-white/5 border-b border-white/5 flex items-center px-4 justify-between rounded-t-xl">
+                  <div className="flex gap-2"><div className="w-3 h-3 rounded-full bg-red-500/50" /><div className="w-3 h-3 rounded-full bg-yellow-500/50" /><div className="w-3 h-3 rounded-full bg-green-500/50" /></div>
+                  <div className="text-[10px] font-mono text-blue-300/50 tracking-widest flex items-center gap-2">SECURE_CONNECTION_ESTABLISHED</div>
+              </div>
+              <div className="p-8 md:p-10 bg-[#0B101B] rounded-b-xl relative">
+                  {isSuccess ? (
+                    <div className="text-center animate-fade-in py-20">
+                      <div className="w-20 h-20 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(74,222,128,0.2)]"><CheckCircle2 size={40} strokeWidth={2.5} /></div>
+                      <h3 className="text-3xl font-bold text-white mb-4">Request Received</h3>
+                      <p className="text-gray-400 text-lg mb-8 max-w-md mx-auto leading-relaxed">Our team is analyzing your request. Expect a technical follow-up within <strong>12 hours</strong>.</p>
+                      <Button variant="outline" className="border-white/20 text-white hover:bg-white/10" onClick={() => { setIsSuccess(false); setFormData({ firstName: '', lastName: '', email: '', phone: '', project: '', crm: false, nda: false }); setFiles([]); }}>Send Another Request</Button>
+                    </div>
+                  ) : (
+                    <form className="space-y-6" onSubmit={handleSubmit}>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2"><label className="text-[10px] font-mono font-bold uppercase text-blue-300/70 tracking-wider ml-1">First Name *</label><input name="firstName" value={formData.firstName} onChange={handleInputChange} className={`w-full p-3 bg-white/5 border rounded-lg text-white focus:border-[#0062D1] focus:bg-white/10 outline-none transition-all font-medium placeholder-gray-600 ${formErrors.firstName ? 'border-red-500/50' : 'border-white/10'}`} placeholder="John" /></div>
+                        <div className="space-y-2"><label className="text-[10px] font-mono font-bold uppercase text-blue-300/70 tracking-wider ml-1">Last Name *</label><input name="lastName" value={formData.lastName} onChange={handleInputChange} className={`w-full p-3 bg-white/5 border rounded-lg text-white focus:border-[#0062D1] focus:bg-white/10 outline-none transition-all font-medium placeholder-gray-600 ${formErrors.lastName ? 'border-red-500/50' : 'border-white/10'}`} placeholder="Doe" /></div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Work Email Input */}
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-mono font-bold uppercase text-blue-300/70 tracking-wider ml-1">Work Email *</label>
+                          <input name="email" type="email" value={formData.email} onChange={handleInputChange} className={`w-full p-3 bg-white/5 border rounded-lg text-white focus:border-[#0062D1] focus:bg-white/10 outline-none transition-all font-medium placeholder-gray-600 ${formErrors.email ? 'border-red-500/50' : 'border-white/10'}`} placeholder="john@company.com" />
+                        </div>
+                        {/* Phone Number Input */}
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-mono font-bold uppercase text-blue-300/70 tracking-wider ml-1">Phone Number</label>
+                          <input name="phone" type="tel" value={formData.phone} onChange={handleInputChange} className={`w-full p-3 bg-white/5 border rounded-lg text-white focus:border-[#0062D1] focus:bg-white/10 outline-none transition-all font-medium placeholder-gray-600 ${formErrors.phone ? 'border-red-500/50' : 'border-white/10'}`} placeholder="+1 (555) 000-0000" />
+                        </div>
+                      </div>
+                      {/* Project Brief Textarea */}
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-mono font-bold uppercase text-blue-300/70 tracking-wider ml-1">Project Brief</label>
+                        <textarea 
+                          name="project" 
+                          value={formData.project} 
+                          onChange={handleInputChange} 
+                          rows="4" 
+                          className="w-full p-3 bg-white/5 border border-white/10 rounded-lg text-white focus:border-[#0062D1] focus:bg-white/10 outline-none transition-all font-medium placeholder-gray-600 resize-none" 
+                          placeholder="Describe your goals, tech stack, and timeline..."
+                        ></textarea>
+                      </div>
+                      {/* Attachments Input */}
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-mono font-bold uppercase text-blue-300/70 tracking-wider ml-1">Attachments</label>
+                        <div className="w-full p-6 bg-white/5 border border-dashed border-white/20 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-white/10 transition-colors group" onClick={() => fileInputRef.current.click()}>
+                          <input type="file" multiple className="hidden" ref={fileInputRef} onChange={handleFileChange} />
+                          <Upload className="text-blue-400 mb-2 group-hover:scale-110 transition-transform" size={24} />
+                          <span className="text-xs text-gray-400 group-hover:text-white transition-colors">Click to upload specs or documents</span>
+                          <span className="text-[10px] text-gray-600 mt-1">Max 10MB per file</span>
+                        </div>
+                        {files.length > 0 && (<div className="space-y-2 mt-3">{files.map((file, index) => (<div key={index} className="flex items-center justify-between p-2 bg-white/5 rounded border border-white/10"><div className="flex items-center gap-2 overflow-hidden"><Paperclip size={14} className="text-blue-400 shrink-0" /><span className="text-xs text-gray-300 truncate">{file.name}</span></div><button type="button" onClick={() => removeFile(index)} className="text-gray-500 hover:text-red-400 transition-colors"><X size={14} /></button></div>))}</div>)}
+                      </div>
+                      {/* Checkboxes */}
+                      <div className={`space-y-3 bg-white/5 p-4 rounded-lg border ${formErrors.crm ? 'border-red-500/30 bg-red-500/5' : 'border-white/5'}`}>
+                        <label className="flex items-start gap-3 cursor-pointer group"><div className="relative flex items-center mt-0.5"><input type="checkbox" name="crm" checked={formData.crm} onChange={handleInputChange} className="peer sr-only" /><div className="w-4 h-4 border border-gray-600 rounded bg-transparent peer-checked:bg-[#0062D1] peer-checked:border-[#0062D1] transition-all"></div><Check size={10} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" /></div><span className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors leading-tight">I agree to be added to the CRM for project communication.</span></label>
+                        <label className="flex items-start gap-3 cursor-pointer group"><div className="relative flex items-center mt-0.5"><input type="checkbox" name="nda" checked={formData.nda} onChange={handleInputChange} className="peer sr-only" /><div className="w-4 h-4 border-2 border-gray-600 rounded bg-transparent peer-checked:bg-[#0062D1] peer-checked:border-[#0062D1] transition-all"></div><Check size={10} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" /></div><span className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors leading-tight">I request a Non-Disclosure Agreement (NDA) before details.</span></label>
+                      </div>
+                      {formErrors.crm && <div className="flex items-center gap-1 text-red-400 text-[10px] mt-1"><AlertCircle size={10} /> {formErrors.crm}</div>}
+                      <div className="pt-4"><Button variant="primary" className="w-full justify-center" disabled={isSubmitting}>{isSubmitting ? <><span className="animate-spin mr-2"><Activity size={16} /></span> Sending...</> : <><Send size={16} className="mr-2" /> Send Request</>}</Button><p className="text-[10px] text-center text-gray-500 mt-4 flex items-center justify-center gap-1"><Lock size={10} /> End-to-end encrypted submission.</p></div>
+                    </form>
+                  )}
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </div>
+    </div>
+  </section>
+  );
+};
+
+// =============================================================================
+// 6. MAIN SECTIONS COMPONENTS (Landing Page)
+// =============================================================================
+
+/**
+ * Hero Section Component.
+ */
+const Hero = ({ onNavigate }) => {
+  const [init, setInit] = useState(false);
+  useEffect(() => { setInit(true); }, []);
+  return (
+    <section className="relative pt-32 md:pt-40 pb-20 md:pb-32 bg-[#0F172A] overflow-hidden min-h-screen flex items-start md:items-center">
+      {/* Background Blobs and Noise */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+         <div className="absolute top-[-10%] right-[-10%] w-[800px] h-[800px] bg-[#0062D1]/20 rounded-full blur-[120px] animate-blob" />
+         <div className="absolute bottom-[-10%] left-[-10%] w-[800px] h-[800px] bg-indigo-900/30 rounded-full blur-[120px] animate-blob animation-delay-2000" />
+         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5"></div>
+         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:100px_100px]"></div>
+      </div>
+      <div className="container mx-auto px-6 relative z-10 mt-4 md:mt-0">
+        <div className="flex flex-col lg:flex-row items-center gap-20">
+          {/* Text Content */}
+          <div className="lg:w-1/2">
+            <FadeIn delay={100}>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-900/20 border border-blue-500/30 text-blue-200 text-[10px] md:text-xs font-bold uppercase tracking-wider mb-6 backdrop-blur-sm">
+                <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span></span>
+                Software Development Agency
+              </div>
+            </FadeIn>
+            <FadeIn delay={200}>
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">We Engineer <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-white">Digital Excellence.</span></h1>
+            </FadeIn>
+            <FadeIn delay={300}>
+              <p className="text-base md:text-xl text-gray-300 mb-12 leading-relaxed max-w-xl border-l-2 border-blue-500/50 pl-6">Building high-load enterprise systems, scalable cloud platforms, and mobile solutions that define market leaders.</p>
+            </FadeIn>
+            <FadeIn delay={400}>
+              <div className="flex flex-col sm:flex-row gap-5">
+                <Button variant="primary" className="!text-base !px-8 !py-4 w-full sm:w-auto shadow-blue-500/20" onClick={() => onNavigate('contact')}>Start Your Project</Button>
+                <Button variant="outline" icon={Play} className="!text-base !px-8 !py-4 w-full sm:w-auto border-white/10 text-white hover:bg-white/5" onClick={() => onNavigate('cases')}>Success Stories</Button>
+              </div>
+            </FadeIn>
+          </div>
+          {/* Live Data Mockup */}
+          <div className="lg:w-1/2 w-full relative perspective-1000">
+            <FadeIn direction="left" delay={400}>
+              <div className="relative bg-[#0B101B] rounded-xl border border-white/10 shadow-2xl shadow-blue-900/20 overflow-hidden animate-float">
+                <div className="absolute inset-0 w-full h-full pointer-events-none z-20 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent h-[20%] animate-scan" />
+                <div className="h-12 bg-white/5 border-b border-white/5 flex items-center px-6 justify-between">
+                   <div className="flex gap-2"><div className="w-3 h-3 rounded-full bg-red-500/50" /><div className="w-3 h-3 rounded-full bg-yellow-500/50" /><div className="w-3 h-3 rounded-full bg-green-500/50" /></div>
+                   <div className="text-[10px] font-mono text-blue-300/50 tracking-widest flex items-center gap-2"><Terminal size={10} /> SYSTEM_MONITOR_V3.0</div>
+                </div>
+                <div className="p-8">
+                   <div className="flex justify-between items-end mb-8">
+                     <div>
+                       <div className="text-gray-400 text-xs uppercase tracking-wider mb-1">System Load</div>
+                       <div className="text-3xl font-bold text-white flex items-baseline gap-1"><span className="animate-pulse">Healthy</span><span className="text-xs font-normal text-gray-500">/ Online</span></div>
+                     </div>
+                     <div className="text-green-400 text-sm font-mono flex items-center gap-2 bg-green-400/10 px-2 py-1 rounded"><span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>OPTIMAL</div>
+                   </div>
+                   <div className="flex items-end gap-2 h-32 mb-8">
+                      {[40, 65, 45, 80, 55, 90, 70, 85].map((h, i) => (
+                        <div key={i} style={{ height: `${h}%`, animationDelay: `${i * 100 + 500}ms` }} className="flex-1 bg-gradient-to-t from-blue-600/20 to-blue-500 rounded-t-sm relative group animate-bar opacity-0">
+                           <div className="absolute top-0 left-0 w-full h-1 bg-blue-300 opacity-0 group-hover:opacity-100 transition-opacity shadow-[0_0_10px_rgba(147,197,253,0.8)]"></div>
+                        </div>
+                      ))}
+                   </div>
+                   <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-white/5 p-4 rounded-lg border border-white/5 group hover:border-white/20 transition-colors">
+                         <div className="text-gray-400 text-[10px] uppercase mb-2 flex items-center gap-2"><Users size={12}/> Active Users</div>
+                         <div className="text-xl font-bold text-white flex items-center gap-2"><Counter end={2400000} suffix="+" duration={2000} /><ArrowUpRight size={16} className="text-green-400" /></div>
+                      </div>
+                      <div className="bg-white/5 p-4 rounded-lg border border-white/5 group hover:border-white/20 transition-colors">
+                         <div className="text-gray-400 text-[10px] uppercase mb-2 flex items-center gap-2"><Activity size={12}/> Avg Latency</div>
+                         <div className="text-xl font-bold text-white flex items-center gap-2"><Counter end={42} suffix="ms" duration={1500} /><Check size={16} className="text-blue-400" /></div>
+                      </div>
+                   </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/**
+ * Service Option for Wizard (internal utility).
+ */
+const Option = ({ label, onClick }) => (
+  <button onClick={onClick} className="w-full flex items-center justify-between p-4 md:p-5 bg-white border border-gray-200 rounded-xl hover:border-[#0062D1] hover:shadow-lg hover:shadow-blue-100 transition-all duration-300 group text-left">
+    <span className="font-semibold text-[#0F172A] text-sm md:text-base pr-4">{label}</span>
+    <div className="w-6 h-6 md:w-8 md:h-8 shrink-0 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#0062D1] group-hover:text-white transition-colors"><ArrowRight size={14} /></div>
+  </button>
+);
+
+/**
+ * Interactive Wizard Component for Project Estimation.
+ */
+const Wizard = () => {
+  const [step, setStep] = useState(1);
+  const [selections, setSelections] = useState({ type: '', stage: '', industry: '', timeline: '', teamSize: '' });
+  const [showForm, setShowForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [formData, setFormData] = useState({ fullName: '', email: '', phone: '', crm: false, nda: false });
+  const [formErrors, setFormErrors] = useState({});
+
+  const handleSelect = (key, value) => { setSelections((prev) => ({ ...prev, [key]: value })); setStep((prev) => prev + 1); };
+  const getRecommendation = () => {
+    const { type, timeline, industry, stage, teamSize } = selections;
+    let serviceName = 'Custom Software Development'; let team = 'Dedicated Team'; let composition = '3 Developers, 1 QA'; let time = '48 hours';
+    if (type.includes('Mobile')) serviceName = industry.includes('Fintech') ? 'Fintech Mobile Banking App' : industry.includes('Health') ? 'mHealth Application' : 'Custom Mobile App Development';
+    else if (type.includes('Web')) serviceName = industry.includes('E-Commerce') ? 'High-Load E-Commerce Platform' : 'Web Platform Engineering';
+    else if (type.includes('Enterprise')) serviceName = 'Enterprise ERP/CRM Solution';
+    else if (type.includes('Cloud')) serviceName = 'Cloud Infrastructure & DevOps';
+    if (teamSize.includes('Small')) composition = '2 Developers, 1 QA, 0.5 PM';
+    else if (teamSize.includes('Medium')) composition = '4 Developers, 1 QA, 1 PM, 1 DevOps';
+    else if (teamSize.includes('Large')) composition = '8+ Cross-functional Experts';
+    else composition = timeline.includes('Urgent') ? 'Senior Squad (Rapid Deployment)' : 'Balanced Agile Team';
+    if (timeline.includes('ASAP')) { time = '24-48 hours (Priority)'; team = 'Rapid Response Team'; } else { time = '1 week'; }
+    if (stage.includes('Idea')) serviceName += ' (MVP)';
+    if (stage.includes('Legacy')) serviceName = 'Legacy Modernization: ' + serviceName;
+    return { serviceName, team, composition, time };
+  };
+  const recommendation = getRecommendation();
+  const validateForm = () => {
+    let isValid = true; const errors = {};
+    if (!formData.fullName.trim()) { errors.fullName = 'Full name is required'; isValid = false; }
+    if (!formData.email.trim()) { errors.email = 'Email is required'; isValid = false; } 
+    else if (!validateEmail(formData.email)) { errors.email = 'Please enter a valid email'; isValid = false; }
+    if (formData.phone && !validatePhone(formData.phone)) { errors.phone = 'Please enter a valid phone number'; isValid = false; }
+    if (!formData.crm) { errors.crm = 'You must agree to be added to the CRM'; isValid = false; }
+    setFormErrors(errors); return isValid;
+  };
+  const handleInputChange = (e) => { const { name, value, type, checked } = e.target; setFormData((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value })); if (formErrors[name]) { setFormErrors((prev) => ({ ...prev, [name]: '' })); } };
+  const handleSubmitProposal = (e) => { e.preventDefault(); if (validateForm()) { setIsSubmitting(true); setTimeout(() => { setIsSubmitting(false); setIsSuccess(true); }, 1500); } };
+  const handleReset = () => { setShowForm(false); setIsSuccess(false); setStep(1); setFormData({ fullName: '', email: '', phone: '', crm: false, nda: false }); setFormErrors({}); };
+
+  return (
+    <section className="relative z-20 -mt-16 pb-12 md:pb-24">
+      <div className="container mx-auto px-4 md:px-6">
+        <FadeIn delay={200} direction="up">
+          <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl shadow-gray-900/10 border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+            {/* Wizard Sidebar */}
+            <div className="md:w-1/3 bg-[#0062D1] p-6 md:p-10 text-white relative overflow-hidden shrink-0">
+              <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay" />
+              <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+              <div className="relative z-10 h-full flex flex-col justify-between gap-8">
+                <div>
+                  <div className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-blue-200 mb-3 md:mb-4">Project Configurator</div>
+                  <h3 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 leading-tight">Get an <br /> Estimate</h3>
+                  <p className="text-blue-100 text-xs md:text-sm leading-relaxed">Answer 5 simple questions. Our algorithm will recommend the service, team structure, and estimated start time.</p>
+                </div>
+                <div className="mt-auto">
+                  <div className="flex justify-between text-[10px] md:text-xs font-bold mb-2 text-blue-200"><span>STEP {step} OF 6</span><span>{Math.round((step / 6) * 100)}%</span></div>
+                  <div className="h-1.5 bg-blue-900/30 rounded-full overflow-hidden"><div className="h-full bg-white transition-all duration-500 ease-out" style={{ width: `${(step / 6) * 100}%` }} /></div>
+                </div>
+              </div>
+            </div>
+            {/* Wizard Steps / Form Content */}
+            <div className="md:w-2/3 p-6 md:p-14 bg-white flex flex-col justify-center min-h-[400px]">
+              {!showForm ? (
+                <>
+                  {step === 1 && (<div className="animate-fade-in w-full"><h4 className="text-lg md:text-xl font-bold text-[#0F172A] mb-6 md:mb-8">1. What type of solution do you need?</h4><div className="grid grid-cols-1 gap-3 md:gap-4"><Option label="Mobile Application (iOS & Android)" onClick={() => handleSelect('type', 'Mobile Application')} /><Option label="Web Platform / SaaS Product" onClick={() => handleSelect('type', 'Web Platform')} /><Option label="Enterprise ERP / CRM System" onClick={() => handleSelect('type', 'Enterprise System')} /><Option label="Cloud Infrastructure / DevOps" onClick={() => handleSelect('type', 'Cloud Infrastructure')} /></div></div>)}
+                  {step === 2 && (<div className="animate-fade-in w-full"><h4 className="text-lg md:text-xl font-bold text-[#0F172A] mb-6 md:mb-8">2. What is the current stage?</h4><div className="grid grid-cols-1 gap-3 md:gap-4"><Option label="Idea / Concept (Need MVP)" onClick={() => handleSelect('stage', 'Idea')} /><Option label="MVP / Prototype (Need Scaling)" onClick={() => handleSelect('stage', 'MVP')} /><Option label="Scaling / Growth" onClick={() => handleSelect('stage', 'Scaling')} /><Option label="Legacy System (Need Modernization)" onClick={() => handleSelect('stage', 'Legacy')} /></div><button onClick={() => setStep(1)} className="mt-6 text-xs font-bold text-gray-400 hover:text-[#0062D1] flex items-center gap-1 transition-colors">← Back</button></div>)}
+                  {step === 3 && (<div className="animate-fade-in w-full"><h4 className="text-lg md:text-xl font-bold text-[#0F172A] mb-6 md:mb-8">3. What is your industry?</h4><div className="grid grid-cols-1 gap-3 md:gap-4"><Option label="Fintech / Banking" onClick={() => handleSelect('industry', 'Fintech')} /><Option label="Healthcare / MedTech" onClick={() => handleSelect('industry', 'Healthcare')} /><Option label="E-Commerce / Retail" onClick={() => handleSelect('industry', 'E-Commerce')} /><Option label="Fitness & Wellness" onClick={() => handleSelect('industry', 'Fitness')} /></div><button onClick={() => setStep(2)} className="mt-6 text-xs font-bold text-gray-400 hover:text-[#0062D1] flex items-center gap-1 transition-colors">← Back</button></div>)}
+                  {step === 4 && (<div className="animate-fade-in w-full"><h4 className="text-lg md:text-xl font-bold text-[#0F172A] mb-6 md:mb-8">4. What is your expected timeline?</h4><div className="grid grid-cols-1 gap-3 md:gap-4"><Option label="ASAP (< 1 month)" onClick={() => handleSelect('timeline', 'ASAP')} /><Option label="1-3 Months" onClick={() => handleSelect('timeline', '1-3 Months')} /><Option label="3-6 Months" onClick={() => handleSelect('timeline', '3-6 Months')} /><Option label="6+ Months" onClick={() => handleSelect('timeline', '6+ Months')} /></div><button onClick={() => setStep(3)} className="mt-6 text-xs font-bold text-gray-400 hover:text-[#0062D1] flex items-center gap-1 transition-colors">← Back</button></div>)}
+                  {step === 5 && (<div className="animate-fade-in w-full"><h4 className="text-lg md:text-xl font-bold text-[#0F172A] mb-6 md:mb-8">5. Preferred Team Size?</h4><div className="grid grid-cols-1 gap-3 md:gap-4"><Option label="Small Team (< 3 devs)" onClick={() => handleSelect('teamSize', 'Small')} /><Option label="Medium Squad (3-7 devs)" onClick={() => handleSelect('teamSize', 'Medium')} /><Option label="Large Dept (8+ devs)" onClick={() => handleSelect('teamSize', 'Large')} /><Option label="Not sure, advise me" onClick={() => handleSelect('teamSize', 'Not sure')} /></div><button onClick={() => setStep(4)} className="mt-6 text-xs font-bold text-gray-400 hover:text-[#0062D1] flex items-center gap-1 transition-colors">← Back</button></div>)}
+                  {step === 6 && (<div className="animate-fade-in text-center w-full"><div className="w-16 h-16 md:w-20 md:h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm"><Check size={32} className="md:w-10 md:h-10" /></div><h4 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-2">Your Recommended Solution</h4><div className="bg-gray-50 rounded-xl p-6 my-6 border border-gray-100 text-left max-w-md mx-auto"><div className="mb-4 pb-4 border-b border-gray-200"><div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Recommended Service</div><div className="text-lg font-bold text-[#0062D1]">{recommendation.serviceName}</div></div><div className="grid grid-cols-2 gap-4"><div><div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Team Composition</div><div className="text-sm font-semibold text-gray-700">{recommendation.composition}</div></div><div><div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Est. Start</div><div className="text-sm font-semibold text-gray-700">{recommendation.time}</div></div></div></div><div className="flex flex-col sm:flex-row gap-3 justify-center"><Button variant="primary" onClick={() => setShowForm(true)}>Request Detailed Proposal</Button><button onClick={() => { setStep(1); setSelections({ type: '', stage: '', industry: '', timeline: '', teamSize: '' }); }} className="py-3 px-6 text-sm font-semibold text-gray-500 hover:text-[#0062D1] transition-colors">Start Over</button></div></div>)}
+                </>
+              ) : isSuccess ? (<div className="animate-fade-in text-center w-full"><div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6"><CheckCircle2 size={40} /></div><h3 className="text-2xl font-bold text-[#0F172A] mb-2">Request Sent!</h3><p className="text-gray-500 mb-8">Thank you for your request. We will analyze your data and contact you within <strong>12 hours</strong>.</p><div className="flex justify-center"><Button variant="outline" onClick={handleReset}>Back to Calculator</Button></div></div>) : (
+                <div className="animate-fade-in w-full max-w-md mx-auto"><div className="text-center mb-8"><div className="text-xs font-bold text-[#0062D1] uppercase tracking-wider mb-2">Final Step</div><h3 className="text-2xl font-bold text-[#0F172A]">Where should we send it?</h3></div><form onSubmit={handleSubmitProposal} className="space-y-4"><div className="space-y-1"><label className="text-xs font-bold uppercase text-gray-500 tracking-wider ml-1">Full Name</label><input name="fullName" value={formData.fullName} onChange={handleInputChange} className={`w-full p-3 bg-gray-50 border rounded-lg text-gray-900 focus:border-[#0062D1] focus:bg-white outline-none transition-all ${formErrors.fullName ? 'border-red-500' : 'border-gray-200'}`} placeholder="John Doe" />{formErrors.fullName && <p className="text-red-500 text-[10px] ml-1">{formErrors.fullName}</p>}</div><div className="space-y-1"><label className="text-xs font-bold uppercase text-gray-500 tracking-wider ml-1">Work Email</label><input name="email" type="email" value={formData.email} onChange={handleInputChange} className={`w-full p-3 bg-gray-50 border rounded-lg text-gray-900 focus:border-[#0062D1] focus:bg-white outline-none transition-all ${formErrors.email ? 'border-red-500' : 'border-gray-200'}`} placeholder="john@company.com" />{formErrors.email && <p className="text-red-500 text-[10px] ml-1">{formErrors.email}</p>}</div><div className="space-y-1"><label className="text-xs font-bold uppercase text-gray-500 tracking-wider ml-1">Phone Number</label><input name="phone" type="tel" value={formData.phone} onChange={handleInputChange} className={`w-full p-3 bg-gray-50 border rounded-lg text-gray-900 focus:border-[#0062D1] focus:bg-white outline-none transition-all ${formErrors.phone ? 'border-red-500' : 'border-gray-200'}`} placeholder="+1 (555) 000-0000" />{formErrors.phone && <p className="text-red-500 text-[10px] ml-1">{formErrors.phone}</p>}</div><div className={`space-y-3 bg-gray-50/50 p-4 rounded-lg border ${formErrors.crm ? 'border-red-200 bg-red-50/50' : 'border-gray-100'}`}><label className="flex items-start gap-3 cursor-pointer group"><div className="relative flex items-center mt-0.5"><input type="checkbox" name="crm" checked={formData.crm} onChange={handleInputChange} className="peer sr-only" /><div className="w-4 h-4 border-2 border-gray-300 rounded bg-white peer-checked:bg-[#0062D1] peer-checked:border-[#0062D1] transition-all" /><Check size={10} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" /></div><span className="text-xs text-gray-600 group-hover:text-gray-900 transition-colors leading-tight">I agree to be added to the CRM for project communication.</span></label><label className="flex items-start gap-3 cursor-pointer group"><div className="relative flex items-center mt-0.5"><input type="checkbox" name="nda" checked={formData.nda} onChange={handleInputChange} className="peer sr-only" /><div className="w-4 h-4 border-2 border-gray-300 rounded bg-white peer-checked:bg-[#0062D1] peer-checked:border-[#0062D1] transition-all" /><Check size={10} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" /></div><span className="text-xs text-gray-600 group-hover:text-gray-900 transition-colors leading-tight">I request a Non-Disclosure Agreement (NDA) before details.</span></label></div>{formErrors.crm && <div className="flex items-center gap-1 text-red-500 text-[10px] mt-1"><AlertCircle size={10} /> {formErrors.crm}</div>}<div className="pt-4"><Button variant="primary" className="w-full justify-center" disabled={isSubmitting}>{isSubmitting ? <><span className="animate-spin mr-2"><Activity size={16} /></span> Sending...</> : <><Send size={16} className="mr-2" /> Send Proposal Request</>}</Button><button type="button" onClick={() => setShowForm(false)} className="w-full py-3 text-xs font-bold text-gray-400 hover:text-gray-600 mt-2">Cancel</button></div></form></div>
+              )}
+            </div>
+          </div>
+        </FadeIn>
+      </div>
+    </section>
+  );
+};
+
+/**
+ * Card component for displaying core service competencies.
+ */
+const ServiceCard = ({ icon: Icon, title, desc, tags, index }) => (
+  <FadeIn delay={index * 100} className="h-full">
+    <div className="group relative h-full bg-white rounded-2xl border border-gray-100 p-8 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 overflow-hidden">
+      <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#0062D1] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out origin-left" />
+      <div className="relative z-10 flex flex-col h-full">
+        <div className="flex justify-between items-start mb-6">
+          <div className="w-16 h-16 rounded-2xl bg-white border border-gray-100 text-gray-400 flex items-center justify-center shadow-sm group-hover:text-[#0062D1] group-hover:border-blue-100 group-hover:scale-110 group-hover:shadow-blue-200/50 transition-all duration-500"><Icon size={32} strokeWidth={1.5} /></div>
+          <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500 delay-100"><ArrowUpRight size={14} className="text-[#0062D1]" /></div>
+        </div>
+        <h3 className="text-2xl font-bold text-[#0F172A] mb-4 group-hover:text-[#0062D1] transition-colors duration-300">{title}</h3>
+        <p className="text-gray-500 leading-relaxed mb-8 text-sm flex-1">{desc}</p>
+        <div className="flex flex-wrap gap-2 mt-auto">
+          {tags.map((tag, i) => (<span key={i} className="text-[11px] font-semibold text-gray-500 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100 group-hover:bg-white group-hover:border-blue-100 group-hover:text-blue-600 transition-colors duration-300">{tag}</span>))}
+        </div>
+      </div>
+    </div>
+  </FadeIn>
+);
+
+/**
+ * Services Section Component.
+ */
+const Services = () => (
+  <section className="py-20 md:py-28 bg-white relative">
+    <div className="container mx-auto px-4 md:px-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 max-w-7xl mx-auto border-b border-gray-100 pb-12">
+         <FadeIn className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#0062D1] text-[10px] font-bold uppercase tracking-widest mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0062D1] animate-pulse" />Core Competencies
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-[#0F172A] tracking-tight">We Build <span className="text-[#0062D1]">Digital Assets.</span></h2>
+            <p className="text-lg text-gray-500 leading-relaxed max-w-lg">From MVP to IPO. Our engineering stack is designed for speed, security, and massive scalability.</p>
+         </FadeIn>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <ServiceCard index={0} icon={Smartphone} title="Mobile Engineering" desc="Native performance with cross-platform efficiency." tags={['iOS', 'Android', 'Flutter']} />
+        <ServiceCard index={1} icon={Globe} title="Web Platforms" desc="Enterprise-grade SaaS solutions using modern stacks." tags={['Next.js', 'React', 'Node.js']} />
+        <ServiceCard index={2} icon={Database} title="Cloud & DevOps" desc="Bank-grade security on public cloud." tags={['AWS', 'Azure', 'Kubernetes']} />
+        <ServiceCard index={3} icon={Users} title="Dedicated Teams" desc="Seamlessly extend your in-house capacity." tags={['Staff Augmentation', 'Agile']} />
+        <ServiceCard index={4} icon={Layers} title="Product Design" desc="Data-driven UX/UI that converts." tags={['Design Systems', 'Figma']} />
+        <ServiceCard index={5} icon={Shield} title="Quality Assurance" desc="Zero-tolerance for bugs." tags={['Automated Testing', 'Cypress']} />
+      </div>
+    </div>
+  </section>
+);
+
+/**
+ * Card component for displaying industry expertise.
+ */
+const IndustryCard = ({ title, sub, features, icon: Icon, index, image }) => (
+  <FadeIn delay={index * 100} className="h-full">
+    <div className="group relative h-48 rounded-lg overflow-hidden bg-[#0F172A] border border-white/5 hover:border-[#0062D1]/30 transition-all duration-500 shadow-lg cursor-default">
+      <div className="absolute inset-0 z-0">
+        <img src={image} alt={title} className="w-full h-full object-cover opacity-30 group-hover:opacity-20 transition-all duration-700 scale-100 group-hover:scale-105 grayscale group-hover:grayscale-0" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-[#0F172A]/90 to-[#0F172A]/40" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,98,209,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,98,209,0.1)_1px,transparent_1px)] bg-[size:16px_16px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      </div>
+      <div className="relative z-10 p-4 flex flex-col h-full">
+        <div className="flex justify-between items-start mb-auto">
+          <div className="w-8 h-8 rounded-md bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center text-blue-400 group-hover:bg-[#0062D1] group-hover:text-white transition-colors duration-500"><Icon size={16} /></div>
+          <span className="text-[9px] font-bold tracking-widest text-gray-500 uppercase bg-black/30 px-1.5 py-0.5 rounded border border-white/5 group-hover:text-blue-300 group-hover:border-blue-500/30 transition-colors">{sub}</span>
+        </div>
+        <div className="transform translate-y-1 group-hover:translate-y-0 transition-transform duration-500">
+           <h3 className="text-base font-bold text-white mb-1.5 group-hover:text-blue-100 transition-colors">{title}</h3>
+           <div className="flex flex-wrap gap-x-2 gap-y-1">
+             {features.split('•').map((f, i) => (<span key={i} className="text-[9px] text-gray-400 font-mono flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity delay-75"><span className="w-0.5 h-0.5 rounded-full bg-[#0062D1]"></span>{f.trim()}</span>))}
+           </div>
+        </div>
+      </div>
+      <div className="absolute bottom-0 left-0 h-0.5 bg-[#0062D1] w-0 group-hover:w-full transition-all duration-700 ease-out" />
+    </div>
+  </FadeIn>
+);
+
+/**
+ * Industries Section Component.
+ */
+const Industries = () => {
+  const industries = [
+    { title: "Fintech", sub: "Finance", features: "PCI DSS • High-Freq Trading", icon: CreditCard, image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" },
+    { title: "Healthcare", sub: "MedTech", features: "HIPAA • Telemedicine", icon: Activity, image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800" },
+    { title: "Fitness", sub: "Lifestyle", features: "Wearables • AI Coaching", icon: Heart, image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=800" },
+    { title: "E-Commerce", sub: "Retail", features: "High Load • Omnichannel", icon: Box, image: "https://images.unsplash.com/photo-1556742031-c6961e8560b0?auto=format&fit=crop&q=80&w=800" },
+    { title: "Real Estate", sub: "PropTech", features: "Virtual Tours • Booking", icon: Briefcase, image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=800" },
+    { title: "Enterprise", sub: "SaaS", features: "ERP Systems • Big Data", icon: Server, image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800" }
+  ];
+  return (
+    <section className="py-24 bg-[#0B101B] relative">
+       <div className="container mx-auto px-4 md:px-6 relative z-10">
+         <SectionHeading label="Vertical Expertise" title="Industries We Transform" subtitle="Deep domain knowledge allows us to speak your language." light={true} />
+         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {industries.map((ind, i) => <IndustryCard key={i} index={i} {...ind} />)}
+         </div>
+       </div>
+    </section>
+  )
+};
+
+/**
+ * Card component for displaying case studies on the main page/cases page.
+ */
+const CaseCard = ({ id, client, title, desc, tags, metrics, image, index, onNavigate }) => (
+  <FadeIn delay={index * 150} className="h-full">
+    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-[#0062D1] transition-all duration-500 group flex flex-col h-full hover:-translate-y-1">
+      <div className="relative h-48 md:h-56 overflow-hidden cursor-pointer" onClick={() => onNavigate(`case:${id}`)}>
+        <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/80 to-transparent opacity-80" />
+        <div className="absolute bottom-0 left-0 p-5 w-full">
+           <div className="flex gap-2 mb-2">
+             {tags.map((t, i) => (<span key={i} className="px-2 py-0.5 bg-white/20 backdrop-blur border border-white/10 text-white text-[9px] font-bold uppercase tracking-wider rounded">{t}</span>))}
+           </div>
+           <div className="text-[10px] font-bold text-blue-200 uppercase tracking-widest mb-1">{client}</div>
+           <h3 className="text-xl font-bold text-white leading-tight">{title}</h3>
+        </div>
+      </div>
+      <div className="p-5 flex-1 flex flex-col">
+        <p className="text-gray-600 text-sm leading-relaxed mb-5 border-b border-gray-100 pb-5 flex-1 line-clamp-3">{desc}</p>
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          {metrics.map((m, i) => (
+            <div key={i}>
+              <div className="text-xl font-bold text-[#0062D1] mb-0.5">{m.value}</div>
+              <div className="text-[9px] font-bold text-gray-400 uppercase tracking-wide">{m.label}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-auto">
+          <Button variant="outline" className="w-full !py-2.5 text-xs justify-center group-hover:bg-[#0062D1] group-hover:text-white group-hover:border-[#0062D1] transition-colors" onClick={() => onNavigate(`case:${id}`)}>Read Case Study <ArrowRight size={14} /></Button>
+        </div>
+      </div>
+    </div>
+  </FadeIn>
+);
+
+/**
+ * Case Studies Section Component (Landing Page).
+ */
+const Cases = ({ onNavigate }) => {
+  const featuredCases = ALL_CASES.slice(0, 3);
+  return (
+    <section id="success-stories" className="py-16 md:py-24 bg-gray-50">
+      <div className="container mx-auto px-4 md:px-6">
+        <SectionHeading label="Proven Track Record" title="Results That Speak" subtitle="We focus on business outcomes. Here is how we helped our partners achieve market dominance." />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+           {featuredCases.map((caseStudy, idx) => (
+             <CaseCard key={idx} index={idx} {...caseStudy} onNavigate={onNavigate} />
+           ))}
+        </div>
+        <div className="mt-12 text-center">
+             <Button variant="outline" onClick={() => onNavigate('cases')}>View All Success Stories</Button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/**
+ * Stats Section Component.
+ */
+const Stats = () => (
+  <section className="py-24 bg-[#0F172A] text-white relative overflow-hidden">
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 md:w-96 md:h-96 bg-[#0062D1] rounded-full blur-[100px] md:blur-[150px] opacity-20 animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 md:w-96 md:h-96 bg-purple-900 rounded-full blur-[100px] md:blur-[150px] opacity-20 animate-pulse animation-delay-2000" />
+    </div>
+
+    <div className="container mx-auto px-4 md:px-6 relative z-10">
+      {/* Enhanced Stats Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-20">
+        {[
+          { val: 7, suffix: "+", label: 'Years on Market', icon: Clock },
+          { val: 300, suffix: "+", label: 'Projects Delivered', icon: Check },
+          { val: 98, suffix: "%", label: 'Client Retention', icon: Users },
+          { val: 120, suffix: "", label: 'Senior Engineers', icon: Code2 }
+        ].map((s, i) => (
+          <FadeIn key={i} delay={i * 100} className="h-full">
+            <div className="h-full p-6 md:p-8 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[#0062D1]/30 transition-all duration-500 group flex flex-col items-center text-center hover:-translate-y-1">
+               <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#0062D1]/20 flex items-center justify-center text-[#0062D1] mb-4 group-hover:scale-110 group-hover:bg-[#0062D1] group-hover:text-white transition-all duration-500">
+                  <s.icon size={24} />
+               </div>
+               <div className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 tracking-tight text-white group-hover:text-blue-200 transition-colors">
+                 <Counter end={s.val} suffix={s.suffix} />
+               </div>
+               <div className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">
+                 {s.label}
+               </div>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+
+      {/* Trusted Companies */}
+      <FadeIn delay={400} className="text-center border-t border-white/10 pt-16">
+        <p className="text-xs md:text-sm font-bold text-gray-500 uppercase tracking-widest mb-10">Trusted by Industry Leaders</p>
+        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 md:gap-24 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+           {['Microsoft', 'Google', 'Spotify', 'Slack', 'Airbnb', 'Uber'].map((logo) => (
+             <h3 key={logo} className="text-2xl md:text-3xl font-black text-white tracking-tighter cursor-default hover:text-[#0062D1] transition-colors duration-300 hover:scale-110 transform inline-block">{logo}</h3>
+           ))}
+        </div>
+      </FadeIn>
+    </div>
+  </section>
+);
+
+/**
+ * Latest Insights Section Component (Restored to original vertical list for Landing Page).
+ */
+const LatestInsights = ({ onNavigate }) => {
+  const posts = ALL_POSTS.slice(0, 3);
+
+  return (
+    <section id="insights" className="py-16 md:py-24 bg-white">
+      <div className="container mx-auto px-4 md:px-6">
+        <SectionHeading label="Thought Leadership" title="Latest Insights" subtitle="Technical deep dives, company updates, and industry analysis from our lead engineers." />
+        <div className="flex flex-col border-t border-gray-200">
+          {posts.map((post, index) => (
+            <FadeIn key={index} delay={index * 100}>
+              <div className="group flex flex-col md:flex-row items-start md:items-center py-6 md:py-10 border-b border-gray-200 hover:bg-gray-50 transition-all duration-300 cursor-pointer px-2 md:px-4 -mx-2 md:-mx-4 rounded-xl">
+                <div className="flex flex-wrap items-center gap-3 md:gap-6 w-full md:w-auto mb-3 md:mb-0 md:mr-12">
+                    <div className="text-[10px] md:text-xs font-bold text-gray-400 tracking-widest uppercase shrink-0 min-w-[80px]">{post.date}</div>
+                    <span className="inline-flex items-center justify-center px-2.5 py-1 md:px-3 md:py-1 rounded-full bg-blue-50 text-[#0062D1] border border-blue-100 text-[9px] md:text-[10px] font-bold uppercase tracking-wider shrink-0">{post.category}</span>
+                </div>
+                <h3 className="flex-1 text-lg md:text-2xl font-bold text-[#0F172A] group-hover:text-[#0062D1] transition-colors leading-snug">{post.title}</h3>
+                <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-full border border-gray-200 text-gray-400 group-hover:bg-[#0062D1] group-hover:text-white group-hover:border-[#0062D1] transition-all ml-6 opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 shrink-0">
+                   <ArrowRight size={18} />
+                </div>
+                <div className="md:hidden w-full flex justify-end mt-2 opacity-0 group-hover:opacity-100 transition-opacity"><ArrowRight size={16} className="text-[#0062D1]" /></div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+        <div className="mt-12 text-center">
+            <Button variant="outline" onClick={() => onNavigate('insights')}>Read All Articles</Button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
+// =============================================================================
+// 7. ARTICLES/INSIGHTS COMPONENTS (Dedicated Page)
+// =============================================================================
+
+/**
+ * Article Card Component (Used on InsightsPage for detailed grid layout).
+ */
+const ArticleCard = ({ post, index, onNavigate, featured = false }) => {
+    
+    // Featured Post Style
+    if (featured) {
+        return (
+            <FadeIn delay={100} className="lg:col-span-3 h-full">
+                <div className="group relative bg-white rounded-3xl border border-gray-200 hover:border-[#0062D1] transition-all duration-500 cursor-pointer overflow-hidden shadow-lg hover:shadow-xl">
+                    {/* Image */}
+                    <div className="relative h-96 overflow-hidden">
+                        <img 
+                            src={post.image} 
+                            alt={post.title} 
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                        />
+                        <div className="absolute inset-0 bg-gray-900/10" />
+                    </div>
+                    {/* Content */}
+                    <div className="p-6 md:p-8 flex flex-col">
+                        <div className="flex items-center gap-3 mb-4 border-b border-gray-100 pb-4">
+                            <span className="px-3 py-1 rounded-full bg-[#0062D1] text-white text-[9px] font-bold uppercase tracking-wider shadow-md">Featured</span>
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{post.category} | {post.date}</span>
+                        </div>
+                        <h3 className="text-3xl md:text-4xl font-bold text-[#0F172A] leading-tight mb-4 group-hover:text-[#0062D1] transition-colors">{post.title}</h3>
+                        <p className="text-gray-600 text-lg leading-relaxed mb-6 flex-1">{post.summary}</p>
+                        <div className="mt-auto">
+                            <button className="flex items-center gap-2 text-base font-bold text-[#0062D1] hover:text-[#0F172A] transition-colors">
+                                Read Full Report <ArrowRight size={16} className="transform translate-x-0 group-hover:translate-x-1 transition-transform" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </FadeIn>
+        );
+    }
+    
+    // Default Grid Card Style
+    return (
+        <FadeIn delay={index * 150} className="h-full">
+            <div className="group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-[#0062D1] transition-all duration-300 flex flex-col h-full cursor-pointer">
+                <div className="relative h-48 overflow-hidden">
+                    <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                </div>
+                <div className="p-6 flex-1 flex flex-col">
+                    <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">{post.category} | {post.date}</div>
+                    <h3 className="text-xl font-bold text-[#0F172A] leading-tight mb-3 group-hover:text-[#0062D1] transition-colors">{post.title}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed mb-6 flex-1 line-clamp-3">{post.summary}</p>
+                    <div className="mt-auto">
+                        <button className="flex items-center gap-2 text-sm font-bold text-[#0062D1] hover:text-[#0F172A] transition-colors">
+                            Read Article <ArrowRight size={14} className="transform translate-x-0 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </FadeIn>
+    );
+};
+
+/**
+ * Dedicated Insights/Blog Page Component.
+ */
+const InsightsPage = ({ onNavigate }) => {
+  const [filter, setFilter] = useState('All');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredPosts = ALL_POSTS.filter(p => {
+    const categoryMatch = filter === 'All' || p.category === filter;
+    const searchMatch = p.title.toLowerCase().includes(searchTerm.toLowerCase()) || p.summary.toLowerCase().includes(searchTerm.toLowerCase());
+    return categoryMatch && searchMatch;
+  });
+  
+  const featuredPost = filteredPosts.length > 0 ? filteredPosts[0] : null;
+  const remainingPosts = filteredPosts.slice(1);
+
+  return (
+    <div className="pt-24 md:pt-32 min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 md:px-6 pb-20">
+            <SectionHeading 
+                label="Knowledge Base" 
+                title="Engineering Insights & Tech Deep Dives" 
+                subtitle="Explore our library of technical articles, case studies, and industry analysis authored by Gimmir's lead experts." 
+                center 
+            />
+
+            {/* Search and Filter Bar */}
+            <FadeIn delay={200}>
+                <div className="max-w-6xl mx-auto mb-10 md:mb-16">
+                    <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 bg-white p-4 md:p-6 rounded-2xl border border-gray-100 shadow-xl">
+                        
+                        {/* Search Input */}
+                        <div className="relative w-full md:w-1/3 shrink-0">
+                            <Search size={18} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search articles..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl font-medium focus:ring-0 focus:border-[#0062D1] outline-none transition-all duration-300"
+                            />
+                        </div>
+                        
+                        {/* Category Filters */}
+                        <div className="w-full md:w-2/3 overflow-x-auto hide-scrollbar flex justify-start md:justify-start">
+                            <div className="flex flex-nowrap gap-2 p-0 rounded-xl">
+                                {ALL_CATEGORIES.map(category => (
+                                    <button 
+                                        key={category} 
+                                        onClick={() => setFilter(category)}
+                                        className={`px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${
+                                            filter === category 
+                                                ? 'text-[#0062D1] border-b-2 border-[#0062D1] bg-transparent' 
+                                                : 'text-gray-600 hover:text-[#0062D1] border-b-2 border-transparent hover:border-gray-300'
+                                        }`}
+                                    >
+                                        {category}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </FadeIn>
+
+
+            {/* Articles Grid */}
+            {filteredPosts.length > 0 ? (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-20">
+                    {/* Featured Post */}
+                    {featuredPost && (
+                        <ArticleCard 
+                            key={featuredPost.id} 
+                            index={0} 
+                            post={featuredPost} 
+                            onNavigate={onNavigate} 
+                            featured={true}
+                        />
+                    )}
+
+                    {/* Remaining Posts Grid */}
+                    <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                      {remainingPosts.map((post, idx) => (
+                          <ArticleCard key={post.id} index={idx} post={post} onNavigate={onNavigate} featured={false} />
+                      ))}
+                    </div>
+                </div>
+            ) : (
+                <div className="text-center py-20 text-gray-500 border border-gray-200 rounded-2xl bg-white">
+                    <Search size={32} className="mx-auto mb-4" />
+                    <p className="text-lg font-semibold">No articles found matching your criteria.</p>
+                    <button onClick={() => {setFilter('All'); setSearchTerm('');}} className="mt-4 text-sm font-bold text-[#0062D1] hover:text-[#0F172A] transition-colors">Clear Filters</button>
+                </div>
+            )}
+            
+            {/* CTA Block */}
+            <FadeIn delay={400}>
+                <div className="relative p-6 md:p-12 bg-[#0F172A] rounded-2xl md:rounded-[2rem] text-center text-white overflow-hidden shadow-2xl shadow-gray-900/30 border border-white/10">
+                    <div className="absolute inset-0 bg-[linear-gradient(rgba(0,98,209,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,98,209,0.1)_1px,transparent_1px)] bg-[size:30px_30px] opacity-10 mix-blend-overlay"></div>
+                    <div className="relative z-10 max-w-2xl mx-auto">
+                        <h3 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-white">Can't find the topic you need?</h3>
+                        <p className="text-gray-300 mb-8 text-base md:text-lg">Let's discuss your specific technical challenge directly with an architect. Book a consultation now.</p>
+                        <div className="flex flex-col sm:flex-row justify-center gap-4">
+                            <Button variant="primary" className="!py-4 !px-8 text-base shadow-xl hover:shadow-2xl hover:scale-105 transition-all w-full sm:w-auto" onClick={() => onNavigate('contact')}>Start Project Discussion</Button>
+                            <Button 
+                                variant="outline" 
+                                className="!py-4 !px-8 text-base text-white border border-white/30 hover:bg-white/10 w-full sm:w-auto" 
+                                data-cal-link="nazar-moroz/first-touch"
+                                data-cal-config='{"layout":"month_view"}'
+                            >
+                                Book a Tech Meet
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </FadeIn>
+        </div>
+    </div>
+  );
+};
+
+
+// =============================================================================
+// 8. CASE STUDIES COMPONENTS (Dedicated Page)
+// =============================================================================
+
+/**
+ * Dedicated Case Studies Page Component.
+ */
+const CasesPage = ({ onNavigate }) => (
+  <div className="pt-24 md:pt-32 min-h-screen bg-gray-50">
+    <div className="container mx-auto px-4 md:px-6 pb-20">
+       <SectionHeading title="Success Stories" subtitle="Explore how we help businesses transform and grow." center />
+       <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-10 md:mb-16">
+          {['All', 'Fintech', 'Healthcare', 'E-Commerce', 'Logistics', 'EdTech'].map(filter => (
+             <button key={filter} className={`px-4 py-2 md:px-5 rounded-full text-xs md:text-sm font-bold transition-all duration-300 active:scale-95 ${filter === 'All' ? 'bg-[#0062D1] text-white shadow-lg shadow-blue-900/20 transform scale-105' : 'bg-white text-gray-500 hover:text-[#0062D1] border border-gray-200 hover:border-blue-200 hover:shadow-md'}`}>
+                {filter}
+             </button>
+          ))}
+       </div>
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-20">
+          {ALL_CASES.map((caseStudy, idx) => (
+             <CaseCard key={idx} index={idx} {...caseStudy} onNavigate={onNavigate} />
+          ))}
+       </div>
+       
+       <div className="relative p-6 md:p-12 bg-[#0062D1] rounded-2xl md:rounded-[2rem] text-center text-white overflow-hidden shadow-2xl shadow-blue-900/30">
+           <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+           <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/20 rounded-full blur-3xl"></div>
+           <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-900/40 rounded-full blur-3xl"></div>
+           <div className="relative z-10 max-w-2xl mx-auto">
+             <h3 className="text-2xl md:text-4xl font-bold mb-4 md:mb-6 leading-tight">Ready to write your success story?</h3>
+             <p className="text-blue-100 mb-8 text-base md:text-lg">Join industry leaders who trust Gimmir with their critical software infrastructure.</p>
+             <div className="flex flex-col sm:flex-row justify-center gap-4">
+               <Button variant="secondary" className="!py-4 !px-8 text-base shadow-xl hover:shadow-2xl hover:scale-105 transition-all w-full sm:w-auto" onClick={() => onNavigate('contact')}>Start Your Project</Button>
+               <Button 
+                  variant="ghost" 
+                  className="!py-4 !px-8 text-base text-white border border-white/30 hover:bg-white/10 w-full sm:w-auto" 
+                  data-cal-link="nazar-moroz/first-touch"
+                  data-cal-config='{"layout":"month_view"}'
+               >
+                  Book a Meet
+               </Button>
+             </div>
+           </div>
+       </div>
+
+       <div className="mt-24 text-center">
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-8">Trusted by Innovators</p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+             {['Microsoft', 'Google', 'Spotify', 'Slack', 'Airbnb', 'Uber'].map((logo) => (
+               <h3 key={logo} className="text-2xl md:text-3xl font-black text-gray-300 hover:text-[#0062D1] transition-colors duration-300 hover:scale-110 transform inline-block cursor-default">{logo}</h3>
+             ))}
+          </div>
+       </div>
+    </div>
+    <Contact />
+  </div>
+);
+
+/**
+ * Case Study Detail Page Component.
+ */
+const CaseStudyDetail = ({ id, onNavigate }) => {
+  const data = ALL_CASES.find(c => c.id === id);
+  
+  const otherCases = ALL_CASES.filter(c => c.id !== id).slice(0, 2);
+
+  if (!data) return <div className="pt-40 text-center">Case study not found. <button onClick={() => onNavigate('cases')} className="text-blue-600">Back to Cases</button></div>;
+
+  return (
+    <article className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <section className="relative pt-40 pb-20 md:pb-32 bg-[#0B101B] text-white overflow-hidden">
+        <div className="absolute inset-0">
+           <img src={data.image} alt={data.title} className="w-full h-full object-cover opacity-20" />
+           <div className="absolute inset-0 bg-gradient-to-b from-[#0B101B] via-[#0B101B]/90 to-[#0B101B]" />
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
+           <button onClick={() => onNavigate('cases')} className="flex items-center gap-2 text-blue-300 hover:text-white mb-8 text-sm font-bold uppercase tracking-wider transition-colors">
+              <ArrowRight size={16} className="rotate-180" /> Back to Stories
+           </button>
+           <FadeIn>
+             <div className="flex flex-wrap gap-3 mb-6">
+                {data.tags.map(t => <span key={t} className="px-3 py-1 rounded-full border border-white/20 bg-white/5 text-xs font-bold uppercase tracking-wider text-blue-200">{t}</span>)}
+             </div>
+             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight max-w-4xl">{data.title}</h1>
+             <div className="flex flex-col md:flex-row gap-8 md:gap-16 border-t border-white/10 pt-8">
+                <div>
+                   <div className="text-xs text-gray-400 uppercase tracking-widest mb-1">Client</div>
+                   <div className="text-xl font-bold">{data.client}</div>
+                </div>
+                <div>
+                   <div className="text-xs text-gray-400 uppercase tracking-widest mb-1">Industry</div>
+                   <div className="text-xl font-bold">{data.industry}</div>
+                </div>
+             </div>
+           </FadeIn>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <section className="py-20 md:py-24">
+         <div className="container mx-auto px-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+               
+               {/* Left Content */}
+               <div className="lg:col-span-8">
+                  {/* About Client & Challenge */}
+                  <FadeIn>
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+                        <div>
+                           <h3 className="text-lg font-bold text-[#0F172A] mb-4 uppercase tracking-widest flex items-center gap-2"><div className="w-6 h-0.5 bg-[#0062D1]"/>About Client</h3>
+                           <p className="text-gray-600 leading-relaxed">{data.aboutClient || "A confidential enterprise client seeking digital transformation to scale operations and improve customer experience."}</p>
+                        </div>
+                        <div>
+                           <h3 className="text-lg font-bold text-[#0F172A] mb-4 uppercase tracking-widest flex items-center gap-2"><div className="w-6 h-0.5 bg-[#0062D1]"/>The Challenge</h3>
+                           <p className="text-gray-600 leading-relaxed">{data.challenge}</p>
+                        </div>
+                     </div>
+                  </FadeIn>
+
+                  {/* Gallery / Mockups (If available) */}
+                  {data.gallery && data.gallery.length > 0 && (
+                    <FadeIn className="my-20">
+                        <div className="rounded-2xl overflow-hidden shadow-2xl border border-gray-100 mb-8">
+                            <img src={data.gallery[0]} className="w-full h-auto" alt="Main Interface" />
+                        </div>
+                        {data.gallery.length > 1 && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {data.gallery.slice(1,3).map((img, idx) => (
+                                    <div key={idx} className="rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                                        <img src={img} className="w-full h-auto" alt={`Interface ${idx}`} />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </FadeIn>
+                  )}
+
+                  {/* Solution & Process */}
+                  <FadeIn>
+                     <h3 className="text-3xl font-bold text-[#0F172A] mb-8">Strategic Approach</h3>
+                     <p className="text-lg text-gray-600 leading-relaxed mb-12">{data.solution}</p>
+                     
+                     {/* Process Steps */}
+                     {data.process && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+                            {data.process.map((step, i) => {
+                                const StepIcon = step.icon;
+                                return (
+                                <div key={i} className="p-6 bg-gray-50 rounded-xl border border-gray-100">
+                                    <div className="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-[#0062D1] mb-4 shadow-sm">
+                                        <StepIcon size={20} />
+                                    </div>
+                                    <h4 className="font-bold text-[#0F172A] mb-2">{step.title}</h4>
+                                    <p className="text-sm text-gray-500">{step.desc}</p>
+                                </div>
+                                )
+                            })}
+                        </div>
+                     )}
+                  </FadeIn>
+
+                  {/* Results */}
+                  <FadeIn className="bg-[#0F172A] text-white p-8 md:p-12 rounded-3xl relative overflow-hidden my-16">
+                      <div className="absolute top-0 right-0 w-64 h-64 bg-[#0062D1] rounded-full blur-[100px] opacity-20" />
+                      <h3 className="text-2xl font-bold mb-8 relative z-10">Key Outcomes</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+                          {data.metrics.map((m, i) => (
+                              <div key={i}>
+                                  <div className="text-4xl md:text-5xl font-bold text-[#0062D1] mb-2">{m.value}</div>
+                                  <div className="text-sm text-gray-400 font-bold uppercase tracking-widest">{m.label}</div>
+                              </div>
+                          ))}
+                      </div>
+                  </FadeIn>
+
+                  {/* Quote */}
+                  {data.testimonial && (
+                    <FadeIn className="border-l-4 border-[#0062D1] pl-8 py-2 my-12">
+                        <p className="text-2xl font-medium text-[#0F172A] italic mb-6 leading-relaxed">"{data.testimonial.text}"</p>
+                        <div className="flex items-center gap-3">
+                            <div className="font-bold text-[#0F172A]">{data.testimonial.author}</div>
+                        </div>
+                    </FadeIn>
+                  )}
+               </div>
+
+               {/* Right Sidebar */}
+               <div className="lg:col-span-4">
+                  <div className="sticky top-32 space-y-8">
+                     {/* Tech Stack Widget */}
+                     <FadeIn delay={200}>
+                        <div className="bg-white rounded-2xl p-8 shadow-lg shadow-gray-100 border border-gray-100">
+                           <h4 className="font-bold text-[#0F172A] mb-6 uppercase text-xs tracking-widest flex items-center gap-2">
+                               <Cpu size={14} className="text-[#0062D1]" /> Technology Stack
+                           </h4>
+                           <div className="flex flex-wrap gap-2">
+                              {data.techStack?.map(tech => (
+                                 <span key={tech} className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs font-bold text-gray-600">
+                                    {tech}
+                                 </span>
+                              ))}
+                           </div>
+                        </div>
+                     </FadeIn>
+
+                     {/* CTA Widget */}
+                     <FadeIn delay={300}>
+                        <div className="bg-[#0062D1] text-white rounded-2xl p-8 text-center relative overflow-hidden shadow-xl shadow-blue-900/20">
+                           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+                           <div className="relative z-10">
+                               <h4 className="text-xl font-bold mb-3">Ready for Impact?</h4>
+                               <p className="text-blue-100 text-sm mb-6">Let's build a similar success story for your business.</p>
+                               <Button variant="secondary" className="w-full justify-center" onClick={() => onNavigate('contact')}>Contact Us</Button>
+                           </div>
+                        </div>
+                     </FadeIn>
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </section>
+
+      {/* Recent Cases Section */}
+      <section className="py-16 bg-gray-50 border-t border-gray-200">
+        <div className="container mx-auto px-6">
+            <SectionHeading title="More Success Stories" subtitle="Explore other projects we have delivered." center />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                {otherCases.map((c, idx) => (
+                    <CaseCard key={c.id} index={idx} {...c} onNavigate={onNavigate} />
+                ))}
+            </div>
+            <div className="mt-12 flex justify-center">
+                <Button variant="outline" onClick={() => onNavigate('cases')}>View All Cases <ArrowRight size={16}/></Button>
+            </div>
+        </div>
+      </section>
+
+      {/* Contact Form at the bottom */}
+      <Contact />
+    </article>
+  );
+};
+
+
+// =============================================================================
+// 9. FOOTER
+// =============================================================================
+
+const locations = [
+  { country: 'USA', city: 'Wilmington, Delaware', roles: 'Backoffice', color: 'bg-indigo-500', shadowColor: 'shadow-indigo-500/50' },
+  { country: 'Estonia', city: 'Tallinn', roles: 'Backoffice & Development', color: 'bg-cyan-500', shadowColor: 'shadow-cyan-500/50' },
+  { country: 'Spain', city: 'Valencia', roles: 'Development', color: 'bg-orange-500', shadowColor: 'shadow-orange-500/50' },
+  { country: 'Mexico', city: 'Mexico City', roles: 'Development & Hiring Hub', color: 'bg-green-500', shadowColor: 'shadow-green-500/50' },
+  { country: 'Ukraine', city: 'Lviv', roles: 'R&D Center & Development', color: 'bg-[#0062D1]', shadowColor: 'shadow-blue-600/50' }
+];
+
+/**
+ * Footer Component.
+ */
+const Footer = ({ onNavigate }) => {
+  const footerSections = [
+    {
+        title: 'Services',
+        links: [
+            { name: 'Mobile Development', id: 'service-mobile' },
+            { name: 'Web Platforms', id: 'service-web' },
+            { name: 'Cloud & DevOps', id: 'service-cloud' },
+            { name: 'Dedicated Teams', id: 'service-teams' },
+            { name: 'Product Design', id: 'service-design' },
+            { name: 'Quality Assurance', id: 'service-qa' },
+        ]
+    },
+    {
+        title: 'Company',
+        links: [
+            { name: 'About Us', id: 'company-about' },
+            { name: 'How We Work', id: 'company-process' },
+            { name: 'Careers', id: 'company-careers' },
+            { name: 'Success Stories', page: 'cases' },
+        ]
+    },
+    {
+        title: 'Resources',
+        links: [
+            { name: 'Insights', page: 'insights' },
+            { name: 'Contact Us', page: 'contact' },
+            { name: 'Privacy Policy', href: '#' },
+            { name: 'Terms of Service', href: '#' },
+        ]
+    }
+  ];
+
+  return (
+    <footer className="bg-[#0F172A] text-white border-t border-white/10 font-sans text-sm">
+      <div className="container mx-auto px-6 py-12">
+        
+        {/* TOP ROW: Brand + Navigation */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-12">
+          
+          {/* BRAND & CONTACT (Col 1-4) */}
+          <div className="lg:col-span-4 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-3 font-bold text-2xl tracking-tight text-white mb-4">
+                <div className="w-8 h-8 rounded-lg bg-[#0062D1] flex items-center justify-center shadow-lg shadow-blue-900/50 text-base">
+                  <Zap size={18} fill="currentColor" />
+                </div>
+                GIMMIR
+              </div>
+              <p className="text-gray-400 leading-relaxed mb-6 max-w-sm">
+                Engineering the digital future. Precision, scale, and security for enterprise leaders.
+              </p>
+              
+              <div className="flex flex-col gap-3">
+                <a href="mailto:hello@gimmir.com" className="flex items-center gap-2 text-white font-bold hover:text-[#0062D1] transition-colors group w-fit">
+                  <Mail size={16} className="text-[#0062D1] group-hover:scale-110 transition-transform" />
+                  hello@gimmir.com
+                </a>
+                <div className="flex gap-3 mt-2">
+                   <a href="#" className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#0062D1] hover:border-[#0062D1] transition-all"><Linkedin size={16} /></a>
+                   <a href="#" className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#0062D1] hover:border-[#0062D1] transition-all"><Instagram size={16} /></a>
+                   <a href="#" className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#0062D1] hover:border-[#0062D1] transition-all"><Facebook size={16} /></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* NAVIGATION LINKS (Col 5-12) */}
+          <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8 lg:pl-12">
+            {footerSections.map((section) => (
+              <div key={section.title}>
+                <h4 className="font-bold text-white mb-4 uppercase text-xs tracking-wider text-[#0062D1]">{section.title}</h4>
+                <ul className="space-y-2.5">
+                  {section.links.map((item) => (
+                    <li key={item.name}>
+                      <button 
+                        onClick={() => {
+                          if (item.id) onNavigate(item.id);
+                          else if (item.page) onNavigate(item.page);
+                          else if (item.href) window.location.href = item.href; // Fallback for external/hash
+                        }}
+                        className="text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-200 block text-left"
+                      >
+                        {item.name}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* MIDDLE ROW: LOCATIONS */}
+        <div className="border-y border-white/5 py-8 mb-8">
+          <div className="flex flex-col xl:flex-row items-start xl:items-center gap-6 xl:gap-12">
+            <div className="flex items-center gap-2 font-bold text-xs uppercase tracking-widest text-gray-500 whitespace-nowrap min-w-fit">
+              <Globe size={14} className="text-[#0062D1]" /> Global Hubs
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-y-6 gap-x-4 w-full">
+              {locations.map((loc) => (
+                <div key={loc.country} className="group">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className={`w-1.5 h-1.5 rounded-full ${loc.color} shadow-[0_0_6px] ${loc.shadowColor}`} />
+                    <span className="font-bold text-white group-hover:text-[#0062D1] transition-colors text-sm">
+                      {loc.country}
+                    </span>
+                  </div>
+                  <div className="pl-3.5 flex flex-col gap-0.5 border-l border-white/5 ml-[3px]">
+                    <div className="text-xs text-gray-300 font-medium">{loc.city}</div>
+                    <div className="text-[10px] uppercase tracking-wide text-gray-500 font-semibold group-hover:text-[#0062D1] transition-colors">{loc.roles}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* BOTTOM ROW: Copyright & Legal */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-600">
+          <div>© 2024 Gimmir Inc. All rights reserved.</div>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-white transition-colors">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+
+// =============================================================================
+// 10. MAIN PAGE WRAPPER COMPONENTS
+// =============================================================================
+
+/**
+ * Wrapper for the Landing Page content.
+ */
+const LandingPage = ({ onNavigate }) => (
+  <>
+    <Hero onNavigate={onNavigate} />
+    <Wizard />
+    <Services />
+    <Industries />
+    <Cases onNavigate={onNavigate} />
+    <Stats />
+    <LatestInsights onNavigate={onNavigate} />
+    <Contact />
+  </>
+);
+
+/**
+ * Main Application Component (The root).
+ */
+export default function App() {
+  const [currentPage, setCurrentPage] = useState('home');
+
+  // Cal.com Embed Initialization
+  useEffect(() => {
+    (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; typeof namespace === "string" ? (cal.ns[namespace] = api) && p(api, arguments) : p(cal, arguments); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init", {origin:"https://cal.com"});
+    Cal("ui", {"styles":{"branding":{"brandColor":"#0062D1"}},"hideEventTypeDetails":false,"layout":"month_view"});
+  }, []);
+
+  // Scroll to top whenever page changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
+  /**
+   * Renders the appropriate page component based on the current page state.
+   */
+  const renderPage = () => {
+    switch(true) {
+      case currentPage === 'home': return <LandingPage onNavigate={setCurrentPage} />;
+      case typeof currentPage === 'string' && currentPage.startsWith('case:'): 
+        const caseId = currentPage.split(':')[1];
+        return <CaseStudyDetail id={caseId} onNavigate={setCurrentPage} />;
+      case currentPage === 'cases': return <CasesPage onNavigate={setCurrentPage} />;
+      case currentPage === 'contact': return <div className="pt-20"><Contact /></div>;
+      case currentPage === 'insights': return <InsightsPage onNavigate={setCurrentPage} />;
+      case currentPage.startsWith('service-'): return <PageLayout title={currentPage.replace('service-', '').replace('-', ' ').toUpperCase()} subtitle="Dedicated service page." />;
+      case currentPage.startsWith('company-'): return <PageLayout title={currentPage.replace('company-', '').replace('-', ' ').toUpperCase()} subtitle="Learn more about our company." />;
+      default: return <LandingPage onNavigate={setCurrentPage} />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white font-sans text-[#0F172A] selection:bg-[#0062D1] selection:text-white">
+      <GlobalStyles />
+      <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />
+      <main>
+        {renderPage()}
+      </main>
+      <Footer onNavigate={setCurrentPage} />
+    </div>
+  );
+}

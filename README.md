@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Website with Sanity CMS
 
-## Getting Started
+Сучасний вебсайт побудований на **Next.js** з **Sanity CMS** як headless CMS, готовий до деплойменту на **Vercel**.
 
-First, run the development server:
+## Структура проекту
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+.
+├── src/                          # Next.js App Router та компоненти
+│   ├── app/                      # Сторінки та layout
+│   ├── components/               # React компоненти
+│   └── lib/                      # Утиліти та конфігурація
+├── sanity/                       # Sanity CMS схеми та конфігурація
+│   └── schemaTypes/              # Типи схем (post, author тощо)
+├── .env.example                  # Приклад .env змінних
+├── .env.local                    # Локальні змінні оточення (не комітити!)
+├── vercel.json                   # Конфігурація Vercel
+└── package.json                  # Залежності проекту
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Встановлення залежностей
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Налаштування Sanity CMS
 
-## Learn More
+1. Перейдіть на [sanity.io](https://sanity.io) та створіть новий проект
+2. Отримайте `Project ID` та `Dataset`
+3. Заповніть `.env.local`:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+NEXT_PUBLIC_SANITY_PROJECT_ID=YOUR_PROJECT_ID
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2024-11-15
+SANITY_API_TOKEN=YOUR_API_TOKEN
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Запуск локально
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Розробка Next.js (frontend)
+```bash
+npm run dev
+```
+Відкрийте [http://localhost:3000](http://localhost:3000)
 
-## Deploy on Vercel
+### Санітарій Studio (CMS)
+**Варіант 1 - Вбудована в додаток:**
+Відкрийте [http://localhost:3000/gadmin](http://localhost:3000/gadmin)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Варіант 2 - Окремий dev сервер:**
+```bash
+npm run dev:sanity
+```
+Студія буде доступна на [http://localhost:3333](http://localhost:3333)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Деплой на Vercel
+
+1. **Через GitHub:**
+   - Запушіть коду на GitHub
+   - Перейдіть на [vercel.com](https://vercel.com)
+   - Імпортуйте репозиторій
+   - Додайте環境 змінні для Sanity
+
+2. **Встановити секрети в GitHub Actions:**
+   - Перейдіть на **Settings → Secrets and variables → Actions**
+   - Додайте:
+     - `NEXT_PUBLIC_SANITY_PROJECT_ID`
+     - `NEXT_PUBLIC_SANITY_DATASET`
+     - `NEXT_PUBLIC_SANITY_API_VERSION`
+     - `SANITY_API_TOKEN`
+
+## Доступні скрипти
+
+- `npm run dev` - Запуск локального сервера розробки
+- `npm run dev:sanity` - Запуск Sanity Studio
+- `npm run build` - Збірка для продакшену
+- `npm start` - Запуск production сервера
+- `npm run lint` - Запуск ESLint
+
+## Технологічний стек
+
+- **Next.js 16** - React фреймворк для SSR та SSG
+- **React 19** - UI бібліотека
+- **TypeScript** - Типізація
+- **Tailwind CSS** - CSS фреймворк для стилізації
+- **Sanity CMS** - Headless CMS
+- **Vercel** - Хостинг та деплой
+
+## Корисні посилання
+
+- [Next.js Документація](https://nextjs.org/docs)
+- [Sanity Документація](https://www.sanity.io/docs)
+- [Vercel Документація](https://vercel.com/docs)
+
+## GitHub Actions
+
+Налаштовано два workflows:
+
+- **lint.yml** - Автоматична перевірка коду при push на main/develop
+- **build.yml** - Автоматична збірка при push на main/develop
+
+## Лікензія
+
+MIT

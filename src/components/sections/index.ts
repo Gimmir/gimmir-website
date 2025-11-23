@@ -1,0 +1,8 @@
+export { Hero } from './Hero'
+export { Services } from './Services'
+export { Industries } from './Industries'
+export { Cases } from './Cases'
+export { Stats } from './Stats'
+export { LatestInsights } from './LatestInsights'
+export { Contact } from './Contact'
+export { default as Wizard } from './Wizard'
