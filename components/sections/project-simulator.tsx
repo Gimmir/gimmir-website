@@ -31,7 +31,7 @@ export default function ProjectSimulatorSection() {
                 </div>
                 <div>
                   <h4 className="text-white font-bold text-sm mb-1">Budget Forecasting</h4>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-slate-500 leading-relaxed">
                     Realistic ranges based on actual project data, not guesswork.
                   </p>
                 </div>
@@ -42,7 +42,7 @@ export default function ProjectSimulatorSection() {
                 </div>
                 <div>
                   <h4 className="text-white font-bold text-sm mb-1">Risk Assessment</h4>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-slate-500 leading-relaxed">
                     Identify scalability and technical debt risks early.
                   </p>
                 </div>

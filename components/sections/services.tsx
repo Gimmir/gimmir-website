@@ -10,7 +10,7 @@ export default function ServicesSection() {
             // SYSTEM_MODULES
           </div>
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-            Comprehensive <br className="md:hidden" /> Engineering{' '}
+            Comprehensive Engineering{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">
               Ecosystem.
             </span>

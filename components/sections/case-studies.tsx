@@ -59,7 +59,7 @@ export default function CaseStudiesSection() {
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {/* Case 1: Gym Network */}
-          <div className="min-w-[85vw] sm:min-w-[320px] md:min-w-[400px] snap-center group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-emerald-500/40 transition-all duration-300 flex flex-col shadow-lg">
+          <div className="min-w-[90vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-emerald-500/40 transition-all duration-300 flex flex-col shadow-lg">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl"></div>
             <div className="flex justify-between items-start mb-8">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider">
@@ -95,7 +95,7 @@ export default function CaseStudiesSection() {
           </div>
 
           {/* Case 2: SaaS Startup */}
-          <div className="min-w-[85vw] sm:min-w-[320px] md:min-w-[400px] snap-center group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-indigo-500/40 transition-all duration-300 flex flex-col shadow-lg">
+          <div className="min-w-[90vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-indigo-500/40 transition-all duration-300 flex flex-col shadow-lg">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl"></div>
             <div className="flex justify-between items-start mb-8">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider">
@@ -125,7 +125,7 @@ export default function CaseStudiesSection() {
           </div>
 
           {/* Case 3: Healthcare */}
-          <div className="min-w-[85vw] sm:min-w-[320px] md:min-w-[400px] snap-center group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-rose-500/40 transition-all duration-300 flex flex-col shadow-lg">
+          <div className="min-w-[90vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-rose-500/40 transition-all duration-300 flex flex-col shadow-lg">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl"></div>
             <div className="flex justify-between items-start mb-8">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold uppercase tracking-wider">
@@ -157,7 +157,7 @@ export default function CaseStudiesSection() {
           </div>
 
           {/* Case 4: E-Commerce */}
-          <div className="min-w-[85vw] sm:min-w-[320px] md:min-w-[400px] snap-center group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-orange-500/40 transition-all duration-300 flex flex-col shadow-lg">
+          <div className="min-w-[90vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-orange-500/40 transition-all duration-300 flex flex-col shadow-lg">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl"></div>
             <div className="flex justify-between items-start mb-8">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-bold uppercase tracking-wider">

@@ -9,6 +9,9 @@ export function ValuePropSection() {
       <div className="absolute inset-0 opacity-[0.03] bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-no-repeat bg-center bg-cover pointer-events-none mix-blend-overlay"></div>
       
       <div className="max-w-7xl mx-auto relative z-10 py-24">
+        {/* Connecting line from previous section */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-24 w-px bg-[#0062d1]"></div>
+
         <SectionHeader 
           title={<span>How We Do It <span className="text-[#0062d1]">Differently</span></span>}
           subtitle="We don't act like a vendor. We operate as your dedicated CTO office, integrating strategy, talent, and compliance into one seamless workflow."

@@ -17,7 +17,7 @@ export function SectionHeader({
   align = 'center' 
 }: SectionHeaderProps) {
   return (
-    <div className={`mb-12 md:mb-16 ${align === 'left' ? 'text-left' : 'text-center'} relative px-4 z-10`}>
+    <div className={`mb-12 md:mb-16 ${align === 'left' ? 'text-left' : 'text-center'} relative z-10`}>
       {badge && (
         <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white text-xs font-bold tracking-wider uppercase mb-6 ${align === 'center' ? 'mx-auto' : ''}`}>
           {Icon && <Icon size={12} className="text-[#0062d1]" />}

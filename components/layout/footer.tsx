@@ -4,8 +4,12 @@ import { FOOTER_LINKS } from '@/lib/constants';
 
 export function Footer() {
   return (
-    <footer className="relative z-20 bg-[#020408] border-t border-white/5 pt-16 pb-8 px-6 font-mono text-sm">
-      <div className="max-w-7xl mx-auto">
+    <footer className="relative z-20 bg-[#020408] border-t border-white/5 pt-16 pb-8 px-6 font-mono text-sm overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(#ffffff03_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none opacity-50"></div>
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 mix-blend-overlay pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-16">
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-2 text-white font-bold tracking-tight text-xl cursor-pointer">
