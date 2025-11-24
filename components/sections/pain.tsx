@@ -3,7 +3,7 @@ import { SectionHeader } from '../ui/section-header';
 
 export function PainSection() {
   return (
-    <section className="relative z-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-white/5">
+    <section className="relative z-20 py-section md:py-section-md px-4 sm:px-6 border-t border-white/5">
       <div className="absolute inset-0 bg-[#060910]">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[400px] bg-[#0062d1] opacity-[0.08] blur-[100px] rounded-full"></div>

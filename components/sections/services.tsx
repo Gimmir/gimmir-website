@@ -2,7 +2,7 @@ import { Server, Cloud, Smartphone, FileCode, Users2 } from 'lucide-react';
 
 export default function ServicesSection() {
   return (
-    <section className="relative z-20 py-24 px-6 overflow-hidden">
+    <section className="relative z-20 py-section md:py-section-md px-6 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#0A1435] to-[#020408]"></div>
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="mb-20 text-center">

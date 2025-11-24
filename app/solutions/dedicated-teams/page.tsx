@@ -77,7 +77,7 @@ export default function DedicatedTeamsPage() {
       </section>
 
       {/* 2. The "Top 1% Talent Funnel" */}
-      <section className="relative py-20 md:py-32 px-4 md:px-6 border-t border-white/5 bg-[#050810]">
+      <section className="relative py-section md:py-section-md px-4 md:px-6 border-t border-white/5 bg-[#050810]">
         <div className="max-w-7xl mx-auto">
           <SectionHeader 
             title="The 1.5% Acceptance Rate" 
@@ -134,7 +134,7 @@ export default function DedicatedTeamsPage() {
       </section>
 
       {/* 3. Retention & Stability Stats */}
-      <section className="py-20 md:py-32 px-4 md:px-6 border-t border-white/5">
+      <section className="py-section md:py-section-md px-4 md:px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-[#0B0F19] p-8 rounded-3xl border border-white/5 relative overflow-hidden group">
@@ -256,7 +256,7 @@ export default function DedicatedTeamsPage() {
       </section>
 
       {/* 5. The "Bridge Layer" (Management) */}
-      <section className="py-20 md:py-32 px-4 md:px-6 border-t border-white/5">
+      <section className="py-section md:py-section-md px-4 md:px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
@@ -314,7 +314,7 @@ export default function DedicatedTeamsPage() {
       </section>
 
       {/* 6. The "Transparency Stack" (Tooling) */}
-      <section className="py-20 md:py-32 px-4 md:px-6 border-t border-white/5 bg-[#050810]">
+      <section className="py-section md:py-section-md px-4 md:px-6 border-t border-white/5 bg-[#050810]">
         <div className="max-w-7xl mx-auto">
           <SectionHeader 
             title="The Transparency Stack" 
@@ -456,7 +456,7 @@ export default function DedicatedTeamsPage() {
       </section>
 
       {/* 9. FAQ (Expanded) */}
-      <section className="py-20 md:py-32 px-4 md:px-6 border-t border-white/5">
+      <section className="py-section md:py-section-md px-4 md:px-6 border-t border-white/5">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 md:mb-12 text-center">Common Founder Questions</h2>
           <div className="space-y-4 md:space-y-6">

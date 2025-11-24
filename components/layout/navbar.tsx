@@ -28,7 +28,7 @@ export function Navbar() {
   return (
     <>
       <div className="fixed top-0 left-0 right-0 z-50 px-4 pt-4 sm:pt-6 flex justify-center pointer-events-none">
-        <nav className={`pointer-events-auto w-full max-w-7xl backdrop-blur-xl border rounded-full px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center transition-all duration-300 ${scrolled ? 'bg-[#0f121a]/95 border-white/10 shadow-2xl scale-[0.98]' : 'bg-[#0f121a]/60 border-white/5 shadow-lg'}`}>
+        <nav className={`pointer-events-auto w-full max-w-7xl backdrop-blur-xl border rounded-full px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center transition-all duration-300 ${scrolled ? 'bg-[#0f121a]/95 border-white/10 shadow-2xl' : 'bg-[#0f121a]/60 border-white/5 shadow-lg'}`}>
           <Link href="/" className="flex items-center gap-2 cursor-pointer group shrink-0">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0062d1] to-[#00387a] flex items-center justify-center font-bold text-white shadow-lg group-hover:scale-105 transition-transform">G</div>
             <span className="text-lg font-bold tracking-tight text-white">GIMMIR</span>
@@ -39,7 +39,11 @@ export function Navbar() {
               <div key={link.title} className="relative group">
                 {link.items ? (
                   <>
-                    <button className="hover:text-white transition-colors flex items-center gap-1 py-2">
+                    <button 
+                      className="hover:text-white transition-colors flex items-center gap-1 py-2"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
                       {link.title}
                       <ChevronDown size={12} className="opacity-50 group-hover:rotate-180 transition-transform duration-300" />
                     </button>

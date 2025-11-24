@@ -40,7 +40,7 @@ export function HeroSection() {
       {/* Visual Console */}
       <div className="w-full relative mt-auto perspective-1000 group px-2 sm:px-0">
         <div className="absolute -top-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#0062d1]/50 to-transparent"></div>
-        <div className="relative mx-auto w-full max-w-4xl bg-[#080a10]/80 backdrop-blur-sm border-t border-x border-white/10 rounded-t-xl sm:rounded-t-2xl shadow-2xl p-2 md:p-4 pb-0 overflow-hidden transform rotate-x-6 sm:rotate-x-12 origin-bottom transition-transform duration-1000 ease-out sm:group-hover:rotate-x-6">
+        <div className="relative mx-auto w-full max-w-4xl bg-[#080a10]/80 backdrop-blur-sm border-t border-x border-white/10 rounded-t-xl sm:rounded-t-2xl shadow-2xl p-2 md:p-4 pb-0 overflow-hidden transform origin-bottom transition-transform duration-1000 ease-out rotate-x-6 group-hover:rotate-x-6 hidden sm:block sm:rotate-x-12 sm:group-hover:rotate-x-6">
           <div className="flex items-center gap-4 mb-4 px-3 py-2 border-b border-white/5">
             <div className="flex gap-1.5">
               <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-red-500/20 border border-red-500/50"></div>
