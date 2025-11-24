@@ -7,7 +7,6 @@ import ProjectSimulatorSection from '@/components/sections/project-simulator';
 import LeadMagnetSection from '@/components/sections/lead-magnet';
 import InsightsSection from '@/components/sections/insights';
 import GlobalContactSection from '@/components/sections/global-contact';
-import CTASection from '@/components/sections/cta';
 
 export default function HomePage() {
   return (
@@ -27,7 +26,6 @@ export default function HomePage() {
       <LeadMagnetSection />
       <InsightsSection />
       <GlobalContactSection />
-      <CTASection />
     </div>
   );
 }

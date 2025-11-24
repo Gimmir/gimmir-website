@@ -21,6 +21,13 @@ import {
   Fingerprint,
   Server,
   ActivitySquare,
+  GitBranch,
+  Eye,
+  Star,
+  Check,
+  Folder,
+  FileText,
+  FileCode,
 } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/section-header';
 
@@ -28,118 +35,225 @@ export default function WebMobilePage() {
   const [activeTab, setActiveTab] = useState<'mobile' | 'web'>('mobile');
 
   return (
-    <div className="min-h-screen bg-[#020408] text-white">
+    <div className="min-h-screen bg-[#020408] text-white selection:bg-[#0062d1] selection:text-white overflow-x-hidden">
       {/* Background effects */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[120%] sm:w-[80%] h-[400px] sm:h-[600px] bg-[#0062d1] rounded-[100%] blur-[80px] sm:blur-[120px] opacity-[0.15]"></div>
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
+        <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[100%] h-[600px] bg-[#0062d1] rounded-[100%] blur-[120px] opacity-[0.12] animate-pulse-slow"></div>
+        <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-purple-900/20 rounded-full blur-[120px] opacity-20"></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.07] mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
       </div>
 
       {/* 1. Hero Section */}
-      <section className="relative pt-32 pb-20 px-6 overflow-hidden z-10">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#0062d1] rounded-full blur-[150px] opacity-[0.1] pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 mb-8">
-            <Code2 size={14} className="text-[#0062d1]" />
-            <span className="text-xs font-mono text-slate-300 tracking-wider uppercase">
-              Solution: Web & Mobile
-            </span>
-          </div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-[1.1] text-balance">
-            Products Built to{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0062d1] to-cyan-400">
-              Scale
-            </span>
-            , <br className="hidden md:block" />
-            Not Just to Demo.
-          </h1>
-          <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto font-light leading-relaxed mb-12 text-balance">
-            Native Mobile & Enterprise Web Engineering. We build assets that pass technical due
-            diligence, avoiding the "rewrite trap" of cheap MVPs.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="px-8 py-4 bg-[#0062d1] hover:bg-[#0052b3] text-white font-bold rounded-full transition-all shadow-[0_0_30px_-5px_rgba(0,98,209,0.4)]">
-              Consult on Architecture
-            </button>
-            <button className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium rounded-full transition-all flex items-center gap-2 group">
-              View Tech Stack{' '}
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center pt-20 pb-32 px-4 text-center max-w-7xl mx-auto w-full overflow-hidden">
+        
+        {/* Floating Elements for depth */}
+        <div className="absolute top-1/4 left-10 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl animate-pulse delay-700"></div>
+        <div className="absolute bottom-1/4 right-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl animate-pulse delay-1000"></div>
+
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0B0F19] border border-white/10 backdrop-blur-md mb-8 shadow-xl shadow-blue-900/5 animate-fade-in-up hover:border-blue-500/30 transition-colors cursor-default">
+          <span className="flex h-2 w-2 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0062d1] opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0062d1]"></span>
+          </span>
+          <span className="text-xs font-mono font-medium tracking-wider uppercase text-slate-300">
+            <span className="text-[#0062d1]">sys_status:</span> operational
+          </span>
         </div>
+
+        {/* Headline */}
+        <h1 className="text-5xl sm:text-6xl md:text-8xl font-bold tracking-tight text-white mb-8 leading-[1.1] drop-shadow-2xl max-w-5xl">
+          Build for <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4da6ff] via-[#0062d1] to-[#4da6ff] animate-gradient bg-[length:200%_auto]">Scale</span>.
+          <br />
+          <span className="text-slate-500 text-3xl sm:text-5xl md:text-6xl font-semibold tracking-normal block mt-2">
+            Not just for the demo.
+          </span>
+        </h1>
+
+        {/* Subheadline */}
+        <p className="text-lg sm:text-xl text-slate-400 max-w-2xl mb-12 font-light leading-relaxed mx-auto px-4">
+          We engineer high-performance mobile & web applications with transparent architecture and full IP ownership. No black boxes.
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center mb-20">
+          <button className="w-full sm:w-auto px-8 py-4 bg-[#0062d1] hover:bg-[#0052b3] text-white font-bold rounded-xl shadow-[0_0_20px_-5px_rgba(0,98,209,0.5)] transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 group">
+            <Code2 size={20} className="group-hover:rotate-12 transition-transform" />
+            <span>Start Engineering</span>
+          </button>
+          <button className="w-full sm:w-auto px-8 py-4 bg-[#0B0F19] hover:bg-[#161B22] border border-white/10 text-slate-300 font-medium rounded-xl transition-all active:scale-95 flex items-center justify-center gap-3 group hover:border-white/20">
+            <Layout size={20} className="text-[#0062d1] group-hover:text-white transition-colors" />
+            <span>View Architecture</span>
+          </button>
+        </div>
+
+        {/* Visual Tech Stack Representation */}
+        <div className="relative w-full max-w-4xl mx-auto perspective-1000">
+           {/* Abstract Code Window */}
+           <div className="relative bg-[#0B0F19]/90 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl transform rotate-x-12 hover:rotate-x-0 transition-transform duration-700 ease-out group">
+              {/* Window Header */}
+              <div className="bg-[#161B22] px-4 py-3 border-b border-white/5 flex items-center gap-2">
+                 <div className="flex gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                 </div>
+                 <div className="ml-4 text-xs font-mono text-slate-500 flex items-center gap-2">
+                    <Globe2 size={12} />
+                    <span>main.tsx</span>
+                 </div>
+              </div>
+              {/* Window Content */}
+              <div className="p-6 font-mono text-xs sm:text-sm text-left overflow-hidden relative">
+                 <div className="absolute top-0 right-0 p-4 opacity-20">
+                    <Cpu size={100} className="text-[#0062d1]" />
+                 </div>
+                 <div className="space-y-1 relative z-10">
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">01</span>
+                       <span className="text-purple-400">import</span> <span className="text-white">{'{'} ScalableApp {'}'}</span> <span className="text-purple-400">from</span> <span className="text-green-400">'@gimmir/core'</span>;
+                    </div>
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">02</span>
+                    </div>
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">03</span>
+                       <span className="text-purple-400">export default function</span> <span className="text-blue-400">App</span>() {'{'}
+                    </div>
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">04</span>
+                       <span className="pl-4 text-slate-400">// Initialize production-grade infrastructure</span>
+                    </div>
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">05</span>
+                       <span className="pl-4 text-purple-400">return</span> (
+                    </div>
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">06</span>
+                       <span className="pl-8 text-blue-300">&lt;ScalableApp</span>
+                    </div>
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">07</span>
+                       <span className="pl-12 text-sky-300">performance</span>=<span className="text-yellow-300">{'{'}true{'}'}</span>
+                    </div>
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">08</span>
+                       <span className="pl-12 text-sky-300">security</span>=<span className="text-green-400">"enterprise-grade"</span>
+                    </div>
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">09</span>
+                       <span className="pl-12 text-sky-300">scale</span>=<span className="text-blue-400">"infinite"</span>
+                    </div>
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">10</span>
+                       <span className="pl-8 text-blue-300">/&gt;</span>
+                    </div>
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">11</span>
+                       <span className="pl-4">);</span>
+                    </div>
+                    <div className="flex gap-4">
+                       <span className="text-slate-600 select-none">12</span>
+                       <span>{'}'}</span>
+                    </div>
+                 </div>
+                 
+                 {/* Blinking Cursor Overlay */}
+                 <div className="absolute bottom-6 left-12 w-2 h-4 bg-[#0062d1] animate-pulse"></div>
+              </div>
+           </div>
+           
+           {/* Floating Badges */}
+           <div className="absolute -right-4 -top-4 bg-[#0B0F19] border border-white/10 p-3 rounded-lg shadow-xl flex items-center gap-3 animate-bounce-slow">
+              <div className="bg-green-500/20 p-1.5 rounded text-green-400"><Check size={16} /></div>
+              <div className="text-xs font-medium text-white">
+                 <div>Tests Passed</div>
+                 <div className="text-slate-500 text-[10px]">100% Coverage</div>
+              </div>
+           </div>
+
+           <div className="absolute -left-4 bottom-10 bg-[#0B0F19] border border-white/10 p-3 rounded-lg shadow-xl flex items-center gap-3 animate-bounce-slow delay-500">
+              <div className="bg-blue-500/20 p-1.5 rounded text-blue-400"><ActivitySquare size={16} /></div>
+              <div className="text-xs font-medium text-white">
+                 <div>Uptime</div>
+                 <div className="text-slate-500 text-[10px]">99.99% Guaranteed</div>
+              </div>
+           </div>
+        </div>
+
       </section>
 
-      {/* 2. The Quality Gap */}
-      <section className="relative py-24 px-6 bg-[#050810] border-t border-white/5 z-10">
-        <div className="max-w-7xl mx-auto">
+      {/* 2. The Quality Gap Section */}
+      <section className="relative z-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-white/5">
+        <div className="absolute inset-0 bg-[#060910]">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-[400px] bg-[#0062d1] opacity-[0.08] blur-[100px] rounded-full"></div>
+          <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#020408] to-transparent pointer-events-none"></div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto">
           <SectionHeader
-            title="The Engineering Gap"
-            subtitle="Why 60% of agency-built products fail technical due diligence."
-            align="center"
+            title="The Quality Gap"
+            subtitle="Most agencies optimize for the demo. We optimize for the IPO."
+            badge="Market Analysis"
+            badgeIcon={ActivitySquare}
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Card 1: AGENCY_LEGACY */}
-            <div className="group bg-[#0B1229]/80 backdrop-blur-md border border-red-900/30 hover:border-red-500/50 rounded-xl p-0 overflow-hidden transition-all duration-300 flex flex-col h-full">
-              <div className="bg-[#1A0B0B] px-6 py-4 border-b border-red-900/30 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 rounded bg-red-500/20 text-red-500">
-                    <Bug size={18} />
-                  </div>
-                  <span className="font-bold text-sm tracking-wide text-white">AGENCY_LEGACY.exe</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 relative z-10">
+            {/* Card 1: Agency Legacy */}
+            <div className="group relative flex flex-col h-full bg-[#0B0F19]/60 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-red-500/40 transition-all duration-300 hover:shadow-2xl hover:shadow-red-900/10">
+              <div className="p-6 sm:p-8 sm:pb-6 relative flex-grow">
+                <div className="absolute top-4 right-4 text-slate-700 font-bold text-5xl sm:text-6xl opacity-10 group-hover:opacity-20 transition-opacity select-none">404</div>
+                <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center mb-4 border border-red-500/20 group-hover:bg-red-500/20 transition-colors">
+                  <Bug className="text-red-400" size={20} />
                 </div>
-                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">The "Facade" Approach</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">Optimized for demos, not production. Features look complete but lack error handling, tests, and scalability logic.</p>
+
+                <div className="mt-6 p-3 bg-[#020408] rounded border border-white/5 font-mono text-[10px] text-red-400/80">
+                  <div className="flex items-center gap-2 mb-1">
+                    <XCircle size={10} /> <span>Error: 0% Test Coverage</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <XCircle size={10} /> <span>Error: Hardcoded Secrets</span>
+                  </div>
+                </div>
               </div>
-              <div className="p-6 md:p-8 flex-grow flex flex-col">
-                <h3 className="text-xl font-bold text-white mb-3">The &quot;Facade&quot; Approach</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                  Optimized for demos, not production. Features look complete but lack error handling,
-                  tests, and scalability logic.
-                </p>
-                <div className="mt-auto bg-[#080202] rounded border border-red-900/30 p-3 font-mono text-[10px] text-red-400">
-                  <div className="flex justify-between mb-1">
-                    <span>&gt; running audit...</span>
-                    <span className="text-red-500 font-bold">
-                      <XCircle size={12} className="inline mr-1" />
-                      FAILED
-                    </span>
-                  </div>
-                  <div className="opacity-70 ml-2 border-l border-red-900/50 pl-2 mt-2">
-                    Error: 0% Test Coverage
-                    <br />
-                    Error: Hardcoded Secrets
-                    <br />
-                    Error: Spaghetti Architecture
-                  </div>
+              <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-0 shrink-0"></div>
+              <div className="px-6 py-5 sm:px-8 sm:py-6 bg-white/[0.02] group-hover:bg-red-500/[0.05] transition-colors shrink-0">
+                <div className="flex items-start gap-3">
+                  <div className="w-4 h-4 rounded-full border border-red-500/50 flex items-center justify-center mt-0.5 text-red-500 text-[10px]">!</div>
+                  <div><h4 className="text-white font-medium text-sm mb-1">Technical Debt</h4><p className="text-slate-500 text-xs">Requires complete rewrite after Series A.</p></div>
                 </div>
               </div>
             </div>
 
-            {/* Card 2: GIMMIR_CORE */}
-            <div className="group bg-[#0B1229]/80 backdrop-blur-md border border-[#1E2945] hover:border-[#0062d1] rounded-xl p-0 overflow-hidden transition-all duration-300 flex flex-col h-full hover:shadow-[0_0_30px_rgba(0,98,209,0.15)]">
-              <div className="bg-[#111A38] px-6 py-4 border-b border-[#1E2945] flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 rounded bg-[#0062d1] text-white">
-                    <Cpu size={18} />
-                  </div>
-                  <span className="font-bold text-sm tracking-wide text-white">GIMMIR_CORE.sys</span>
+            {/* Card 2: Gimmir Core */}
+            <div className="group relative flex flex-col h-full bg-[#0B0F19]/60 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-[#0062d1]/40 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/10">
+              <div className="p-6 sm:p-8 sm:pb-6 relative flex-grow">
+                <div className="absolute top-4 right-4 text-slate-700 font-bold text-5xl sm:text-6xl opacity-10 group-hover:opacity-20 transition-opacity select-none">200</div>
+                <div className="w-10 h-10 rounded-lg bg-[#0062d1]/10 flex items-center justify-center mb-4 border border-[#0062d1]/20 group-hover:bg-[#0062d1]/20 transition-colors">
+                  <Cpu className="text-[#0062d1]" size={20} />
                 </div>
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-              </div>
-              <div className="p-6 md:p-8 flex-grow flex flex-col">
-                <h3 className="text-xl font-bold text-white mb-3">Production-Grade Engineering</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                  We build systems designed to handle 1M+ users from day one. Automated CI/CD, full
-                  documentation, and modular code.
-                </p>
-                <div className="mt-auto bg-[#080C1B] rounded border border-[#1E2945] p-3 font-mono text-[10px] text-slate-400">
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Production-Grade Engineering</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">We build systems designed to handle 1M+ users from day one. Automated CI/CD, full documentation, and modular code.</p>
+
+                <div className="mt-6 p-3 bg-[#020408] rounded border border-white/5 font-mono text-[10px] text-emerald-400">
                   <div className="flex justify-between mb-1">
                     <span>&gt; running tests...</span>
-                    <span className="text-green-400">√ PASSED (142/142)</span>
+                    <span className="font-bold">PASSED (142/142)</span>
                   </div>
-                  <div className="w-full bg-[#1E2945] h-1 rounded overflow-hidden mt-2">
-                    <div className="bg-[#0062d1] w-full h-full"></div>
+                  <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                    <div className="h-full bg-emerald-500 w-full animate-progress-loading"></div>
                   </div>
+                </div>
+              </div>
+              <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-0 shrink-0"></div>
+              <div className="px-6 py-5 sm:px-8 sm:py-6 bg-white/[0.02] group-hover:bg-[#0062d1]/[0.05] transition-colors shrink-0">
+                <div className="flex items-start gap-3">
+                  <div className="w-4 h-4 rounded-full border border-emerald-500/50 flex items-center justify-center mt-0.5 text-emerald-500 text-[10px]">✓</div>
+                  <div><h4 className="text-white font-medium text-sm mb-1">Investment Ready</h4><p className="text-slate-500 text-xs">Passes technical due diligence instantly.</p></div>
                 </div>
               </div>
             </div>
@@ -147,180 +261,162 @@ export default function WebMobilePage() {
         </div>
       </section>
 
-      {/* 3. Tech Stack Strategy */}
-      <section className="relative py-24 px-6 z-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 md:gap-0">
-            <div>
-              <h2 className="text-3xl font-bold text-white mb-2">Strategic Stack</h2>
-              <p className="text-slate-400 text-sm">Selected for performance, not just popularity.</p>
-            </div>
+      {/* 3. Tech Stack Strategy Section */}
+      <section className="relative z-20 py-24 px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1435] to-[#020408]"></div>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="mb-20 text-center">
+            <div className="inline-block px-3 py-1 rounded bg-white/5 border border-white/10 text-xs font-mono text-slate-400 mb-6 tracking-wide">// SYSTEM_ARCHITECTURE</div>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Tech Stack <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">Strategy</span></h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto font-light">Native performance or strategic cross-platform. We help you avoid dependency hell.</p>
 
-            <div className="flex bg-white/5 rounded-lg p-1 border border-white/10 mt-6 md:mt-0 w-full md:w-auto">
-              <button
-                onClick={() => setActiveTab('mobile')}
-                className={`flex-1 md:flex-none px-4 py-2 rounded-md text-xs font-bold font-mono transition-all text-center ${
-                  activeTab === 'mobile'
-                    ? 'bg-[#0062d1] text-white'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                MOBILE_SYS
-              </button>
-              <button
-                onClick={() => setActiveTab('web')}
-                className={`flex-1 md:flex-none px-4 py-2 rounded-md text-xs font-bold font-mono transition-all text-center ${
-                  activeTab === 'web'
-                    ? 'bg-[#0062d1] text-white'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                WEB_SYS
-              </button>
+            {/* Tabs */}
+            <div className="flex justify-center mt-8">
+              <div className="inline-flex bg-white/5 p-1 rounded-xl border border-white/10 backdrop-blur-sm">
+                <button
+                  onClick={() => setActiveTab('mobile')}
+                  className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${activeTab === 'mobile'
+                    ? 'bg-[#0062d1] text-white shadow-lg'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    }`}
+                >
+                  Mobile Solutions
+                </button>
+                <button
+                  onClick={() => setActiveTab('web')}
+                  className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${activeTab === 'web'
+                    ? 'bg-[#0062d1] text-white shadow-lg'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    }`}
+                >
+                  Web Platforms
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {activeTab === 'mobile' ? (
               <>
-                {/* Native */}
-                <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-emerald-500/50 transition-all duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
+                {/* React Native Card */}
+                <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#0062d1]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
                   <div className="flex items-start justify-between mb-6">
-                    <div className="p-3 bg-white/5 rounded-lg text-slate-300 group-hover:text-emerald-500 group-hover:bg-emerald-500/10 transition-colors">
+                    <div className="p-3 bg-white/5 rounded-lg text-slate-300 group-hover:text-[#0062d1] group-hover:bg-[#0062d1]/10 transition-colors">
                       <Smartphone size={24} />
                     </div>
                     <span className="text-[10px] font-mono text-slate-600">LAYER_NATIVE</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">Swift & Kotlin</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">React Native</h3>
                   <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                    Direct hardware access (Bluetooth, AR, NFC). Zero-latency performance for heavy
-                    computation.
+                    95% code sharing between iOS and Android. The standard for modern startups.
                   </p>
                   <div className="font-mono text-[10px] text-slate-500 bg-[#020408] p-3 rounded border border-white/5">
-                    <span className="text-purple-400">class</span>{' '}
-                    <span className="text-emerald-400">BankingCore</span> :{' '}
-                    <span className="text-yellow-200">SecureModule</span> {'{'}
-                    <br />
-                    &nbsp;&nbsp;<span className="text-slate-600">// Native Hardware Access</span>
-                    <br />
-                    {'}'}
+                    <span className="text-blue-400">&lt;View</span> <span className="text-sky-300">style</span>=<span className="text-yellow-200">{'{'}styles.container{'}'}</span><span className="text-blue-400">&gt;</span><br />
+                    &nbsp;&nbsp;<span className="text-slate-600">// Native Performance</span><br />
+                    <span className="text-blue-400">&lt;/View&gt;</span>
                   </div>
                 </div>
 
-                {/* Flutter */}
+                {/* Flutter Card */}
                 <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-sky-500/50 transition-all duration-300">
                   <div className="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
                   <div className="flex items-start justify-between mb-6">
                     <div className="p-3 bg-white/5 rounded-lg text-slate-300 group-hover:text-sky-500 group-hover:bg-sky-500/10 transition-colors">
-                      <Layout size={24} />
+                      <Zap size={24} />
                     </div>
-                    <span className="text-[10px] font-mono text-slate-600">LAYER_CROSS</span>
+                    <span className="text-[10px] font-mono text-slate-600">LAYER_NATIVE</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">Flutter</h3>
                   <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                    Pixel-perfect rendering engine (Skia). 60fps smooth animations on all devices. Single
-                    codebase.
+                    Pixel-perfect rendering on all devices. Best for complex, custom UI designs.
                   </p>
                   <div className="font-mono text-[10px] text-slate-500 bg-[#020408] p-3 rounded border border-white/5">
-                    <span className="text-blue-400">Widget</span> build(
-                    <span className="text-purple-400">Context</span> c) {'{'}
-                    <br />
-                    &nbsp;&nbsp;<span className="text-sky-300">return</span>{' '}
-                    <span className="text-yellow-200">PixelPerfectUI()</span>;<br />
-                    {'}'}
+                    <span className="text-purple-400">return</span> <span className="text-yellow-200">Container</span>(<br />
+                    &nbsp;&nbsp;<span className="text-sky-300">child:</span> <span className="text-yellow-200">CustomPaint</span>(),<br />
+                    );
                   </div>
                 </div>
 
-                {/* React Native */}
-                <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-blue-500/50 transition-all duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
+                {/* Native iOS/Android Card */}
+                <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-emerald-500/50 transition-all duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
                   <div className="flex items-start justify-between mb-6">
-                    <div className="p-3 bg-white/5 rounded-lg text-slate-300 group-hover:text-blue-500 group-hover:bg-blue-500/10 transition-colors">
-                      <Code2 size={24} />
+                    <div className="p-3 bg-white/5 rounded-lg text-slate-300 group-hover:text-emerald-500 group-hover:bg-emerald-500/10 transition-colors">
+                      <Cpu size={24} />
                     </div>
-                    <span className="text-[10px] font-mono text-slate-600">LAYER_HYBRID</span>
+                    <span className="text-[10px] font-mono text-slate-600">LAYER_CORE</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">React Native</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Native Swift/Kotlin</h3>
                   <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                    Ideal for teams with existing JS/React infrastructure. Rapid iteration for SaaS
-                    products.
+                    For hardware-intensive apps (AR, Bluetooth, Crypto). Maximum performance.
                   </p>
                   <div className="font-mono text-[10px] text-slate-500 bg-[#020408] p-3 rounded border border-white/5">
-                    <span className="text-purple-400">import</span>{' '}
-                    <span className="text-yellow-200">{'{'} View {'}'}</span>{' '}
-                    <span className="text-purple-400">from</span>{' '}
-                    <span className="text-green-400">&apos;react-native&apos;</span>;<br />
-                    <span className="text-slate-600">// Shared Logic</span>
+                    <span className="text-purple-400">func</span> <span className="text-blue-300">optimize</span>() {'{'}<br />
+                    &nbsp;&nbsp;<span className="text-yellow-200">Metal</span>.<span className="text-blue-300">render</span>(texture)<br />
+                    {'}'}
                   </div>
                 </div>
               </>
             ) : (
               <>
-                {/* Next.js */}
+                {/* Next.js Card */}
                 <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-white/50 transition-all duration-300">
                   <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
                   <div className="flex items-start justify-between mb-6">
                     <div className="p-3 bg-white/5 rounded-lg text-slate-300 group-hover:text-white group-hover:bg-white/10 transition-colors">
                       <Globe2 size={24} />
                     </div>
-                    <span className="text-[10px] font-mono text-slate-600">LAYER_FRONT</span>
+                    <span className="text-[10px] font-mono text-slate-600">LAYER_WEB</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">Next.js / React</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Next.js (React)</h3>
                   <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                    Server-side rendering for SEO. Edge computing ready. High performance SaaS frontends.
+                    Server-side rendering for SEO and speed. The enterprise standard for web.
                   </p>
                   <div className="font-mono text-[10px] text-slate-500 bg-[#020408] p-3 rounded border border-white/5">
-                    <span className="text-purple-400">export</span>{' '}
-                    <span className="text-blue-400">default</span>{' '}
-                    <span className="text-purple-400">async</span> () =&gt; {'{'}
-                    <br />
-                    &nbsp;&nbsp;<span className="text-slate-600">// Server Component</span>
-                    <br />
+                    <span className="text-purple-400">export default</span> <span className="text-purple-400">async</span> <span className="text-purple-400">function</span> <span className="text-blue-300">Page</span>() {'{'}<br />
+                    &nbsp;&nbsp;<span className="text-purple-400">await</span> <span className="text-blue-300">getData</span>();<br />
                     {'}'}
                   </div>
                 </div>
 
-                {/* Backend */}
-                <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-yellow-500/50 transition-all duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
+                {/* Node.js Card */}
+                <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-green-500/50 transition-all duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
                   <div className="flex items-start justify-between mb-6">
-                    <div className="p-3 bg-white/5 rounded-lg text-slate-300 group-hover:text-yellow-500 group-hover:bg-yellow-500/10 transition-colors">
-                      <Database size={24} />
+                    <div className="p-3 bg-white/5 rounded-lg text-slate-300 group-hover:text-green-500 group-hover:bg-green-500/10 transition-colors">
+                      <Server size={24} />
                     </div>
-                    <span className="text-[10px] font-mono text-slate-600">LAYER_BACK</span>
+                    <span className="text-[10px] font-mono text-slate-600">LAYER_API</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">Python / Node.js</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Node.js / Python</h3>
                   <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                    Asynchronous processing. AI/ML integration ready. Scalable microservices.
+                    Scalable microservices. We build APIs that don't break under load.
                   </p>
                   <div className="font-mono text-[10px] text-slate-500 bg-[#020408] p-3 rounded border border-white/5">
-                    <span className="text-purple-400">@app.get</span>(
-                    <span className="text-green-400">&quot;/api&quot;</span>)<br />
-                    <span className="text-purple-400">async def</span>{' '}
-                    <span className="text-blue-300">root</span>():<br />
-                    &nbsp;&nbsp;<span className="text-slate-600"># Fast execution</span>
+                    <span className="text-purple-400">app</span>.<span className="text-blue-300">post</span>(<span className="text-green-400">'/api'</span>, (req) <span className="text-purple-400">=&gt;</span> {'{'}<br />
+                    &nbsp;&nbsp;<span className="text-slate-600">// Secure & Fast</span><br />
+                    {'}'});
                   </div>
                 </div>
 
-                {/* Cloud */}
-                <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-cyan-500/50 transition-all duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
+                {/* Cloud Card */}
+                <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-orange-500/50 transition-all duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
                   <div className="flex items-start justify-between mb-6">
-                    <div className="p-3 bg-white/5 rounded-lg text-slate-300 group-hover:text-cyan-500 group-hover:bg-cyan-500/10 transition-colors">
+                    <div className="p-3 bg-white/5 rounded-lg text-slate-300 group-hover:text-orange-500 group-hover:bg-orange-500/10 transition-colors">
                       <Cloud size={24} />
                     </div>
-                    <span className="text-[10px] font-mono text-slate-600">LAYER_INFRA</span>
+                    <span className="text-[10px] font-mono text-slate-600">LAYER_OPS</span>
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3">AWS / GCP</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">AWS / Google Cloud</h3>
                   <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                    Auto-scaling infrastructure. Multi-region deployments. 99.99% uptime SLA.
+                    Auto-scaling infrastructure. Pay only for what you use.
                   </p>
                   <div className="font-mono text-[10px] text-slate-500 bg-[#020408] p-3 rounded border border-white/5">
-                    <span className="text-yellow-200">terraform</span> apply<br />
-                    &nbsp;&nbsp;<span className="text-green-400">✓</span> Infrastructure Ready
-                    <br />
-                    &nbsp;&nbsp;<span className="text-slate-600"># Production Grade</span>
+                    <span className="text-purple-400">resource</span> <span className="text-green-400">"aws_instance"</span> {'{'}<br />
+                    &nbsp;&nbsp;<span className="text-sky-300">ami</span> = <span className="text-green-400">"ami-123"</span><br />
+                    {'}'}
                   </div>
                 </div>
               </>
@@ -330,99 +426,95 @@ export default function WebMobilePage() {
       </section>
 
       {/* 4. You Own The Repo Section */}
-      <section className="relative py-24 px-6 bg-[#0B1221] border-t border-white/5 z-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left Column */}
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 mb-8">
-                <Shield size={12} className="text-[#0062d1]" />
-                <span className="text-xs font-mono text-slate-300 tracking-wider uppercase">
-                  NO HOSTAGE SITUATIONS
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-                You Own The Repo.
-                <br />
-                From Day One.
-              </h2>
-              <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                We don&apos;t build on proprietary platforms. We build in your GitHub/GitLab
-                organization. You hold the keys to the cloud accounts, app store listings, and source
-                code at all times.
-              </p>
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                  </div>
-                  <span className="text-slate-300">Full Admin Access</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                  </div>
-                  <span className="text-slate-300">MIT / Proprietary License</span>
-                </div>
-              </div>
-            </div>
+      <section className="relative z-20 py-24 px-6 overflow-hidden bg-[#0A1435]">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020408] via-[#050B20] to-[#0A1435]"></div>
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#020408] to-transparent pointer-events-none"></div>
+        <div className="absolute inset-0 opacity-[0.03] bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-no-repeat bg-center bg-cover pointer-events-none mix-blend-overlay"></div>
 
-            {/* Right Column - GitHub Repo Mock */}
-            <div className="relative">
-              <div className="bg-[#0D1B2A] border border-white/10 rounded-xl overflow-hidden shadow-2xl">
-                {/* Header */}
-                <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-[#0A1525]">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <SectionHeader
+            title={<span>You Own The <span className="text-[#0062d1]">Repo</span></span>}
+            subtitle="No vendor lock-in. No obfuscated code. You get full admin access to the GitHub repository from Day 1."
+            badge="Transparency Protocol"
+            badgeIcon={GitBranch}
+          />
+
+          <div className="mt-12 relative max-w-5xl mx-auto">
+            {/* GitHub Mockup */}
+            <div className="bg-[#0D1117] rounded-xl border border-white/10 overflow-hidden shadow-2xl">
+              {/* Repo Header */}
+              <div className="bg-[#161B22] border-b border-white/10 px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-sm text-slate-300">
+                  <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center text-[10px]">G</div>
+                  <span className="font-semibold">gimmir-llc</span>
+                  <span className="text-slate-500">/</span>
+                  <span className="font-bold text-white">project-core</span>
+                  <span className="px-2 py-0.5 rounded-full border border-white/10 text-xs text-slate-400 ml-2">Public</span>
+                </div>
+                <div className="flex gap-2">
+                  <div className="flex items-center gap-1 px-3 py-1 rounded-md bg-[#21262D] border border-white/10 text-xs text-slate-300">
+                    <Eye size={14} /> Watch <span className="bg-slate-700 px-1.5 rounded-full text-[10px] ml-1">12</span>
+                  </div>
+                  <div className="flex items-center gap-1 px-3 py-1 rounded-md bg-[#21262D] border border-white/10 text-xs text-slate-300">
+                    <Star size={14} /> Star <span className="bg-slate-700 px-1.5 rounded-full text-[10px] ml-1">48</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Repo Content */}
+              <div className="p-0 md:p-0">
+                {/* File List Header */}
+                <div className="bg-[#161B22] px-4 py-3 border-b border-white/10 flex items-center justify-between text-xs text-slate-400">
                   <div className="flex items-center gap-2">
-                    <FolderGit2 size={16} className="text-slate-400" />
-                    <span className="text-sm font-mono text-white">
-                      gimmir / your-project-name
-                    </span>
+                    <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center"><Check size={12} className="text-green-400" /></div>
+                    <span className="text-white font-medium">feat: initial production release</span>
                   </div>
-                  <span className="px-2 py-1 text-[10px] font-mono text-slate-400 bg-white/5 rounded border border-white/10">
-                    Public
-                  </span>
+                  <div className="font-mono">7h ago</div>
                 </div>
 
-                {/* File List */}
-                <div className="p-4 space-y-2 font-mono text-sm">
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded bg-[#0062d1]/20 flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-sm bg-[#0062d1]"></div>
+                {/* Files */}
+                <div className="divide-y divide-white/5">
+                  {[
+                    { name: '.github/workflows', msg: 'ci: add deployment pipeline', time: '2d ago', icon: FolderGit2, color: 'text-blue-400' },
+                    { name: 'src', msg: 'feat: implement auth flow', time: '4h ago', icon: Folder, color: 'text-blue-400' },
+                    { name: 'tests', msg: 'test: add integration tests', time: '4h ago', icon: Folder, color: 'text-blue-400' },
+                    { name: '.env.example', msg: 'chore: update env vars', time: '1d ago', icon: FileText, color: 'text-slate-400' },
+                    { name: 'docker-compose.yml', msg: 'ops: add redis service', time: '3d ago', icon: FileCode, color: 'text-slate-400' },
+                    { name: 'README.md', msg: 'docs: update setup guide', time: '1w ago', icon: FileText, color: 'text-slate-400' },
+                  ].map((file, i) => (
+                    <div key={i} className="px-4 py-2.5 flex items-center justify-between hover:bg-white/[0.02] group transition-colors cursor-default">
+                      <div className="flex items-center gap-3 w-1/3">
+                        <file.icon size={16} className={file.color} />
+                        <span className="text-sm text-slate-300 group-hover:text-blue-400 transition-colors">{file.name}</span>
                       </div>
-                      <span className="text-slate-300">src</span>
+                      <div className="flex-1 text-xs text-slate-500 truncate hidden sm:block">{file.msg}</div>
+                      <div className="text-xs text-slate-600 w-16 text-right">{file.time}</div>
                     </div>
-                    <span className="text-slate-500 text-xs">Initial commit</span>
-                  </div>
+                  ))}
+                </div>
 
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded bg-white/5 flex items-center justify-center">
-                        <div className="w-2 h-2 bg-slate-500 rounded-sm"></div>
+                {/* Readme Preview */}
+                <div className="p-6 border-t border-white/10 bg-[#0D1117]">
+                  <div className="border border-white/10 rounded-lg p-6 bg-[#0D1117]">
+                    <h3 className="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">README.md</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2">
+                        <div className="px-2 py-1 bg-green-500/10 border border-green-500/20 rounded text-xs text-green-400 font-mono">build: passing</div>
+                        <div className="px-2 py-1 bg-blue-500/10 border border-blue-500/20 rounded text-xs text-blue-400 font-mono">coverage: 98%</div>
                       </div>
-                      <span className="text-slate-300">README.md</span>
-                    </div>
-                    <span className="text-slate-500 text-xs">Update documentation</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded bg-yellow-500/20 flex items-center justify-center">
-                        <div className="w-2 h-2 bg-yellow-500 rounded-sm"></div>
+                      <p className="text-slate-400 text-sm leading-relaxed">
+                        This repository contains the production-ready source code for the platform.
+                        It includes a fully automated CI/CD pipeline, comprehensive test suite, and
+                        infrastructure-as-code definitions.
+                      </p>
+                      <h4 className="text-white font-bold text-sm mt-4 mb-2">Getting Started</h4>
+                      <div className="bg-[#161B22] p-3 rounded-md font-mono text-xs text-slate-300 border border-white/5">
+                        git clone https://github.com/gimmir-llc/project-core.git<br />
+                        cd project-core<br />
+                        npm install<br />
+                        npm run dev
                       </div>
-                      <span className="text-slate-300">terraform.tf</span>
                     </div>
-                    <span className="text-slate-500 text-xs">Add AWS infrastructure</span>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded bg-emerald-500/20 flex items-center justify-center">
-                        <div className="w-2 h-2 bg-emerald-500 rounded-sm"></div>
-                      </div>
-                      <span className="text-slate-300">license.txt</span>
-                    </div>
-                    <span className="text-slate-500 text-xs">Transfer IP to Client</span>
                   </div>
                 </div>
               </div>
@@ -432,110 +524,110 @@ export default function WebMobilePage() {
       </section>
 
       {/* 5. Advanced Capabilities Section */}
-      <section className="relative py-24 px-6 z-10">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative z-20 py-24 px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Advanced Capabilities</h2>
-            <p className="text-slate-400 text-lg">Production-grade features, standard.</p>
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Advanced <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">Capabilities</span></h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto font-light">Production-grade features, standard. We don't charge extra for security.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Row 1 */}
-            <div className="bg-[#0A1525] border border-white/10 rounded-xl p-6 hover:border-[#0062d1]/50 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-slate-400">
-                <Zap size={20} />
+            <div className="group bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 text-slate-400 group-hover:text-[#0062d1] group-hover:bg-[#0062d1]/10 transition-colors">
+                <Zap size={24} />
               </div>
-              <h3 className="text-white font-bold mb-2">Offline Mode</h3>
-              <p className="text-slate-500 text-xs font-mono">Local-first sync</p>
+              <h3 className="text-white font-bold mb-2 text-lg">Offline Mode</h3>
+              <p className="text-slate-500 text-sm font-mono">Local-first sync engine</p>
             </div>
 
-            <div className="bg-[#0A1525] border border-white/10 rounded-xl p-6 hover:border-[#0062d1]/50 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-slate-400">
-                <Zap size={20} />
+            <div className="group bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 text-slate-400 group-hover:text-[#0062d1] group-hover:bg-[#0062d1]/10 transition-colors">
+                <ActivitySquare size={24} />
               </div>
-              <h3 className="text-white font-bold mb-2">Real-time</h3>
-              <p className="text-slate-500 text-xs font-mono">WebSockets</p>
+              <h3 className="text-white font-bold mb-2 text-lg">Real-time</h3>
+              <p className="text-slate-500 text-sm font-mono">WebSockets & PubSub</p>
             </div>
 
-            <div className="bg-[#0A1525] border border-white/10 rounded-xl p-6 hover:border-[#0062d1]/50 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-slate-400">
-                <CreditCard size={20} />
+            <div className="group bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 text-slate-400 group-hover:text-[#0062d1] group-hover:bg-[#0062d1]/10 transition-colors">
+                <CreditCard size={24} />
               </div>
-              <h3 className="text-white font-bold mb-2">Payments</h3>
-              <p className="text-slate-500 text-xs font-mono">Stripe / Adyen</p>
+              <h3 className="text-white font-bold mb-2 text-lg">Payments</h3>
+              <p className="text-slate-500 text-sm font-mono">Stripe / Adyen Integration</p>
             </div>
 
-            <div className="bg-[#0A1525] border border-white/10 rounded-xl p-6 hover:border-[#0062d1]/50 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-slate-400">
-                <Fingerprint size={20} />
+            <div className="group bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 text-slate-400 group-hover:text-[#0062d1] group-hover:bg-[#0062d1]/10 transition-colors">
+                <Fingerprint size={24} />
               </div>
-              <h3 className="text-white font-bold mb-2">Biometrics</h3>
-              <p className="text-slate-500 text-xs font-mono">FaceID / TouchID</p>
+              <h3 className="text-white font-bold mb-2 text-lg">Biometrics</h3>
+              <p className="text-slate-500 text-sm font-mono">FaceID / TouchID Auth</p>
             </div>
 
             {/* Row 2 */}
-            <div className="bg-[#0A1525] border border-white/10 rounded-xl p-6 hover:border-[#0062d1]/50 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-slate-400">
-                <Shield size={20} />
+            <div className="group bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 text-slate-400 group-hover:text-[#0062d1] group-hover:bg-[#0062d1]/10 transition-colors">
+                <Shield size={24} />
               </div>
-              <h3 className="text-white font-bold mb-2">Encryption</h3>
-              <p className="text-slate-500 text-xs font-mono">AES-256 Data</p>
+              <h3 className="text-white font-bold mb-2 text-lg">Encryption</h3>
+              <p className="text-slate-500 text-sm font-mono">AES-256 Data Protection</p>
             </div>
 
-            <div className="bg-[#0A1525] border border-white/10 rounded-xl p-6 hover:border-[#0062d1]/50 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-slate-400">
-                <Globe2 size={20} />
+            <div className="group bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 text-slate-400 group-hover:text-[#0062d1] group-hover:bg-[#0062d1]/10 transition-colors">
+                <Globe2 size={24} />
               </div>
-              <h3 className="text-white font-bold mb-2">Localization</h3>
-              <p className="text-slate-500 text-xs font-mono">i18n Ready</p>
+              <h3 className="text-white font-bold mb-2 text-lg">Localization</h3>
+              <p className="text-slate-500 text-sm font-mono">i18n Multi-language</p>
             </div>
 
-            <div className="bg-[#0A1525] border border-white/10 rounded-xl p-6 hover:border-[#0062d1]/50 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-slate-400">
-                <ActivitySquare size={20} />
+            <div className="group bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 text-slate-400 group-hover:text-[#0062d1] group-hover:bg-[#0062d1]/10 transition-colors">
+                <Server size={24} />
               </div>
-              <h3 className="text-white font-bold mb-2">Analytics</h3>
-              <p className="text-slate-500 text-xs font-mono">Custom Events</p>
+              <h3 className="text-white font-bold mb-2 text-lg">Auto-Scaling</h3>
+              <p className="text-slate-500 text-sm font-mono">Kubernetes / Serverless</p>
             </div>
 
-            <div className="bg-[#0A1525] border border-white/10 rounded-xl p-6 hover:border-[#0062d1]/50 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-slate-400">
-                <Server size={20} />
+            <div className="group bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300">
+              <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 text-slate-400 group-hover:text-[#0062d1] group-hover:bg-[#0062d1]/10 transition-colors">
+                <Lock size={24} />
               </div>
-              <h3 className="text-white font-bold mb-2">Serverless</h3>
-              <p className="text-slate-500 text-xs font-mono">Auto-scaling</p>
+              <h3 className="text-white font-bold mb-2 text-lg">Compliance</h3>
+              <p className="text-slate-500 text-sm font-mono">GDPR / HIPAA Ready</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* 6. FAQ Section - Enhanced Terminal Style */}
-      <section className="relative py-24 px-6 bg-[#050810] border-t border-white/5 z-10 overflow-hidden">
+      <section className="relative py-32 px-6 bg-[#050810] border-t border-white/5 z-10 overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px]"></div>
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#0062d1]/5 blur-[100px] rounded-full pointer-events-none"></div>
-        
+
         <div className="max-w-4xl mx-auto relative z-10">
           {/* Terminal Header */}
-          <div className="mb-12">
-            <div className="inline-flex items-center gap-3 mb-4 px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+          <div className="mb-16">
+            <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 bg-white/5 border border-white/10 rounded-lg backdrop-blur-sm">
               <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                <div className="w-3 h-3 rounded-full bg-red-500/80 shadow-[0_0_8px_rgba(239,68,68,0.5)]"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500/80 shadow-[0_0_8px_rgba(234,179,8,0.5)]"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500/80 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></div>
               </div>
               <span className="text-xs font-mono text-slate-500">terminal — FAQ</span>
             </div>
             <div className="font-mono">
               <span className="text-slate-600 text-xl mr-2">&gt;</span>
-              <span className="text-white text-2xl md:text-4xl font-bold">FAQ</span>
-              <span className="text-[#0062d1] text-2xl md:text-4xl font-bold ml-3">--verbose</span>
-              <span className="text-emerald-400 ml-4 text-sm animate-pulse">█</span>
+              <span className="text-white text-3xl md:text-5xl font-bold">FAQ</span>
+              <span className="text-[#0062d1] text-3xl md:text-5xl font-bold ml-3">--verbose</span>
+              <span className="text-emerald-400 ml-4 text-3xl md:text-5xl animate-pulse">_</span>
             </div>
           </div>
 
           {/* FAQ Items with Enhanced Terminal Style */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             {/* Question 1 */}
             <div className="group">
               <div className="bg-[#0B0F19] border border-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:border-[#0062d1]/50 hover:shadow-[0_0_30px_rgba(0,98,209,0.1)]">
@@ -544,30 +636,30 @@ export default function WebMobilePage() {
                   <span className="text-white font-mono text-sm md:text-base font-medium">
                     query --topic=&quot;Flutter vs Native&quot;
                   </span>
-                  <span className="ml-auto text-[10px] font-mono text-slate-600 bg-white/5 px-2 py-0.5 rounded">
-                    ANSWERED
+                  <span className="ml-auto text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+                    200 OK
                   </span>
                 </div>
-                <div className="p-6">
-                  <div className="mb-4">
-                    <span className="text-slate-500 font-mono text-xs">&gt;&gt; Question:</span>
-                    <p className="text-slate-300 mt-1 font-medium">
+                <div className="p-8">
+                  <div className="mb-6">
+                    <span className="text-slate-500 font-mono text-xs block mb-2">// User Question:</span>
+                    <p className="text-slate-200 text-lg font-medium">
                       Why use Flutter instead of Native Swift/Kotlin?
                     </p>
                   </div>
                   <div className="pl-4 border-l-2 border-[#0062d1]/30 group-hover:border-[#0062d1] transition-colors">
-                    <span className="text-emerald-400 font-mono text-xs block mb-2">
-                      &lt;response status=&quot;200&quot;&gt;
+                    <span className="text-emerald-400 font-mono text-xs block mb-3">
+                      &lt;response&gt;
                     </span>
-                    <p className="text-slate-400 leading-relaxed text-sm mb-3">
-                      <strong className="text-white">Optimization vector.</strong> Flutter delivers 95% of native performance 
+                    <p className="text-slate-400 leading-relaxed text-base mb-4">
+                      <strong className="text-white">Optimization vector.</strong> Flutter delivers 95% of native performance
                       for 60% of the budget. Single codebase = faster iteration cycles and consistent UX across platforms.
                     </p>
-                    <p className="text-slate-400 leading-relaxed text-sm">
-                      <strong className="text-white">When to use Native:</strong> Hardware-intensive features only 
+                    <p className="text-slate-400 leading-relaxed text-base">
+                      <strong className="text-white">When to use Native:</strong> Hardware-intensive features only
                       (AR/VR, advanced Bluetooth LE, custom camera processing). For 90% of apps, Flutter is the optimal choice.
                     </p>
-                    <span className="text-emerald-400 font-mono text-xs block mt-2">
+                    <span className="text-emerald-400 font-mono text-xs block mt-3">
                       &lt;/response&gt;
                     </span>
                   </div>
@@ -583,35 +675,35 @@ export default function WebMobilePage() {
                   <span className="text-white font-mono text-sm md:text-base font-medium">
                     query --topic=&quot;App Store Risks&quot;
                   </span>
-                  <span className="ml-auto text-[10px] font-mono text-slate-600 bg-white/5 px-2 py-0.5 rounded">
-                    ANSWERED
+                  <span className="ml-auto text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+                    200 OK
                   </span>
                 </div>
-                <div className="p-6">
-                  <div className="mb-4">
-                    <span className="text-slate-500 font-mono text-xs">&gt;&gt; Question:</span>
-                    <p className="text-slate-300 mt-1 font-medium">
+                <div className="p-8">
+                  <div className="mb-6">
+                    <span className="text-slate-500 font-mono text-xs block mb-2">// User Question:</span>
+                    <p className="text-slate-200 text-lg font-medium">
                       How do you mitigate App Store rejection risks?
                     </p>
                   </div>
                   <div className="pl-4 border-l-2 border-[#0062d1]/30 group-hover:border-[#0062d1] transition-colors">
-                    <span className="text-emerald-400 font-mono text-xs block mb-2">
-                      &lt;response status=&quot;200&quot;&gt;
+                    <span className="text-emerald-400 font-mono text-xs block mb-3">
+                      &lt;response&gt;
                     </span>
-                    <p className="text-slate-400 leading-relaxed text-sm mb-3">
-                      <strong className="text-white">Pre-validation protocol.</strong> We audit against Apple HIG (Human Interface Guidelines) 
+                    <p className="text-slate-400 leading-relaxed text-base mb-4">
+                      <strong className="text-white">Pre-validation protocol.</strong> We audit against Apple HIG (Human Interface Guidelines)
                       and Google Play Policy during the design phase—before a single line of code is written.
                     </p>
-                    <div className="bg-[#020408] border border-white/5 rounded-lg p-3 my-3 font-mono text-xs">
-                      <div className="text-slate-500 mb-1">// Track Record:</div>
-                      <div className="text-emerald-400">✓ 47/47 apps approved (first submission)</div>
-                      <div className="text-slate-500 mt-1">✓ Zero rejections for policy violations</div>
+                    <div className="bg-[#020408] border border-white/5 rounded-lg p-4 my-4 font-mono text-xs">
+                      <div className="text-slate-500 mb-2">// Track Record:</div>
+                      <div className="text-emerald-400 mb-1">✓ 47/47 apps approved (first submission)</div>
+                      <div className="text-slate-500">✓ Zero rejections for policy violations</div>
                     </div>
-                    <p className="text-slate-400 leading-relaxed text-sm">
-                      Common risks we eliminate: Unclear privacy policies, missing data handling disclosures, 
+                    <p className="text-slate-400 leading-relaxed text-base">
+                      Common risks we eliminate: Unclear privacy policies, missing data handling disclosures,
                       incomplete metadata, guideline 4.3 (spam) violations.
                     </p>
-                    <span className="text-emerald-400 font-mono text-xs block mt-2">
+                    <span className="text-emerald-400 font-mono text-xs block mt-3">
                       &lt;/response&gt;
                     </span>
                   </div>
@@ -627,26 +719,26 @@ export default function WebMobilePage() {
                   <span className="text-white font-mono text-sm md:text-base font-medium">
                     query --topic=&quot;Knowledge Transfer&quot;
                   </span>
-                  <span className="ml-auto text-[10px] font-mono text-slate-600 bg-white/5 px-2 py-0.5 rounded">
-                    ANSWERED
+                  <span className="ml-auto text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+                    200 OK
                   </span>
                 </div>
-                <div className="p-6">
-                  <div className="mb-4">
-                    <span className="text-slate-500 font-mono text-xs">&gt;&gt; Question:</span>
-                    <p className="text-slate-300 mt-1 font-medium">
+                <div className="p-8">
+                  <div className="mb-6">
+                    <span className="text-slate-500 font-mono text-xs block mb-2">// User Question:</span>
+                    <p className="text-slate-200 text-lg font-medium">
                       What does your handoff process look like?
                     </p>
                   </div>
                   <div className="pl-4 border-l-2 border-[#0062d1]/30 group-hover:border-[#0062d1] transition-colors">
-                    <span className="text-emerald-400 font-mono text-xs block mb-2">
-                      &lt;response status=&quot;200&quot;&gt;
+                    <span className="text-emerald-400 font-mono text-xs block mb-3">
+                      &lt;response&gt;
                     </span>
-                    <p className="text-slate-400 leading-relaxed text-sm mb-3">
-                      <strong className="text-white">No &quot;zip file&quot; drops.</strong> We execute a structured 2-week 
+                    <p className="text-slate-400 leading-relaxed text-base mb-4">
+                      <strong className="text-white">No &quot;zip file&quot; drops.</strong> We execute a structured 2-week
                       pair-programming transition with your internal team or new vendor.
                     </p>
-                    <div className="space-y-2 my-3">
+                    <div className="space-y-3 my-4">
                       <div className="flex items-start gap-3">
                         <div className="w-6 h-6 rounded bg-[#0062d1]/10 border border-[#0062d1]/30 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <span className="text-[#0062d1] font-mono text-xs font-bold">1</span>
@@ -675,10 +767,10 @@ export default function WebMobilePage() {
                         </div>
                       </div>
                     </div>
-                    <p className="text-slate-400 leading-relaxed text-sm">
+                    <p className="text-slate-400 leading-relaxed text-base">
                       You receive full documentation, runbooks, and a recorded video library covering every system component.
                     </p>
-                    <span className="text-emerald-400 font-mono text-xs block mt-2">
+                    <span className="text-emerald-400 font-mono text-xs block mt-3">
                       &lt;/response&gt;
                     </span>
                   </div>
@@ -689,8 +781,8 @@ export default function WebMobilePage() {
 
           {/* Footer */}
           <div className="mt-12 text-center">
-            <div className="inline-flex items-center gap-2 text-slate-500 font-mono text-xs">
-              <span className="text-emerald-400">●</span>
+            <div className="inline-flex items-center gap-2 text-slate-500 font-mono text-xs bg-white/5 px-4 py-2 rounded-full border border-white/5">
+              <span className="text-emerald-400 animate-pulse">●</span>
               <span>3/3 queries executed successfully</span>
             </div>
           </div>
@@ -698,10 +790,10 @@ export default function WebMobilePage() {
       </section>
 
       {/* 7. Final CTA Section */}
-      <section className="relative py-16 md:py-24 px-6 overflow-hidden border-t border-white/5 z-10">
+      <section className="relative py-32 px-6 overflow-hidden border-t border-white/5 z-10">
         {/* Gradient and Noise Background */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#0a1435_0%,_#020408_100%)]"></div>
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] mix-blend-overlay pointer-events-none"></div>
 
         {/* Subtle Circuit/Network Pattern Overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none opacity-50"></div>
@@ -709,42 +801,43 @@ export default function WebMobilePage() {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           {/* Pre-headline Tag */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-8">
-            <Code2 size={14} className="text-[#0062d1]" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm">
+            <Code2 size={16} className="text-[#0062d1]" />
             <span className="text-xs font-mono text-slate-300 tracking-wider uppercase">
               FINAL_CHECKPOINT
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight drop-shadow-xl">
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight drop-shadow-2xl">
             Ready to Build an Asset, <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0062d1] to-cyan-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0062d1] via-cyan-400 to-[#0062d1] bg-[length:200%_auto] animate-gradient">
               Not a Liability?
             </span>
           </h2>
-          <p className="text-lg text-slate-300 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-xl text-slate-300 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
             Stop guessing. Get a precise engineering roadmap that guarantees scalability and IP ownership
             from the first commit.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-12">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-16">
             {/* High-Contrast Primary Button */}
-            <button className="w-full sm:w-auto px-8 py-4 bg-[#0062d1] hover:bg-[#0052b3] text-white font-bold rounded-xl transition-all shadow-[0_0_40px_-10px_rgba(0,98,209,0.5)] hover:shadow-[0_0_50px_-10px_rgba(0,98,209,0.7)] hover:scale-105 active:scale-95 flex flex-col items-center gap-1 group">
-              <div className="flex items-center gap-2">
+            <button className="w-full sm:w-auto px-10 py-5 bg-[#0062d1] hover:bg-[#0052b3] text-white font-bold rounded-2xl transition-all shadow-[0_0_40px_-10px_rgba(0,98,209,0.5)] hover:shadow-[0_0_50px_-10px_rgba(0,98,209,0.7)] hover:scale-105 active:scale-95 flex flex-col items-center gap-1 group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:animate-shimmer"></div>
+              <div className="flex items-center gap-2 relative z-10">
                 <span>Simulate Project Cost & Risk</span>
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </div>
-              <span className="text-[10px] opacity-80 font-mono font-normal uppercase tracking-wider">
+              <span className="text-[10px] opacity-80 font-mono font-normal uppercase tracking-wider relative z-10">
                 GET RANGE IN 2 MINS
               </span>
             </button>
 
             {/* Secondary Outline Button */}
-            <button className="w-full sm:w-auto px-8 py-4 bg-transparent border border-white/20 hover:bg-white/10 text-white font-bold rounded-xl transition-all hover:border-white/40 active:scale-95 flex flex-col items-center gap-1 group">
+            <button className="w-full sm:w-auto px-10 py-5 bg-transparent border border-white/10 hover:bg-white/5 text-white font-bold rounded-2xl transition-all hover:border-white/20 active:scale-95 flex flex-col items-center gap-1 group backdrop-blur-sm">
               <div className="flex items-center gap-2">
                 <span>Book Architecture Review</span>
                 <ChevronRightSquare
-                  size={18}
+                  size={20}
                   className="text-slate-400 group-hover:text-white transition-colors"
                 />
               </div>
@@ -755,11 +848,12 @@ export default function WebMobilePage() {
           </div>
 
           {/* Trust Footer */}
-          <div className="inline-flex flex-col sm:flex-row items-center justify-center gap-2 text-xs text-slate-500 font-mono bg-white/5 border border-white/10 px-4 py-2 rounded-2xl sm:rounded-full text-center">
+          <div className="inline-flex flex-col sm:flex-row items-center justify-center gap-3 text-xs text-slate-500 font-mono bg-[#0A1525]/80 border border-white/10 px-6 py-3 rounded-2xl backdrop-blur-md">
             <div className="flex items-center gap-2">
-              <Lock size={12} className="text-emerald-500 shrink-0" />
+              <Lock size={14} className="text-emerald-500 shrink-0" />
               <span>All discussions are covered by our standard NDA.</span>
             </div>
+            <span className="hidden sm:inline text-slate-700">|</span>
             <span>Your idea remains yours.</span>
           </div>
         </div>
