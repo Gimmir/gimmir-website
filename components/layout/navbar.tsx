@@ -31,7 +31,7 @@ export function Navbar() {
         <nav className={`pointer-events-auto w-full max-w-7xl backdrop-blur-xl border rounded-full px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center transition-all duration-300 ${scrolled ? 'bg-[#0f121a]/95 border-white/10 shadow-2xl scale-[0.98]' : 'bg-[#0f121a]/60 border-white/5 shadow-lg'}`}>
           <Link href="/" className="flex items-center gap-2 cursor-pointer group shrink-0">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0062d1] to-[#00387a] flex items-center justify-center font-bold text-white shadow-lg group-hover:scale-105 transition-transform">G</div>
-            <span className="text-lg font-bold tracking-tight text-white">Gimmir</span>
+            <span className="text-lg font-bold tracking-tight text-white">GIMMIR</span>
           </Link>
           
           <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-300/90">
