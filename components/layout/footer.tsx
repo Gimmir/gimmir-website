@@ -24,24 +24,16 @@ export function Footer() {
 
           {FOOTER_LINKS.map((section) => (
             <div key={section.title} className="lg:col-span-1">
-              {section.items ? (
-                <>
-                  <h4 className="text-white font-bold mb-4">{section.title}</h4>
-                  <ul className="space-y-2">
-                    {section.items.map(item => (
-                      <li key={item.name}>
-                        <Link href={item.href} className="text-slate-500 hover:text-[#0062d1] transition-colors text-xs text-left">
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ) : (
-                <div className="flex flex-col">
-                  <Link href={section.href!} className="text-white font-bold mb-4 hover:text-[#0062d1] transition-colors block text-left">{section.title}</Link>
-                </div>
-              )}
+              <h4 className="text-white font-bold mb-4">{section.title}</h4>
+              <ul className="space-y-2">
+                {section.items.map(item => (
+                  <li key={item.name}>
+                    <Link href={item.href} className="text-slate-500 hover:text-[#0062d1] transition-colors text-xs text-left">
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
