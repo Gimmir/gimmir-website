@@ -9,9 +9,10 @@ import {
   ChevronLeft,
   ChevronRight,
   ArrowRight,
+  Trophy,
 } from 'lucide-react';
 
-export default function CaseStudiesSection() {
+export function CaseStudiesSection() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollLeft = () =>
     scrollContainerRef.current?.scrollBy({ left: -420, behavior: 'smooth' });
@@ -19,18 +20,24 @@ export default function CaseStudiesSection() {
     scrollContainerRef.current?.scrollBy({ left: 420, behavior: 'smooth' });
 
   return (
-    <section className="relative z-20 py-24 px-0 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050810] via-[#0b1221] to-[#050810]"></div>
+    <section className="relative z-20 py-16 sm:py-24 px-0 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#020408] via-[#0b1221] to-[#020408]"></div>
       <div className="absolute inset-0 bg-[radial-gradient(#ffffff05_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050A14] to-transparent pointer-events-none z-10"></div>
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#020408] to-transparent pointer-events-none z-10"></div>
 
-      <div className="max-w-7xl mx-auto relative z-10 px-6 flex flex-col md:flex-row justify-between items-end w-full mb-12">
+      <div className="max-w-7xl mx-auto relative z-10 px-6 flex flex-col md:flex-row justify-between items-end w-full mb-6 md:mb-12">
         <div className="text-left max-w-2xl">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Proven Track Record.</h2>
-          <p className="text-slate-400 text-lg font-light">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white text-xs font-bold tracking-wider uppercase mb-6">
+            <Trophy size={12} className="text-[#0062d1]" />
+            <span>SUCCESS_STORIES</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+            Proven Track <span className="text-[#0062d1]">Record.</span>
+          </h2>
+          <p className="text-slate-400 text-lg font-light leading-relaxed">
             Real results for companies where failure was not an option.
           </p>
-          <div className="md:hidden flex items-center gap-2 text-slate-500 text-sm mt-4 animate-pulse">
+          <div className="md:hidden flex items-center gap-2 text-slate-400 text-sm mt-6 animate-pulse">
             <ArrowRight size={16} />
             <span>Swipe to explore</span>
           </div>
@@ -52,14 +59,13 @@ export default function CaseStudiesSection() {
       </div>
 
       <div className="relative w-full z-10">
-        <div className="md:hidden absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[#050810] to-transparent z-20 pointer-events-none"></div>
         <div
           ref={scrollContainerRef}
-          className="flex overflow-x-auto py-10 pb-12 gap-6 snap-x snap-mandatory no-scrollbar w-full px-6 md:px-12 scroll-pl-6 lg:pl-[max(1.5rem,calc(50vw-40rem+1.5rem))]"
+          className="flex overflow-x-auto py-10 pb-12 gap-6 snap-x snap-mandatory no-scrollbar w-full px-6 xl:pl-[calc(50%_-_40rem_+_1.5rem)] xl:scroll-pl-[calc(50%_-_40rem_+_1.5rem)]"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {/* Case 1: Gym Network */}
-          <div className="min-w-[90vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-emerald-500/40 transition-all duration-300 flex flex-col shadow-lg">
+          <div className="min-w-[85vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#0B0F19]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-emerald-500/40 transition-all duration-300 flex flex-col shadow-lg">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl"></div>
             <div className="flex justify-between items-start mb-8">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider">
@@ -78,7 +84,7 @@ export default function CaseStudiesSection() {
               automated franchise network.
             </p>
             <div className="mt-auto pt-6 border-t border-white/5">
-              <div className="flex justify-between items-center text-xs text-slate-500 font-mono uppercase mb-2">
+              <div className="flex justify-between items-center text-xs text-slate-400 font-mono uppercase mb-2">
                 <span>Locations Opened</span>
                 <span className="text-emerald-400 font-bold">15 → 150</span>
               </div>
@@ -95,7 +101,7 @@ export default function CaseStudiesSection() {
           </div>
 
           {/* Case 2: SaaS Startup */}
-          <div className="min-w-[90vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-indigo-500/40 transition-all duration-300 flex flex-col shadow-lg">
+          <div className="min-w-[85vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#0B0F19]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-indigo-500/40 transition-all duration-300 flex flex-col shadow-lg">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl"></div>
             <div className="flex justify-between items-start mb-8">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider">
@@ -125,7 +131,7 @@ export default function CaseStudiesSection() {
           </div>
 
           {/* Case 3: Healthcare */}
-          <div className="min-w-[90vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-rose-500/40 transition-all duration-300 flex flex-col shadow-lg">
+          <div className="min-w-[85vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#0B0F19]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-rose-500/40 transition-all duration-300 flex flex-col shadow-lg">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl"></div>
             <div className="flex justify-between items-start mb-8">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold uppercase tracking-wider">
@@ -157,7 +163,7 @@ export default function CaseStudiesSection() {
           </div>
 
           {/* Case 4: E-Commerce */}
-          <div className="min-w-[90vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#080C1B]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-orange-500/40 transition-all duration-300 flex flex-col shadow-lg">
+          <div className="min-w-[85vw] sm:min-w-[320px] md:min-w-[400px] snap-center md:snap-start group relative bg-[#0B0F19]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 hover:border-orange-500/40 transition-all duration-300 flex flex-col shadow-lg">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl"></div>
             <div className="flex justify-between items-start mb-8">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-bold uppercase tracking-wider">
@@ -177,11 +183,11 @@ export default function CaseStudiesSection() {
             </p>
             <div className="mt-auto pt-6 border-t border-white/5 grid grid-cols-2 gap-4">
               <div>
-                <div className="text-[10px] text-slate-500 font-mono uppercase">Traffic</div>
+                <div className="text-[10px] text-slate-400 font-mono uppercase">Traffic</div>
                 <div className="text-white font-bold text-sm">2.4M Daily</div>
               </div>
               <div>
-                <div className="text-[10px] text-slate-500 font-mono uppercase">Load Time</div>
+                <div className="text-[10px] text-slate-400 font-mono uppercase">Load Time</div>
                 <div className="text-white font-bold text-sm">&lt; 0.8s</div>
               </div>
             </div>

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, ChevronDown, Linkedin, Github, Globe } from 'lucide-react';
 import { NAV_LINKS } from '@/lib/constants';
@@ -27,8 +27,8 @@ export function Navbar() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-50 px-4 pt-4 sm:pt-6 flex justify-center pointer-events-none">
-        <nav className={`pointer-events-auto w-full max-w-7xl backdrop-blur-xl border rounded-full px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center transition-all duration-300 ${scrolled ? 'bg-[#0f121a]/95 border-white/10 shadow-2xl' : 'bg-[#0f121a]/60 border-white/5 shadow-lg'}`}>
+      <div className="fixed top-0 left-0 right-0 z-50 px-4 pt-4 sm:pt-6 flex justify-center pointer-events-none animate-fade-in-up">
+        <nav className={`pointer-events-auto w-full max-w-7xl backdrop-blur-xl border rounded-full px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center transition-all duration-300 ${scrolled ? 'bg-[#0f121a]/95 border-white/10 shadow-2xl scale-[0.98]' : 'bg-[#0f121a]/60 border-white/5 shadow-lg'}`}>
           <Link href="/" className="flex items-center gap-2 cursor-pointer group shrink-0">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0062d1] to-[#00387a] flex items-center justify-center font-bold text-white shadow-lg group-hover:scale-105 transition-transform">G</div>
             <span className="text-lg font-bold tracking-tight text-white">GIMMIR</span>
@@ -39,11 +39,7 @@ export function Navbar() {
               <div key={link.title} className="relative group">
                 {link.items ? (
                   <>
-                    <button 
-                      className="hover:text-white transition-colors flex items-center gap-1 py-2"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
+                    <button className="hover:text-white transition-colors flex items-center gap-1 py-2">
                       {link.title}
                       <ChevronDown size={12} className="opacity-50 group-hover:rotate-180 transition-transform duration-300" />
                     </button>
@@ -63,7 +59,7 @@ export function Navbar() {
                     </div>
                   </>
                 ) : (
-                  <Link href={link.href!} className="hover:text-white transition-colors relative group py-2">
+                  <Link href={link.href || '#'} className="hover:text-white transition-colors relative group py-2">
                     {link.title}
                     <span className="absolute bottom-0 left-0 w-0 h-px bg-[#0062d1] transition-all group-hover:w-full"></span>
                   </Link>
@@ -88,10 +84,10 @@ export function Navbar() {
       {isMenuOpen && (
         <div className="fixed inset-0 z-[100] bg-[#020408] flex flex-col animate-mobile-menu">
           <div className="px-6 py-5 flex justify-between items-center border-b border-white/5 bg-[#020408]">
-             <Link href="/" className="flex items-center gap-2">
+             <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0062d1] to-[#00387a] flex items-center justify-center font-bold text-white shadow-lg">G</div>
                 <span className="text-lg font-bold tracking-tight text-white">Gimmir</span>
-             </Link>
+             </div>
              <button onClick={() => setIsMenuOpen(false)} className="p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-colors">
                <X size={28} />
              </button>
@@ -110,13 +106,26 @@ export function Navbar() {
                       <div className={`overflow-hidden transition-all duration-300 ease-in-out ${activeMobileDropdown === link.title ? 'max-h-[500px] opacity-100 mb-4' : 'max-h-0 opacity-0'}`}>
                         <div className="pl-4 flex flex-col gap-3 border-l-2 border-[#0062d1]/20 ml-2">
                           {link.items.map((item) => (
-                            <Link key={item.name} href={item.href} onClick={() => setIsMenuOpen(false)} className="block w-full text-left text-base text-slate-400 hover:text-[#0062d1] py-1 font-medium">{item.name}</Link>
+                            <Link 
+                              key={item.name} 
+                              href={item.href} 
+                              className="block w-full text-left text-base text-slate-400 hover:text-[#0062d1] py-1 font-medium"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              {item.name}
+                            </Link>
                           ))}
                         </div>
                       </div>
                     </>
                   ) : (
-                    <Link href={link.href!} onClick={() => setIsMenuOpen(false)} className="block w-full text-left py-4 text-2xl font-bold text-slate-200 hover:text-white transition-colors">{link.title}</Link>
+                    <Link 
+                      href={link.href || '#'} 
+                      className="block py-4 text-2xl font-bold text-slate-200 hover:text-white transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {link.title}
+                    </Link>
                   )}
                 </div>
               ))}

@@ -4,7 +4,7 @@ import { FOOTER_LINKS } from '@/lib/constants';
 
 export function Footer() {
   return (
-    <footer className="relative z-20 bg-[#020408] border-t border-white/5 pt-16 pb-8 px-6 font-mono text-sm overflow-hidden">
+    <footer className="relative z-20 bg-[#050A14] border-t border-white/5 pt-16 pb-8 px-6 text-sm overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(#ffffff03_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none opacity-50"></div>
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 mix-blend-overlay pointer-events-none"></div>

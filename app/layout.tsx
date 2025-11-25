@@ -1,11 +1,15 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import { Navbar } from '@/components/layout/navbar';
-import { Footer } from '@/components/layout/footer';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { GlobalContactSection } from "@/components/sections/global-contact";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Gimmir Website',
-  description: 'Built with Next.js 16 and Sanity v3',
+  title: "Gimmir Website",
+  description: "Engineering digital assets that pass due diligence.",
 };
 
 export default function RootLayout({
@@ -14,10 +18,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html lang="en" className="scroll-smooth">
+      <body className={`${inter.className} min-h-screen bg-[#020408] text-white font-sans selection:bg-[#0062d1] selection:text-white overflow-x-hidden w-full`}>
+        <div className="fixed inset-0 pointer-events-none z-0">
+           <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[120%] sm:w-[80%] h-[400px] sm:h-[600px] bg-[#0062d1] rounded-[100%] blur-[80px] sm:blur-[120px] opacity-[0.15]"></div>
+           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
+        </div>
         <Navbar />
-        {children}
+        <main className="relative z-10">
+          {children}
+        </main>
+        <GlobalContactSection />
         <Footer />
       </body>
     </html>
