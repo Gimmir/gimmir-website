@@ -13,8 +13,27 @@ export function Navbar() {
   const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
 
   useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? 'hidden' : 'unset';
-    return () => { document.body.style.overflow = 'unset'; };
+    if (isMenuOpen) {
+      // Prevent scrolling while maintaining position
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+    } else {
+      // Restore scrolling and position
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      
+      // Temporarily disable smooth scrolling to prevent "swiping" effect
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      // Restore smooth scrolling after a brief delay
+      setTimeout(() => {
+        document.documentElement.style.scrollBehavior = '';
+      }, 50);
+    }
   }, [isMenuOpen]);
 
   useEffect(() => {
@@ -32,14 +51,14 @@ export function Navbar() {
       <div className="fixed top-0 left-0 right-0 z-50 px-4 pt-4 sm:pt-6 flex justify-center pointer-events-none animate-fade-in-up">
         <nav className={`pointer-events-auto w-full max-w-7xl backdrop-blur-xl border rounded-full px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center transition-all duration-300 ${scrolled ? 'bg-[#0f121a]/95 border-white/10 shadow-2xl scale-[0.98]' : 'bg-[#0f121a]/60 border-white/5 shadow-lg'}`}>
           <Link href="/" className="flex items-center gap-2 cursor-pointer group shrink-0">
-            <motion.div layoutId="navbar-logo" className="relative w-8 h-8 group-hover:scale-105 transition-transform">
+            <div className="relative w-8 h-8 group-hover:scale-105 transition-transform">
               <Image 
                 src="/logo.svg" 
                 alt="Gimmir Logo" 
                 fill 
                 className="object-contain"
               />
-            </motion.div>
+            </div>
             <span className="text-lg font-bold tracking-tight text-white">GIMMIR</span>
           </Link>
           
@@ -101,14 +120,14 @@ export function Navbar() {
           >
             <div className="px-6 py-5 flex justify-between items-center border-b border-white/5 bg-[#020408]">
                <div className="flex items-center gap-2">
-                  <motion.div layoutId="navbar-logo" className="relative w-8 h-8">
+                  <div className="relative w-8 h-8">
                     <Image 
                       src="/logo.svg" 
                       alt="Gimmir Logo" 
                       fill 
                       className="object-contain"
                     />
-                  </motion.div>
+                  </div>
                   <span className="text-lg font-bold tracking-tight text-white">GIMMIR</span>
                </div>
                <button onClick={() => setIsMenuOpen(false)} className="p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-colors">
