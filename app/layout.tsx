@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black",
     title: "Gimmir",
   },
 };
@@ -30,8 +30,10 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  viewportFit: "cover",
-  themeColor: "#050810",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#050810" },
+    { media: "(prefers-color-scheme: dark)", color: "#050810" },
+  ],
 };
 
 export default function RootLayout({
