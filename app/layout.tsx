@@ -31,7 +31,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
-  colorScheme: "dark",
+  themeColor: "#020408",
 };
 
 export default function RootLayout({
@@ -45,6 +45,7 @@ export default function RootLayout({
         <div className="fixed top-0 left-0 w-full h-[120vh] pointer-events-none z-0">
            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[120%] sm:w-[80%] h-[400px] sm:h-[600px] bg-[#0062d1] rounded-[100%] blur-[80px] sm:blur-[120px] opacity-[0.15]"></div>
            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
+           <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#020408] to-transparent z-10"></div>
         </div>
         <Navbar />
         <main className="relative z-10">
