@@ -10,6 +10,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Gimmir Website",
   description: "Engineering digital assets that pass due diligence.",
+  icons: {
+    icon: "/logo.svg",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
