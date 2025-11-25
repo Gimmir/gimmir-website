@@ -14,21 +14,21 @@ export function HeroSection() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
         {/* Text Content */}
         <div className="text-center lg:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 animate-fade-in-up shadow-lg shadow-black/20">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 animate-fade-in-up opacity-0 shadow-lg shadow-black/20">
             <Cpu size={14} className="text-[#0062d1]" />
             <span className="text-xs font-mono text-slate-300 tracking-wider uppercase">Web & Mobile Engineering</span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-[1.1] tracking-tight animate-fade-in-up drop-shadow-2xl" style={{ animationDelay: '0.1s' }}>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-[1.1] tracking-tight animate-fade-in-up opacity-0 drop-shadow-2xl" style={{ animationDelay: '0.1s' }}>
             Engineering Assets. <br className="hidden lg:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0062d1] to-cyan-400">Not Liabilities.</span>
           </h1>
 
-          <p className="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <p className="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed mb-8 animate-fade-in-up opacity-0" style={{ animationDelay: '0.2s' }}>
              We build High-Load Web & Native Mobile platforms designed to handle 1M+ users without a total rewrite. Architecture ready for Series A Due Diligence.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 animate-fade-in-up opacity-0" style={{ animationDelay: '0.3s' }}>
             <button className="w-full sm:w-auto px-8 py-4 bg-[#0062d1] hover:bg-[#0052b3] text-white font-bold rounded-full transition-all shadow-[0_0_30px_-5px_rgba(0,98,209,0.4)] hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
               <Settings2 size={18} />
               Plan Your Architecture
@@ -37,7 +37,7 @@ export function HeroSection() {
         </div>
 
         {/* Visual Content - Abstract Code/Architecture Visualization */}
-        <div className="relative hidden lg:block animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+        <div className="relative hidden lg:block animate-fade-in-up opacity-0" style={{ animationDelay: '0.4s' }}>
             <div className="relative bg-[#0B0F19]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-500 ring-1 ring-white/5">
                <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
                   <div className="flex items-center gap-2">
