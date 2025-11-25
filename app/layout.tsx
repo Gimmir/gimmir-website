@@ -11,7 +11,13 @@ export const metadata: Metadata = {
   title: "Gimmir Website",
   description: "Engineering digital assets that pass due diligence.",
   icons: {
-    icon: "/logo.svg",
+    icon: [
+      { url: '/logo.svg', type: 'image/svg+xml' },
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/favicon.png' },
+    ],
   },
   appleWebApp: {
     capable: true,
