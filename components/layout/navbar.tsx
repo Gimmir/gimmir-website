@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X, ChevronDown, Linkedin, Github, Globe } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_LINKS } from '@/lib/constants';
 
 export function Navbar() {
@@ -31,14 +32,14 @@ export function Navbar() {
       <div className="fixed top-0 left-0 right-0 z-50 px-4 pt-4 sm:pt-6 flex justify-center pointer-events-none animate-fade-in-up">
         <nav className={`pointer-events-auto w-full max-w-7xl backdrop-blur-xl border rounded-full px-4 py-3 sm:px-6 sm:py-4 flex justify-between items-center transition-all duration-300 ${scrolled ? 'bg-[#0f121a]/95 border-white/10 shadow-2xl scale-[0.98]' : 'bg-[#0f121a]/60 border-white/5 shadow-lg'}`}>
           <Link href="/" className="flex items-center gap-2 cursor-pointer group shrink-0">
-            <div className="relative w-8 h-8 group-hover:scale-105 transition-transform">
+            <motion.div layoutId="navbar-logo" className="relative w-8 h-8 group-hover:scale-105 transition-transform">
               <Image 
                 src="/logo.svg" 
                 alt="Gimmir Logo" 
                 fill 
                 className="object-contain"
               />
-            </div>
+            </motion.div>
             <span className="text-lg font-bold tracking-tight text-white">GIMMIR</span>
           </Link>
           
@@ -89,75 +90,94 @@ export function Navbar() {
         </nav>
       </div>
 
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-[100] bg-[#020408] flex flex-col animate-mobile-menu">
-          <div className="px-6 py-5 flex justify-between items-center border-b border-white/5 bg-[#020408]">
-             <div className="flex items-center gap-2">
-                <div className="relative w-8 h-8">
-                  <Image 
-                    src="/logo.svg" 
-                    alt="Gimmir Logo" 
-                    fill 
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-lg font-bold tracking-tight text-white">Gimmir</span>
-             </div>
-             <button onClick={() => setIsMenuOpen(false)} className="p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-               <X size={28} />
-             </button>
-          </div>
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed inset-0 z-[100] bg-[#020408] flex flex-col"
+          >
+            <div className="px-6 py-5 flex justify-between items-center border-b border-white/5 bg-[#020408]">
+               <div className="flex items-center gap-2">
+                  <motion.div layoutId="navbar-logo" className="relative w-8 h-8">
+                    <Image 
+                      src="/logo.svg" 
+                      alt="Gimmir Logo" 
+                      fill 
+                      className="object-contain"
+                    />
+                  </motion.div>
+                  <span className="text-lg font-bold tracking-tight text-white">GIMMIR</span>
+               </div>
+               <button onClick={() => setIsMenuOpen(false)} className="p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-colors">
+                 <X size={28} />
+               </button>
+            </div>
 
-          <div className="flex-1 overflow-y-auto p-6 flex flex-col">
-            <div className="flex flex-col gap-2 mb-8">
-              {NAV_LINKS.map((link) => (
-                <div key={link.title} className="border-b border-white/5 last:border-0 pb-2">
-                  {link.items ? (
-                    <>
-                      <button onClick={() => toggleMobileDropdown(link.title)} className="flex items-center justify-between w-full py-4 text-2xl font-bold text-slate-200 hover:text-white transition-colors text-left">
-                        {link.title}
-                        <ChevronDown size={20} className={`transition-transform duration-300 text-slate-500 ${activeMobileDropdown === link.title ? 'rotate-180 text-[#0062d1]' : ''}`} />
-                      </button>
-                      <div className={`overflow-hidden transition-all duration-300 ease-in-out ${activeMobileDropdown === link.title ? 'max-h-[500px] opacity-100 mb-4' : 'max-h-0 opacity-0'}`}>
-                        <div className="pl-4 flex flex-col gap-3 border-l-2 border-[#0062d1]/20 ml-2">
-                          {link.items.map((item) => (
-                            <Link 
-                              key={item.name} 
-                              href={item.href} 
-                              className="block w-full text-left text-base text-slate-400 hover:text-[#0062d1] py-1 font-medium"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              {item.name}
-                            </Link>
-                          ))}
+            <div className="flex-1 overflow-y-auto p-6 flex flex-col">
+              <div className="flex flex-col gap-2 mb-8">
+                {NAV_LINKS.map((link, index) => (
+                  <motion.div 
+                    key={link.title} 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + index * 0.05 }}
+                    className="border-b border-white/5 last:border-0 pb-2"
+                  >
+                    {link.items ? (
+                      <>
+                        <button onClick={() => toggleMobileDropdown(link.title)} className="flex items-center justify-between w-full py-4 text-2xl font-bold text-slate-200 hover:text-white transition-colors text-left">
+                          {link.title}
+                          <ChevronDown size={20} className={`transition-transform duration-300 text-slate-500 ${activeMobileDropdown === link.title ? 'rotate-180 text-[#0062d1]' : ''}`} />
+                        </button>
+                        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${activeMobileDropdown === link.title ? 'max-h-[500px] opacity-100 mb-4' : 'max-h-0 opacity-0'}`}>
+                          <div className="pl-4 flex flex-col gap-3 border-l-2 border-[#0062d1]/20 ml-2">
+                            {link.items.map((item) => (
+                              <Link 
+                                key={item.name} 
+                                href={item.href} 
+                                className="block w-full text-left text-base text-slate-400 hover:text-[#0062d1] py-1 font-medium"
+                                onClick={() => setIsMenuOpen(false)}
+                              >
+                                {item.name}
+                              </Link>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    </>
-                  ) : (
-                    <Link 
-                      href={link.href || '#'} 
-                      className="block py-4 text-2xl font-bold text-slate-200 hover:text-white transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {link.title}
-                    </Link>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-auto space-y-4 pb-8">
-              <button className="w-full py-4 text-white font-bold text-lg rounded-xl border border-white/20 hover:bg-white/10 transition-colors">Book a Meet</button>
-              <button className="w-full py-4 bg-[#0062d1] rounded-xl font-bold text-lg text-white active:bg-[#0052b3] shadow-lg shadow-blue-900/20">Estimate Project</button>
-              <div className="flex justify-center gap-8 pt-6 opacity-60">
-                 <a href="#" className="text-slate-400 hover:text-white"><Linkedin size={24} /></a>
-                 <a href="#" className="text-slate-400 hover:text-white"><Github size={24} /></a>
-                 <a href="#" className="text-slate-400 hover:text-white"><Globe size={24} /></a>
+                      </>
+                    ) : (
+                      <Link 
+                        href={link.href || '#'} 
+                        className="block py-4 text-2xl font-bold text-slate-200 hover:text-white transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {link.title}
+                      </Link>
+                    )}
+                  </motion.div>
+                ))}
               </div>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mt-auto space-y-4 pb-8"
+              >
+                <button className="w-full py-4 text-white font-bold text-lg rounded-xl border border-white/20 hover:bg-white/10 transition-colors">Book a Meet</button>
+                <button className="w-full py-4 bg-[#0062d1] rounded-xl font-bold text-lg text-white active:bg-[#0052b3] shadow-lg shadow-blue-900/20">Estimate Project</button>
+                <div className="flex justify-center gap-8 pt-6 opacity-60">
+                   <a href="#" className="text-slate-400 hover:text-white"><Linkedin size={24} /></a>
+                   <a href="#" className="text-slate-400 hover:text-white"><Github size={24} /></a>
+                   <a href="#" className="text-slate-400 hover:text-white"><Globe size={24} /></a>
+                </div>
+              </motion.div>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
