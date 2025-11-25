@@ -17,57 +17,57 @@ export function TimezoneSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
            
            {/* Row 1: Scenario A (Americas) */}
-           <div className="group bg-[#0B0F19] border border-white/10 p-8 rounded-2xl hover:bg-white/[0.02] transition-colors shadow-lg shadow-black/10">
+           <div className="group bg-[#0B0F19] border border-white/10 p-6 sm:p-8 rounded-2xl hover:bg-white/[0.02] transition-colors shadow-lg shadow-black/10">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
-                 <h3 className="text-2xl font-bold text-white">Scenario A (Americas)</h3>
+                 <h3 className="text-xl sm:text-2xl font-bold text-white">Scenario A (Americas)</h3>
                  <Globe2 className="text-[#0062d1]" />
               </div>
               <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent mb-6"></div>
               {/* Details */}
               <div className="space-y-4">
-                 <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Hub</span>
-                    <span className="text-white font-mono">Mexico City (LatAm)</span>
+                 <div className="flex justify-between items-start text-sm gap-4">
+                    <span className="text-slate-400 shrink-0">Hub</span>
+                    <span className="text-white font-mono text-right">Mexico City (LatAm)</span>
                  </div>
-                 <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Benefit</span>
-                    <span className="text-emerald-400 font-bold font-mono">100% Real-Time Overlap (CST)</span>
+                 <div className="flex justify-between items-start text-sm gap-4">
+                    <span className="text-slate-400 shrink-0">Benefit</span>
+                    <span className="text-emerald-400 font-bold font-mono text-right">100% Real-Time Overlap (CST)</span>
                  </div>
-                 <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Note</span>
-                    <span className="text-slate-200 text-right max-w-[200px]">Best for US-based teams requiring synchronous collaboration.</span>
+                 <div className="flex justify-between items-start text-sm gap-4">
+                    <span className="text-slate-400 shrink-0">Note</span>
+                    <span className="text-slate-200 text-right max-w-[200px] ml-auto">Best for US-based teams requiring synchronous collaboration.</span>
                  </div>
               </div>
            </div>
 
            {/* Row 1: Scenario B (Europe) */}
-           <div className="group bg-[#0B0F19] border border-white/10 p-8 rounded-2xl hover:bg-white/[0.02] transition-colors shadow-lg shadow-black/10">
+           <div className="group bg-[#0B0F19] border border-white/10 p-6 sm:p-8 rounded-2xl hover:bg-white/[0.02] transition-colors shadow-lg shadow-black/10">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
-                 <h3 className="text-2xl font-bold text-white">Scenario B (Europe)</h3>
+                 <h3 className="text-xl sm:text-2xl font-bold text-white">Scenario B (Europe)</h3>
                  <Globe2 className="text-[#0062d1]" />
               </div>
               <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent mb-6"></div>
               {/* Details */}
               <div className="space-y-4">
-                 <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Hub</span>
-                    <span className="text-white font-mono">Ukraine / Spain</span>
+                 <div className="flex justify-between items-start text-sm gap-4">
+                    <span className="text-slate-400 shrink-0">Hub</span>
+                    <span className="text-white font-mono text-right">Ukraine / Spain</span>
                  </div>
-                 <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Benefit</span>
-                    <span className="text-emerald-400 font-bold font-mono">Full Business Day Overlap</span>
+                 <div className="flex justify-between items-start text-sm gap-4">
+                    <span className="text-slate-400 shrink-0">Benefit</span>
+                    <span className="text-emerald-400 font-bold font-mono text-right">Full Business Day Overlap</span>
                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Note</span>
-                    <span className="text-slate-200 text-right max-w-[200px]">Best for EU teams or US teams wanting morning updates.</span>
+                  <div className="flex justify-between items-start text-sm gap-4">
+                    <span className="text-slate-400 shrink-0">Note</span>
+                    <span className="text-slate-200 text-right max-w-[200px] ml-auto">Best for EU teams or US teams wanting morning updates.</span>
                  </div>
               </div>
            </div>
 
            {/* Row 2: Scenario C (Global / Hybrid) - Full Width */}
-           <div className="md:col-span-2 group relative bg-[#0B0F19] border border-cyan-500/30 p-8 rounded-2xl overflow-hidden transition-all hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.1)] shadow-lg shadow-black/10">
+           <div className="md:col-span-2 group relative bg-[#0B0F19] border border-cyan-500/30 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.1)] shadow-lg shadow-black/10">
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-transparent pointer-events-none"></div>
               
               <div className="relative z-10">
@@ -77,12 +77,12 @@ export function TimezoneSection() {
                   
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
                      <div>
-                        <h3 className="text-2xl font-bold text-white mb-2">Scenario C (20h+ Continuous Cycle)</h3>
+                        <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Scenario C (20h+ Continuous Cycle)</h3>
                         <p className="text-slate-400 text-sm max-w-xl leading-relaxed">
                            Maximize velocity. Europe starts the sprint, hands off to LatAm in the evening. Result: Development continues while you sleep. Almost zero downtime.
                         </p>
                      </div>
-                     <div className="text-right">
+                     <div className="text-left md:text-right">
                          <div className="text-xs text-slate-500 uppercase tracking-widest mb-1">Benefit</div>
                          <div className="text-cyan-400 font-bold font-mono text-lg">&quot;Follow the Sun&quot; Delivery</div>
                      </div>
@@ -118,7 +118,7 @@ export function TimezoneSection() {
                           {/* Europe Shift */}
                           <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2">
-                                  <span className="text-2xl">🇺🇦</span>
+                                  <span className="text-2xl">🇪🇺</span>
                                   <div>
                                       <div className="text-white font-bold text-sm">Europe (Start)</div>
                                       <div className="text-slate-500 text-xs font-mono">08:00 - 17:00 CET</div>

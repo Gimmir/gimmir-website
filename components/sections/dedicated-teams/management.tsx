@@ -4,7 +4,7 @@ import { Cpu, Zap } from 'lucide-react';
 export function ManagementSection() {
   return (
     <section className="py-16 sm:py-24 px-6 bg-[#050A14]">
-      <div className="max-w-6xl mx-auto bg-[#0B0F19] border border-white/10 rounded-3xl p-8 md:p-16 overflow-hidden relative shadow-2xl shadow-black/30">
+      <div className="max-w-6xl mx-auto bg-[#0B0F19] border border-white/10 rounded-3xl p-6 md:p-16 overflow-hidden relative shadow-2xl shadow-black/30">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#0062d1]/5 to-transparent pointer-events-none"></div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
           <div>
@@ -28,16 +28,16 @@ export function ManagementSection() {
           </div>
           <div className="relative">
              {/* Visual Rep of Management */}
-             <div className="bg-[#080C14] border border-white/10 rounded-xl p-6 font-mono text-xs text-slate-400 shadow-2xl ring-1 ring-white/5">
-                <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+             <div className="bg-[#080C14] border border-white/10 rounded-xl p-4 sm:p-6 font-mono text-xs text-slate-400 shadow-2xl ring-1 ring-white/5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 mb-4 gap-4 sm:gap-0">
                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#0062d1] flex items-center justify-center text-white font-bold">TL</div>
+                      <div className="w-8 h-8 rounded-full bg-[#0062d1] flex items-center justify-center text-white font-bold shrink-0">TL</div>
                       <div>
                         <div className="text-white font-bold">Alex (Tech Lead)</div>
                         <div className="text-[10px]">Code Review • PR #420</div>
                       </div>
                    </div>
-                   <span className="text-green-400 bg-green-400/10 px-2 py-1 rounded border border-green-400/10">Approved</span>
+                   <span className="text-green-400 bg-green-400/10 px-2 py-1 rounded border border-green-400/10 w-fit">Approved</span>
                 </div>
                 <div className="space-y-2">
                    <p className="text-slate-500">// Tech Lead Comment:</p>
