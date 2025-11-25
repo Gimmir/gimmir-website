@@ -6,7 +6,7 @@ import { SectionHeader } from '@/components/ui/section-header';
 
 export function DeliverablesSection() {
   return (
-    <section className="py-24 px-6 border-b border-white/5 bg-[#080C14] overflow-hidden relative">
+    <section className="py-16 sm:py-24 px-6 border-b border-white/5 bg-[#080C14] overflow-hidden relative">
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader 
           title="The 'Anti-Lock-in' Deliverables" 

@@ -5,7 +5,7 @@ import { ChevronRightSquare } from 'lucide-react';
 
 export function FinalCTA() {
   return (
-    <section className="py-24 px-6 relative overflow-hidden bg-[#050A14]">
+    <section className="py-16 sm:py-24 px-6 relative overflow-hidden bg-[#050A14]">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#0a1435_0%,_#020408_100%)] -z-10"></div>
       <div className="max-w-4xl mx-auto text-center">
          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8">Don&apos;t just build an app. <br className="hidden sm:block" /> Build a business.</h2>

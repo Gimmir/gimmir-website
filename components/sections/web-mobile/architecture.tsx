@@ -5,7 +5,7 @@ import { Layers } from 'lucide-react';
 
 export function ArchitectureSection() {
   return (
-    <section className="py-24 px-6 bg-[#050A14]">
+    <section className="py-16 sm:py-24 px-6 bg-[#050A14]">
       <div className="max-w-6xl mx-auto bg-[#0B0F19] border border-white/10 rounded-3xl p-6 md:p-16 overflow-hidden relative shadow-2xl shadow-black/30">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#0062d1]/5 to-transparent pointer-events-none"></div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">

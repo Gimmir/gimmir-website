@@ -13,7 +13,7 @@ export function SecuritySection() {
   ];
 
   return (
-    <section className="py-24 px-6 bg-[#080C14] border-y border-white/5">
+    <section className="py-16 sm:py-24 px-6 bg-[#080C14] border-y border-white/5">
       <div className="max-w-5xl mx-auto">
         <SectionHeader 
           title="Security & Compliance" 

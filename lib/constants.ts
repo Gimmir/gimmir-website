@@ -33,7 +33,8 @@ export const NAV_LINKS = [
       { name: 'How We Work', href: '/company/how-we-work' },
       { name: 'Global Hubs', href: '/#global-contact' }
     ] 
-  }
+  },
+  { title: 'Contact Us', href: '/contact-us', items: undefined }
 ] as const;
 
 export const FOOTER_LINKS = [
@@ -60,7 +61,8 @@ export const FOOTER_LINKS = [
       { name: 'About Us', href: '/company/about' },
       { name: 'Success Stories', href: '/success-stories' },
       { name: 'How We Work', href: '/company/how-we-work' },
-      { name: 'Global Hubs', href: '/#global-contact' }
+      { name: 'Global Hubs', href: '/#global-contact' },
+      { name: 'Contact Us', href: '/contact-us' }
     ] 
   }
 ] as const;

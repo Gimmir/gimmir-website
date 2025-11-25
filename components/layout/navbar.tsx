@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Menu, X, ChevronDown, Linkedin, Github, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,6 +12,14 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
+  const [activeDesktopDropdown, setActiveDesktopDropdown] = useState<string | null>(null);
+  const pathname = usePathname();
+
+  // Close menus on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setActiveDesktopDropdown(null);
+  }, [pathname]);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -64,14 +73,19 @@ export function Navbar() {
           
           <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-300/90">
             {NAV_LINKS.map((link) => (
-              <div key={link.title} className="relative group">
+              <div 
+                key={link.title} 
+                className="relative"
+                onMouseEnter={() => setActiveDesktopDropdown(link.title)}
+                onMouseLeave={() => setActiveDesktopDropdown(null)}
+              >
                 {link.items ? (
                   <>
-                    <button className="hover:text-white transition-colors flex items-center gap-1 py-2">
+                    <button className={`hover:text-white transition-colors flex items-center gap-1 py-2 ${activeDesktopDropdown === link.title ? 'text-white' : ''}`}>
                       {link.title}
-                      <ChevronDown size={12} className="opacity-50 group-hover:rotate-180 transition-transform duration-300" />
+                      <ChevronDown size={12} className={`opacity-50 transition-transform duration-300 ${activeDesktopDropdown === link.title ? 'rotate-180' : ''}`} />
                     </button>
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2 w-64">
+                    <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-6 transition-all duration-200 transform w-64 ${activeDesktopDropdown === link.title ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2'}`}>
                       <div className="bg-[#0B0F19] border border-white/10 rounded-xl p-2 shadow-xl backdrop-blur-md overflow-hidden ring-1 ring-white/5 relative">
                         <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#0B0F19] border-t border-l border-white/10 rotate-45 transform"></div>
                         {link.items.map((item) => (
@@ -79,6 +93,7 @@ export function Navbar() {
                             key={item.name} 
                             href={item.href}
                             className="block w-full text-left px-4 py-2.5 text-sm text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors relative z-10"
+                            onClick={() => setActiveDesktopDropdown(null)}
                           >
                             {item.name}
                           </Link>

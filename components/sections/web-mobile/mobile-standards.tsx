@@ -6,7 +6,7 @@ import { SectionHeader } from '@/components/ui/section-header';
 
 export function MobileStandardsSection() {
   return (
-    <section className="py-24 px-6 border-t border-white/5 bg-[#050A14] relative overflow-hidden">
+    <section className="py-16 sm:py-24 px-6 border-t border-white/5 bg-[#050A14] relative overflow-hidden">
       {/* Background Glow & Noise */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[500px] bg-[#0062d1]/5 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
