@@ -4,8 +4,7 @@
 
 @layer base {
   html, body {
-    height: 100%;
-    overflow-x: hidden;
+    /* height: 100%; - Removed to fix Safari address bar not collapsing */
   }
 }
 
