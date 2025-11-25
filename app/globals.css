@@ -3,11 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    background-color: #020408;
-  }
   html, body {
-    /* height: 100%; - Removed to fix Safari address bar not collapsing */
+    height: 100%;
+    overflow-x: hidden;
   }
 }
 
