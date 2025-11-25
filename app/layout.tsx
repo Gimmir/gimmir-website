@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#020408",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -28,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.className} min-h-[100dvh] bg-[#020408] text-white font-sans selection:bg-[#0062d1] selection:text-white overflow-x-hidden w-full`}>
-        <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="fixed top-0 left-0 w-full h-[100dvh] pointer-events-none z-0">
            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[120%] sm:w-[80%] h-[400px] sm:h-[600px] bg-[#0062d1] rounded-[100%] blur-[80px] sm:blur-[120px] opacity-[0.15]"></div>
            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
         </div>
