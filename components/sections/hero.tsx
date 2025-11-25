@@ -5,7 +5,7 @@ import { Settings2, PlayCircle, ShieldCheck, FileKey, Globe } from 'lucide-react
 
 export function HeroSection() {
   return (
-    <section className="relative z-10 min-h-[100dvh] flex flex-col items-center justify-start pt-28 sm:pt-32 md:pt-40 px-4 text-center max-w-5xl mx-auto w-full">
+    <section className="relative z-10 min-h-[100vh] flex flex-col items-center justify-start pt-28 sm:pt-32 md:pt-40 px-4 text-center max-w-5xl mx-auto w-full">
       <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 sm:mb-8 animate-fade-in-up opacity-0" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
         <span className="flex h-2 w-2 relative">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0062d1] opacity-75"></span>
