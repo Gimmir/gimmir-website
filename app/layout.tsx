@@ -12,11 +12,11 @@ export const metadata: Metadata = {
   description: "Engineering digital assets that pass due diligence.",
   icons: {
     icon: [
-      { url: '/logo.svg', type: 'image/svg+xml' },
-      { url: '/favicon.png', type: 'image/png' },
+      { url: '/logo.svg?v=2', type: 'image/svg+xml' },
+      { url: '/favicon.png?v=2', type: 'image/png' },
     ],
     apple: [
-      { url: '/favicon.png' },
+      { url: '/favicon.png?v=2' },
     ],
   },
   appleWebApp: {
