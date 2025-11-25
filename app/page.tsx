@@ -9,7 +9,7 @@ import { InsightsSection } from "@/components/sections/insights";
 
 export default function Home() {
   return (
-    <div className="animate-in fade-in duration-700">
+    <div className="animate-in fade-in duration-700 min-h-screen">
       <HeroSection />
       <PainSection />
       <ValuePropSection />
