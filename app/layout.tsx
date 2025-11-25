@@ -31,7 +31,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
-  themeColor: "#021226", // Matches the blue glow at the top of the page
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
