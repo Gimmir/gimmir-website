@@ -72,23 +72,23 @@ export function LeadershipSection() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 max-w-5xl mx-auto">
                     {leaders.map((leader, i) => (
-                        <div key={i} className="bg-[#0B0F19] border border-white/10 rounded-2xl p-6 flex flex-col sm:flex-row shadow-xl shadow-black/20 md:hover:border-[#0062d1]/50 transition-colors duration-300 group h-full">
+                        <div key={i} className="bg-[#0B0F19] border border-white/10 rounded-2xl p-6 flex flex-col sm:flex-row shadow-xl shadow-black/20 hover:border-[#0062d1]/50 transition-colors duration-300 group h-full">
                             
                             {/* Image & Title Column */}
                             <div className="flex flex-col items-center text-center sm:items-start sm:text-left w-full sm:w-1/3 shrink-0 border-b border-white/10 pb-6 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-8">
                                 
-                                <div className="w-24 h-24 shrink-0 relative overflow-hidden rounded-full border-4 border-[#0062d1]/50 bg-slate-800/50 mb-4 md:group-hover:border-[#0062d1] transition-colors duration-300">
+                                <div className="w-24 h-24 shrink-0 relative overflow-hidden rounded-full border-4 border-[#0062d1]/50 bg-slate-800/50 mb-4 group-hover:border-[#0062d1] transition-colors duration-300">
                                     <Image
                                         src={leader.imgUrl}
                                         alt={leader.name}
                                         width={96}
                                         height={96}
-                                        className="object-cover w-full h-full grayscale opacity-80 transition-all duration-500 md:group-hover:grayscale-0 md:group-hover:opacity-100"
+                                        className="object-cover w-full h-full grayscale opacity-80 transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100"
                                     />
                                 </div>
                                 
                                 <h3 className="text-xl font-bold text-white mb-0.5 whitespace-nowrap">{leader.name}</h3>
-                                <p className="text--[#0062d1] font-semibold text-sm mb-3">{leader.title}</p>
+                                <p className="text-[#0062d1] font-semibold text-sm mb-3">{leader.title}</p>
                                 
                                 {leader.linkedinUrl && (
                                     <Link 
