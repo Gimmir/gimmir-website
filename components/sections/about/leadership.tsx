@@ -72,22 +72,23 @@ export function LeadershipSection() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 max-w-5xl mx-auto">
                     {leaders.map((leader, i) => (
-                        <div key={i} className="bg-[#0B0F19] border border-white/10 rounded-2xl p-6 flex flex-col sm:flex-row shadow-xl shadow-black/20 hover:border-[#0062d1]/50 transition-all duration-300 group">
+                        <div key={i} className="bg-[#0B0F19] border border-white/10 rounded-2xl p-6 flex flex-col sm:flex-row shadow-xl shadow-black/20 md:hover:border-[#0062d1]/50 transition-colors duration-300 group h-full">
                             
-                            <div className="flex flex-col items-center text-center sm:items-start sm:text-left w-full sm:w-1/3 shrink-0 pr-6 border-b border-white/10 sm:border-b-0 sm:border-r sm:pr-8 sm:pb-0 pb-6">
+                            {/* Image & Title Column */}
+                            <div className="flex flex-col items-center text-center sm:items-start sm:text-left w-full sm:w-1/3 shrink-0 border-b border-white/10 pb-6 sm:border-b-0 sm:border-r sm:pb-0 sm:pr-8">
                                 
-                                <div className="w-24 h-24 shrink-0 relative overflow-hidden rounded-full border-4 border-[#0062d1]/50 bg-slate-800/50 mb-4 group-hover:border-[#0062d1] transition-all duration-300">
+                                <div className="w-24 h-24 shrink-0 relative overflow-hidden rounded-full border-4 border-[#0062d1]/50 bg-slate-800/50 mb-4 md:group-hover:border-[#0062d1] transition-colors duration-300">
                                     <Image
                                         src={leader.imgUrl}
                                         alt={leader.name}
                                         width={96}
                                         height={96}
-                                        className="object-cover w-full h-full grayscale opacity-80 transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100"
+                                        className="object-cover w-full h-full grayscale opacity-80 transition-all duration-500 md:group-hover:grayscale-0 md:group-hover:opacity-100"
                                     />
                                 </div>
                                 
                                 <h3 className="text-xl font-bold text-white mb-0.5 whitespace-nowrap">{leader.name}</h3>
-                                <p className="text-[#0062d1] font-semibold text-sm mb-3">{leader.title}</p>
+                                <p className="text--[#0062d1] font-semibold text-sm mb-3">{leader.title}</p>
                                 
                                 {leader.linkedinUrl && (
                                     <Link 
@@ -101,16 +102,17 @@ export function LeadershipSection() {
                                 )}
                             </div>
 
-                            <div className="w-full sm:w-2/3 pt-4 sm:pt-0 sm:pl-8 flex flex-col justify-between">
+                            {/* Description Column */}
+                            <div className="w-full sm:w-2/3 pt-6 sm:pt-0 sm:pl-8 flex flex-col justify-between">
                                 <div className='space-y-4'>
-                                    <h4 className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-3">OUR MISSION STATEMENT:</h4>
+                                    <h4 className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-3 text-center sm:text-left">OUR MISSION STATEMENT:</h4>
                                     
-                                    <p className="text-slate-300 text-base italic">
+                                    <p className="text-slate-300 text-sm sm:text-base italic text-center sm:text-left">
                                         &quot;{leader.title === 'CEO / Founder' ? "We founded Gimmir to fix the trust and quality issues endemic to outsourcing. Our mission is to build digital assets, not debt." : "My focus is on maintaining a modular, high-performance architecture that guarantees scalability and passes any technical audit."}&quot;
                                     </p>
                                 </div>
                                 
-                                <div className="mt-6 pt-4 border-t border-white/5">
+                                <div className="mt-6 pt-4 border-t border-white/5 flex justify-center sm:justify-start">
                                     <span className="text-xs font-mono text-slate-600">
                                         {leader.title === 'CEO / Founder' ? "BUSINESS & VISION" : "TECHNICAL INTEGRITY"}
                                     </span>
