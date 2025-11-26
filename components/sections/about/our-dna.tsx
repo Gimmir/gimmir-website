@@ -69,7 +69,7 @@ export function OurDnaSection() {
         {
             icon: Users2,
             title: "Talent Over Location",
-            desc: "We hire the top 1.5% of engineers globally, regardless of whether they sit in Spain, Ukraine, or Mexico.",
+            desc: "We hire the top 1.5% of engineers globally, regardless of whether they sit in Europe, LATAM, or Ukraine.",
             color: "text-purple-400",
             bg: "bg-purple-500/10",
             hoverBorder: "hover:border-purple-500/50"

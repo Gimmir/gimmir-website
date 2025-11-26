@@ -50,7 +50,7 @@ export function GlobalInfrastructureSection() {
         { name: "Legal Safety", detail: "US (Delaware) & EU (Estonia) entities for ironclad contracts.", icon: Landmark, color: "text-blue-400", bg: "bg-blue-500/10" },
         { name: "Timezone Sync", detail: "Nearshore hubs ensuring we are online when you are.", icon: Clock, color: "text-emerald-400", bg: "bg-emerald-500/10" },
         { name: "Data Security", detail: "GDPR & HIPAA compliant workspaces for sensitive data.", icon: Shield, color: "text-red-400", bg: "bg-red-500/10" },
-        { name: "Core Talent", detail: "Top 1.5% engineering talent from UA, Spain, Mexico.", icon: Cpu, color: "text-purple-400", bg: "bg-purple-500/10" },
+        { name: "Core Talent", detail: "Top 1.5% engineering talent from Europe, LATAM, Ukraine.", icon: Cpu, color: "text-purple-400", bg: "bg-purple-500/10" },
     ];
 
     return (
