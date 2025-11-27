@@ -50,6 +50,14 @@ export interface Author {
   linkedinUrl?: string;
 }
 
+// OG Image type for social media metadata
+export interface OgImage {
+  url: string;
+  width?: number;
+  height?: number;
+  alt?: string;
+}
+
 // Base fields shared by all layouts
 export interface NewsPostBase {
   id: string;
@@ -64,6 +72,7 @@ export interface NewsPostBase {
   description: string;
   tags?: string[];
   body?: PortableTextBlock[];
+  ogImage?: OgImage;
 }
 
 // Standard layout (Magazine View)
@@ -162,6 +171,14 @@ const NEWS_DETAIL_QUERY = `*[_type == "news" && slug.current == $slug && !(_id i
   description,
   tags,
   body,
+  
+  // OG Image for social media (with dimensions)
+  "ogImage": mainImage {
+    "url": asset->url,
+    "width": asset->metadata.dimensions.width,
+    "height": asset->metadata.dimensions.height,
+    "alt": alt
+  },
   
   // Standard layout fields
   "imageUrl": mainImage.asset->url,

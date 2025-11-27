@@ -113,6 +113,16 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     };
   }
 
+  // Build OG image array if main image exists
+  const ogImages = post.ogImage?.url 
+    ? [{
+        url: post.ogImage.url,
+        width: post.ogImage.width || 1200,
+        height: post.ogImage.height || 630,
+        alt: post.ogImage.alt || post.title,
+      }]
+    : undefined;
+
   return {
     title: `${post.title} | Gimmir`,
     description: post.description,
@@ -123,11 +133,14 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       publishedTime: post.date,
       authors: post.author?.name ? [post.author.name] : ['Gimmir Team'],
       tags: post.tags,
+      images: ogImages,
+      siteName: 'Gimmir',
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.description,
+      images: ogImages?.map(img => img.url),
     },
   };
 }
