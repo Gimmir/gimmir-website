@@ -120,6 +120,78 @@ export interface NewsPostCard {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// LEGAL DOCUMENT TYPES
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Terms of Service document type
+export interface TermsOfService {
+  title: string;
+  heroDescription?: string;
+  lastRevision?: string;
+  jurisdiction?: string;
+  acceptanceBody?: PortableTextBlock[];
+  ipOwnershipBody?: PortableTextBlock[];
+  ipOwnershipChecklist?: string[];
+  ipThirdPartyBody?: PortableTextBlock[];
+  ipThirdPartyWarning?: string;
+  paymentBody?: PortableTextBlock[];
+  paymentRefundText?: string;
+  terminationBody?: PortableTextBlock[];
+  governingLawBody?: PortableTextBlock[];
+  acceptableUseIntro?: string;
+  acceptableUseList?: string[];
+  liabilityBody?: PortableTextBlock[];
+}
+
+// Privacy Policy document type
+export interface GdprRight {
+  title: string;
+  description: string;
+}
+
+export interface CookieItem {
+  name: string;
+  description: string;
+}
+
+export interface JurisdictionCard {
+  title?: string;
+  governingLaw?: string;
+  description?: string;
+}
+
+export interface PrivacyPolicy {
+  title: string;
+  heroDescription?: string;
+  lastUpdated?: string;
+  complianceBadge?: string;
+  introductionBody?: PortableTextBlock[];
+  transparencyStatement?: string;
+  sovereigntyIntro?: string;
+  usaJurisdiction?: JurisdictionCard;
+  euJurisdiction?: JurisdictionCard;
+  explicitDataTitle?: string;
+  explicitDataDescription?: string;
+  explicitDataList?: string[];
+  implicitDataTitle?: string;
+  implicitDataDescription?: string;
+  implicitDataList?: string[];
+  dataUsageBody?: PortableTextBlock[];
+  gdprGuaranteeTitle?: string;
+  gdprGuaranteeText?: string;
+  securityTitle?: string;
+  securityDescription?: string;
+  securityFeatures?: string[];
+  gdprRightsIntro?: string;
+  gdprRights?: GdprRight[];
+  cookiesIntro?: string;
+  cookiesList?: CookieItem[];
+  contactTitle?: string;
+  contactDescription?: string;
+  dpoEmail?: string;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // GROQ QUERIES
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -240,6 +312,62 @@ const LATEST_INSIGHTS_QUERY = `*[_type == "news" && !(_id in path("drafts.**"))]
   "imageUrl": mainImage.asset->url,
   tags,
   "resourceFileUrl": resourceFile.asset->url
+}`;
+
+// ═══════════════════════════════════════════════════════════════════════════
+// LEGAL DOCUMENTS QUERIES
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Terms of Service singleton query
+const TERMS_OF_SERVICE_QUERY = `*[_type == "termsOfService"][0] {
+  title,
+  heroDescription,
+  lastRevision,
+  jurisdiction,
+  acceptanceBody,
+  ipOwnershipBody,
+  ipOwnershipChecklist,
+  ipThirdPartyBody,
+  ipThirdPartyWarning,
+  paymentBody,
+  paymentRefundText,
+  terminationBody,
+  governingLawBody,
+  acceptableUseIntro,
+  acceptableUseList,
+  liabilityBody
+}`;
+
+// Privacy Policy singleton query
+const PRIVACY_POLICY_QUERY = `*[_type == "privacyPolicy"][0] {
+  title,
+  heroDescription,
+  lastUpdated,
+  complianceBadge,
+  introductionBody,
+  transparencyStatement,
+  sovereigntyIntro,
+  usaJurisdiction,
+  euJurisdiction,
+  explicitDataTitle,
+  explicitDataDescription,
+  explicitDataList,
+  implicitDataTitle,
+  implicitDataDescription,
+  implicitDataList,
+  dataUsageBody,
+  gdprGuaranteeTitle,
+  gdprGuaranteeText,
+  securityTitle,
+  securityDescription,
+  securityFeatures,
+  gdprRightsIntro,
+  gdprRights,
+  cookiesIntro,
+  cookiesList,
+  contactTitle,
+  contactDescription,
+  dpoEmail
 }`;
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -446,6 +574,91 @@ const FALLBACK_DETAIL_POSTS: Record<string, NewsPost> = {
     tags: ['Cost Analysis', 'Vendor Risk'],
     imageUrl: '/images/outsourcing-cost.jpg',
   },
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
+// LEGAL DOCUMENTS FALLBACK DATA
+// ═══════════════════════════════════════════════════════════════════════════
+
+const FALLBACK_TERMS_OF_SERVICE: TermsOfService = {
+  title: 'Terms of Service & IP Agreement',
+  heroDescription: 'Governing your use of Gimmir services, including payment terms, obligations, and the clear transfer of Intellectual Property rights.',
+  lastRevision: new Date().toISOString().split('T')[0],
+  jurisdiction: 'Delaware, USA / EU',
+  ipOwnershipChecklist: [
+    'Source Code Transfer',
+    'IP Rights Assignment',
+    'No Hidden Licensing Fees',
+  ],
+  ipThirdPartyWarning: 'Client Responsibility: You are responsible for complying with the licenses of any specific third-party or open-source software you explicitly request us to integrate into the project.',
+  paymentRefundText: 'Refunds: Due to the nature of custom engineering services, refunds are not provided for work already completed and approved. If you are unsatisfied with a deliverable, you must notify us within the review period (typically 5 business days) for rectification.',
+  acceptableUseIntro: 'You agree not to use Gimmir\'s services or the resulting software for:',
+  acceptableUseList: [
+    'Illegal activities or promotion of illegal acts.',
+    'Violating the intellectual property rights of others.',
+    'Distribution of malware or malicious code.',
+    'Harassment, hate speech, or discrimination.',
+  ],
+};
+
+const FALLBACK_PRIVACY_POLICY: PrivacyPolicy = {
+  title: 'Global Privacy Policy',
+  heroDescription: 'Our commitment to your data sovereignty and privacy, compliant with GDPR, CCPA, and international standards.',
+  lastUpdated: new Date().toISOString().split('T')[0],
+  complianceBadge: 'GDPR & CCPA Ready',
+  transparencyStatement: 'Transparency Statement: We operate with full transparency regarding data collection protocols. This policy details the technical and legal frameworks governing your information.',
+  sovereigntyIntro: 'Your data is processed under strict legal frameworks depending on your region. We maintain distinct legal entities to ensure compliance with local regulations.',
+  usaJurisdiction: {
+    title: 'USA Jurisdiction',
+    governingLaw: 'Delaware State Law',
+    description: 'For clients in North America, contracting and data processing are handled by our US entity in Wilmington, DE. Compliant with CCPA.',
+  },
+  euJurisdiction: {
+    title: 'EU Jurisdiction',
+    governingLaw: 'Estonian & EU Law',
+    description: 'For global and EU clients, operations are governed by our entity in Tallinn, Estonia. Fully GDPR compliant regarding data portability and privacy.',
+  },
+  explicitDataTitle: 'Explicit Data (Input)',
+  explicitDataDescription: 'Data you voluntarily provide through our Inquiry Forms, Project Simulator, or direct correspondence.',
+  explicitDataList: [
+    'Full Name & Job Title',
+    'Corporate Email Address',
+    'Direct Phone Number',
+    'Project Briefs & Technical Specs',
+    'Budget Constraints',
+    'Uploaded RFPs / Architecture Docs',
+  ],
+  implicitDataTitle: 'Implicit Data (Telemetry)',
+  implicitDataDescription: 'Technical data automatically collected to optimize system performance and security.',
+  implicitDataList: [
+    'IP Address & Geolocation (for regional compliance)',
+    'Browser Type & Version',
+    'Session Duration & Simulator Interaction Metrics',
+  ],
+  gdprGuaranteeTitle: 'GDPR Compliance Guarantee',
+  gdprGuaranteeText: 'Any transfer of data outside the EEA is protected by Standard Contractual Clauses (SCCs) approved by the European Commission, ensuring your data rights travel with your data.',
+  securityTitle: 'Enterprise-Grade Encryption',
+  securityDescription: 'We adhere to a "Security by Design" philosophy. All sensitive project data is treated as high-value intellectual property.',
+  securityFeatures: [
+    'AES-256 Data at Rest',
+    'TLS 1.3 Data in Transit',
+    'MFA Access Control',
+  ],
+  gdprRightsIntro: 'We empower you with full control over your digital footprint. You have the right to:',
+  gdprRights: [
+    { title: 'Right to Access', description: 'Request a complete export of the personal and project data we hold about you.' },
+    { title: 'Right to Rectification', description: 'Correct any inaccurate or incomplete data in our CRM systems.' },
+    { title: "Right to Erasure ('Right to be Forgotten')", description: 'Request permanent deletion of your data from our servers, subject to legal retention obligations.' },
+    { title: 'Right to Restriction', description: 'Request a temporary halt to the processing of your data.' },
+  ],
+  cookiesIntro: 'We utilize minimal cookies strictly necessary for system operation.',
+  cookiesList: [
+    { name: 'Session Cookies', description: 'Essential for maintaining your state in the Project Simulator.' },
+    { name: 'Analytics Cookies', description: 'Anonymized telemetry to help us improve system response times.' },
+  ],
+  contactTitle: 'Contact Data Protection Officer',
+  contactDescription: 'To exercise your rights or report a vulnerability, initiate a secure channel with our DPO.',
+  dpoEmail: 'privacy@gimmir.com',
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -754,4 +967,76 @@ export function getAccentColor(layoutType: LayoutType): string {
  */
 export function getLayoutIcon(layoutType: LayoutType): string {
   return LAYOUT_STYLES[layoutType]?.icon || 'FileText';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// LEGAL DOCUMENTS DATA FETCHING
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Fetches the Terms of Service singleton document
+ * @returns TermsOfService object or fallback data
+ */
+export async function getTermsOfService(): Promise<TermsOfService> {
+  try {
+    const terms = await client.fetch<TermsOfService | null>(
+      TERMS_OF_SERVICE_QUERY,
+      {},
+      { next: { revalidate: 300 } } // Revalidate every 5 minutes
+    );
+
+    if (!terms) {
+      console.warn('Terms of Service not found in Sanity, using fallback data');
+      return FALLBACK_TERMS_OF_SERVICE;
+    }
+
+    return terms;
+  } catch (error) {
+    console.error('Error fetching Terms of Service:', error);
+    return FALLBACK_TERMS_OF_SERVICE;
+  }
+}
+
+/**
+ * Fetches the Privacy Policy singleton document
+ * @returns PrivacyPolicy object or fallback data
+ */
+export async function getPrivacyPolicy(): Promise<PrivacyPolicy> {
+  try {
+    const policy = await client.fetch<PrivacyPolicy | null>(
+      PRIVACY_POLICY_QUERY,
+      {},
+      { next: { revalidate: 300 } } // Revalidate every 5 minutes
+    );
+
+    if (!policy) {
+      console.warn('Privacy Policy not found in Sanity, using fallback data');
+      return FALLBACK_PRIVACY_POLICY;
+    }
+
+    return policy;
+  } catch (error) {
+    console.error('Error fetching Privacy Policy:', error);
+    return FALLBACK_PRIVACY_POLICY;
+  }
+}
+
+/**
+ * Format date string for legal documents
+ * @param dateString - ISO date string
+ * @returns Formatted date string (e.g., "November 27, 2025")
+ */
+export function formatLegalDate(dateString?: string): string {
+  if (!dateString) return 'Not set';
+  
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  } catch {
+    return dateString;
+  }
 }

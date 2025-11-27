@@ -7,7 +7,9 @@ import {
   TagIcon,
   DocumentIcon,
   DownloadIcon,
-  CodeBlockIcon
+  CodeBlockIcon,
+  DocumentsIcon,
+  LockIcon
 } from '@sanity/icons';
 
 /**
@@ -15,7 +17,8 @@ import {
  * 
  * Organizes content into logical groups:
  * 1. Main Content - News & Insights (articles)
- * 2. Configuration - Authors, Categories (relational data)
+ * 2. Legal Documents - Terms of Service, Privacy Policy (singletons)
+ * 3. Configuration - Authors, Categories (relational data)
  */
 export const structure = (S: StructureBuilder) =>
   S.list()
@@ -82,6 +85,47 @@ export const structure = (S: StructureBuilder) =>
                     .filter('_type == "news" && layoutType == "magnet"')
                     .schemaType('news')
                     .defaultOrdering([{ field: 'publishedAt', direction: 'desc' }])
+                ),
+            ])
+        ),
+
+      S.divider(),
+
+      // ═══════════════════════════════════════════════════════════════════
+      // LEGAL DOCUMENTS (SINGLETONS)
+      // ═══════════════════════════════════════════════════════════════════
+      S.listItem()
+        .title('Legal Documents')
+        .id('legal-section')
+        .icon(DocumentsIcon)
+        .child(
+          S.list()
+            .title('Legal Documents')
+            .items([
+              // Terms of Service (Singleton)
+              S.listItem()
+                .title('Terms of Service')
+                .id('terms-of-service')
+                .icon(DocumentIcon)
+                .child(
+                  S.editor()
+                    .id('termsOfService')
+                    .schemaType('termsOfService')
+                    .documentId('termsOfService')
+                    .title('Terms of Service')
+                ),
+
+              // Privacy Policy (Singleton)
+              S.listItem()
+                .title('Privacy Policy')
+                .id('privacy-policy')
+                .icon(LockIcon)
+                .child(
+                  S.editor()
+                    .id('privacyPolicy')
+                    .schemaType('privacyPolicy')
+                    .documentId('privacyPolicy')
+                    .title('Privacy Policy')
                 ),
             ])
         ),

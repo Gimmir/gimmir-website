@@ -18,7 +18,6 @@ export const NAV_LINKS = [
       { name: 'Cloud & DevOps', href: '/solutions/cloud-devops' }
     ] 
   },
-  { title: 'Success Stories', href: '/success-stories', items: undefined },
   { 
     title: 'Resources', 
     items: [
