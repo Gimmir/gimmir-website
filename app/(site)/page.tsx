@@ -6,8 +6,12 @@ import { CaseStudiesSection } from "@/components/sections/case-studies";
 import { ProjectSimulatorSection } from "@/components/sections/project-simulator";
 import { LeadMagnetSection } from "@/components/sections/lead-magnet";
 import { InsightsSection } from "@/components/sections/insights";
+import { getLatestInsights } from "@/sanity/sanity-utils";
 
-export default function Home() {
+export default async function Home() {
+  // Fetch latest 3 posts (all layout types) for the Insights section
+  const latestPosts = await getLatestInsights();
+
   return (
     <div className="animate-in fade-in duration-700 min-h-screen">
       <HeroSection />
@@ -17,7 +21,7 @@ export default function Home() {
       <CaseStudiesSection />
       <ProjectSimulatorSection />
       <LeadMagnetSection />
-      <InsightsSection />
+      <InsightsSection posts={latestPosts} />
     </div>
   );
 }

@@ -1,6 +1,12 @@
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { InsightCard, type InsightPost } from "@/components/ui/insight-cards";
 
-export function InsightsSection() {
+interface InsightsSectionProps {
+  posts?: InsightPost[];
+}
+
+export function InsightsSection({ posts = [] }: InsightsSectionProps) {
   return (
     <section className="relative z-20 py-24 px-6 border-t border-white/5 bg-[#050A14] overflow-hidden">
       {/* Subtle Tech Background */}
@@ -16,110 +22,38 @@ export function InsightsSection() {
                 Engineering <span className="text-slate-500">Insights</span>
               </h2>
            </div>
-           <button className="hidden md:flex group items-center gap-2 text-sm font-bold text-slate-300 hover:text-white transition-all duration-300 px-6 py-2.5 rounded-full border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 shrink-0">
+           <Link 
+              href="/news"
+              className="hidden md:flex group items-center gap-2 text-sm font-bold text-slate-300 hover:text-white transition-all duration-300 px-6 py-2.5 rounded-full border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 shrink-0"
+           >
               View All Insights
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-           </button>
+           </Link>
         </div>
 
-        {/* Content - Clean Minimal Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> 
-           
-           {/* Card 1 */}
-           <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300 flex flex-col h-full">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0062d1]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
-              
-              <div className="relative z-10 flex flex-col h-full">
-                  <div className="flex justify-between items-start mb-6">
-                      <span className="text-[10px] font-mono text-slate-500 border border-white/10 px-2 py-1 rounded bg-white/5">STRATEGY</span>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#0062d1] transition-colors leading-snug">
-                      The Hidden Cost of Low Rates
-                  </h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
-                      Why paying $20/hr often results in 3x total cost of ownership due to "communication lag" and refactoring loops.
-                  </p>
-                  
-                  <div className="mt-auto pt-6 border-t border-white/5 flex justify-between items-center">
-                      <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500">
-                          <span>MAR 12, 2025</span>
-                          <span className="text-slate-700 opacity-50">|</span>
-                          <span>5 MIN READ</span>
-                      </div>
-                      <button className="text-[10px] font-bold text-white group-hover:text-[#0062d1] transition-colors flex items-center gap-1.5 uppercase tracking-wider">
-                          Read More <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-                      </button>
-                  </div>
+        {/* Content - Dynamic Cards using shared InsightCard component */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"> 
+           {posts.map((post) => (
+              <InsightCard key={post.id} post={post} />
+           ))}
+
+           {/* Fallback if no posts */}
+           {posts.length === 0 && (
+              <div className="col-span-full text-center py-12">
+                <p className="text-slate-500">No insights available yet. Check back soon!</p>
               </div>
-           </div>
-
-           {/* Card 2 */}
-           <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300 flex flex-col h-full">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0062d1]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
-              
-              <div className="relative z-10 flex flex-col h-full">
-                  <div className="flex justify-between items-start mb-6">
-                      <span className="text-[10px] font-mono text-slate-500 border border-white/10 px-2 py-1 rounded bg-white/5">AUDIT</span>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#0062d1] transition-colors leading-snug">
-                      Passing the VC Tech Audit
-                  </h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
-                      Investors are now auditing for "Spaghetti Code" and IP ownership. Here is our 10-point due diligence checklist.
-                  </p>
-
-                   <div className="mt-auto pt-6 border-t border-white/5 flex justify-between items-center">
-                      <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500">
-                          <span>FEB 28, 2025</span>
-                          <span className="text-slate-700 opacity-50">|</span>
-                          <span>8 MIN READ</span>
-                      </div>
-                      <button className="text-[10px] font-bold text-white group-hover:text-[#0062d1] transition-colors flex items-center gap-1.5 uppercase tracking-wider">
-                          Read More <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-                      </button>
-                  </div>
-              </div>
-           </div>
-
-           {/* Card 3 */}
-           <div className="group relative bg-[#050810]/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/[0.02] hover:border-[#0062d1]/50 transition-all duration-300 flex flex-col h-full sm:col-span-2 lg:col-span-1">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0062d1]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
-              
-              <div className="relative z-10 flex flex-col h-full">
-                  <div className="flex justify-between items-start mb-6">
-                      <span className="text-[10px] font-mono text-slate-500 border border-white/10 px-2 py-1 rounded bg-white/5">GLOBAL</span>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#0062d1] transition-colors leading-snug">
-                      Nearshore vs. Offshore
-                  </h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">
-                      How pivoting to Mexico & Spain helps US startups solve the GDPR puzzle and eliminate the 12-hour feedback loop.
-                  </p>
-
-                   <div className="mt-auto pt-6 border-t border-white/5 flex justify-between items-center">
-                      <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500">
-                          <span>JAN 15, 2025</span>
-                          <span className="text-slate-700 opacity-50">|</span>
-                          <span>4 MIN READ</span>
-                      </div>
-                      <button className="text-[10px] font-bold text-white group-hover:text-[#0062d1] transition-colors flex items-center gap-1.5 uppercase tracking-wider">
-                          Read More <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
-                      </button>
-                  </div>
-              </div>
-           </div>
-
+           )}
         </div>
 
         {/* Mobile Button */}
         <div className="mt-12 flex md:hidden justify-center">
-           <button className="w-full group flex items-center justify-center gap-2 text-sm font-bold text-slate-300 hover:text-white transition-all duration-300 px-6 py-4 rounded-full border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10">
+           <Link 
+              href="/news"
+              className="w-full group flex items-center justify-center gap-2 text-sm font-bold text-slate-300 hover:text-white transition-all duration-300 px-6 py-4 rounded-full border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10"
+           >
               View All Insights
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-           </button>
+           </Link>
         </div>
 
       </div>

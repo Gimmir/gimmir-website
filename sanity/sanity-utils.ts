@@ -226,6 +226,22 @@ const RELATED_POSTS_QUERY = `*[_type == "news" && (category->title == $category 
   tags
 }`;
 
+// Query for homepage insights - latest 3 standard layout posts
+// Used for the InsightsSection on the homepage
+const LATEST_INSIGHTS_QUERY = `*[_type == "news" && !(_id in path("drafts.**"))] | order(_createdAt desc)[0...3] {
+  "id": _id,
+  title,
+  "slug": slug.current,
+  "category": coalesce(category->title, category, "Uncategorized"),
+  layoutType,
+  "date": _createdAt,
+  readTime,
+  description,
+  "imageUrl": mainImage.asset->url,
+  tags,
+  "resourceFileUrl": resourceFile.asset->url
+}`;
+
 // ═══════════════════════════════════════════════════════════════════════════
 // FALLBACK MOCK DATA
 // ═══════════════════════════════════════════════════════════════════════════
@@ -479,6 +495,30 @@ export async function getPosts(): Promise<NewsPostCard[]> {
   } catch (error) {
     console.error('Error fetching news posts:', error);
     return FALLBACK_POSTS;
+  }
+}
+
+/**
+ * Fetches the latest 3 posts of any layout type for homepage insights
+ * @returns Array of NewsPostCard objects (max 3)
+ */
+export async function getLatestInsights(): Promise<NewsPostCard[]> {
+  try {
+    const posts = await client.fetch<NewsPostCard[]>(
+      LATEST_INSIGHTS_QUERY,
+      {},
+      { next: { revalidate: 60 } }
+    );
+
+    if (!posts || posts.length === 0) {
+      // Return fallback posts
+      return FALLBACK_POSTS.slice(0, 3);
+    }
+
+    return posts;
+  } catch (error) {
+    console.error('Error fetching latest insights:', error);
+    return FALLBACK_POSTS.slice(0, 3);
   }
 }
 
