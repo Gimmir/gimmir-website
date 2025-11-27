@@ -22,7 +22,7 @@ export const NAV_LINKS = [
   { 
     title: 'Resources', 
     items: [
-      { name: 'Insights', href: '/resources/insights' },
+      { name: 'Insights', href: '/news' },
       { name: 'Calculators', href: '/resources/calculators' }
     ] 
   },
@@ -51,7 +51,7 @@ export const FOOTER_LINKS = [
   { 
     title: 'Resources', 
     items: [
-      { name: 'Insights', href: '/resources/insights' },
+      { name: 'Insights', href: '/news' },
       { name: 'Calculators', href: '/resources/calculators' }
     ] 
   },
