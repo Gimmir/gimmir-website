@@ -121,7 +121,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       description: post.description,
       type: 'article',
       publishedTime: post.date,
-      authors: post.author ? [post.author] : ['Gimmir Team'],
+      authors: post.author?.name ? [post.author.name] : ['Gimmir Team'],
       tags: post.tags,
     },
     twitter: {
