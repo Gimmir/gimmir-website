@@ -28,12 +28,21 @@ import type { NewsPostCard, LayoutType, TableOfContentsItem } from '@/sanity/san
 // TYPES
 // ═══════════════════════════════════════════════════════════════════════════
 
+// Author type for referenced author documents
+export interface Author {
+  name: string;
+  role?: string;
+  isTeamAlias?: boolean;
+  imageUrl?: string;
+  linkedinUrl?: string;
+}
+
 export interface ArticleData {
   id: string;
   title: string;
   subtitle?: string;
   slug: string;
-  author?: string;
+  author?: Author;
   category: string;
   layoutType: LayoutType;
   date: string;
@@ -92,20 +101,75 @@ const AuthorCard = ({
   date, 
   readTime 
 }: { 
-  author?: string; 
+  author?: Author; 
   date: string; 
   readTime?: string;
 }) => {
-  const authorName = author || 'Gimmir Team';
+  const authorName = author?.name || 'Gimmir Team';
+  const authorRole = author?.role || 'Author';
+  const isTeamAlias = author?.isTeamAlias === true; // Only true if explicitly set
+  const authorImageUrl = author?.imageUrl;
+  const linkedinUrl = author?.linkedinUrl;
   
-  return (
-    <div className="flex items-center gap-4 py-4">
+  // Render avatar based on available data
+  const renderAvatar = () => {
+    // Priority 1: Show author's photo if available (and not a team alias)
+    if (authorImageUrl && !isTeamAlias) {
+      return (
+        <img 
+          src={authorImageUrl} 
+          alt={authorName}
+          className="w-12 h-12 rounded-full object-cover border-2 border-white/10"
+        />
+      );
+    }
+    
+    // Priority 2: Show Gimmir logo for team aliases
+    if (isTeamAlias) {
+      return (
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0062d1] to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
+          G
+        </div>
+      );
+    }
+    
+    // Priority 3: Fallback to author's initials
+    return (
       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0062d1] to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
         {authorName.charAt(0)}
       </div>
+    );
+  };
+  
+  return (
+    <div className="flex items-center gap-4 py-4">
+      {linkedinUrl ? (
+        <a 
+          href={linkedinUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="hover:opacity-80 transition-opacity"
+          title={`View ${authorName}'s LinkedIn profile`}
+        >
+          {renderAvatar()}
+        </a>
+      ) : (
+        renderAvatar()
+      )}
       <div className="flex-1">
-        <div className="text-white font-semibold">{authorName}</div>
-        <div className="text-slate-500 text-sm">Author</div>
+        {linkedinUrl ? (
+          <a 
+            href={linkedinUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-white font-semibold hover:text-[#0062d1] transition-colors"
+          >
+            {authorName}
+          </a>
+        ) : (
+          <div className="text-white font-semibold">{authorName}</div>
+        )}
+        <div className="text-slate-500 text-sm">{authorRole}</div>
       </div>
       <div className="flex flex-col items-end gap-1 text-xs font-mono text-slate-500">
         <div className="flex items-center gap-1.5">
@@ -338,7 +402,7 @@ const TechnicalLayout = ({ article, relatedPosts }: ArticleClientProps) => {
                 ))}
               </nav>
 
-              {/* Meta Info */}
+              {/* Meta Info - Date & Read Time only (no author for technical docs) */}
               <div className="mt-6 pt-6 border-t border-white/10 space-y-3">
                 {article.readTime && (
                   <div className="flex items-center gap-2 text-xs text-slate-500">
@@ -350,12 +414,6 @@ const TechnicalLayout = ({ article, relatedPosts }: ArticleClientProps) => {
                   <Calendar size={12} />
                   <span>{formatDate(article.date)}</span>
                 </div>
-                {article.author && (
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
-                    <User size={12} />
-                    <span>{article.author}</span>
-                  </div>
-                )}
               </div>
             </div>
           </div>

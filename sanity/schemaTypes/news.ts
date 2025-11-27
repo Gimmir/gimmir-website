@@ -42,23 +42,37 @@ export const newsType = defineType({
     }),
     defineField({
       name: 'author',
-      title: 'Author',
-      type: 'string',
+      title: 'Article Author',
+      type: 'reference',
+      to: [{ type: 'author' }],
       group: 'meta',
+      description:
+        'Required for Standard Layout. Optional for Technical/Magnet layouts.',
+
+      // CRITICAL LOGIC: Make required only if layoutType is 'standard'
+      validation: (rule) =>
+        rule.custom((field, context) => {
+          // Check if current layout is 'standard' AND author field is empty
+          if (
+            (context.document?.layoutType === 'standard' ||
+              !context.document?.layoutType) &&
+            !field
+          ) {
+            return 'Author is required for articles with "Standard (Magazine View)" layout.';
+          }
+          return true;
+        }),
+
+      // Optional: Hide field when not required (improves UX in Sanity Studio)
+      hidden: ({ document }) =>
+        document?.layoutType === 'magnet' ||
+        document?.layoutType === 'technical',
     }),
     defineField({
       name: 'category',
       title: 'Category',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Strategy', value: 'Strategy' },
-          { title: 'Engineering', value: 'Engineering' },
-          { title: 'Management', value: 'Management' },
-          { title: 'Resources', value: 'Resources' },
-        ],
-        layout: 'radio',
-      },
+      type: 'reference',
+      to: [{ type: 'category' }],
       group: 'meta',
       validation: (Rule) => Rule.required(),
     }),
@@ -340,14 +354,14 @@ export const newsType = defineType({
   preview: {
     select: {
       title: 'title',
-      category: 'category',
+      category: 'category.title',
       layoutType: 'layoutType',
       media: 'mainImage',
     },
     prepare({ title, category, layoutType, media }) {
       return {
         title,
-        subtitle: `${category} • ${layoutType}`,
+        subtitle: `${category || 'No category'} • ${layoutType}`,
         media,
       };
     },

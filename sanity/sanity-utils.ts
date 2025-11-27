@@ -32,13 +32,31 @@ export interface SanityFile {
   };
 }
 
+// Category type
+export interface Category {
+  id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  order: number;
+}
+
+// Author type (for referenced author documents)
+export interface Author {
+  name: string;
+  role?: string;
+  isTeamAlias?: boolean;
+  imageUrl?: string;
+  linkedinUrl?: string;
+}
+
 // Base fields shared by all layouts
 export interface NewsPostBase {
   id: string;
   title: string;
   subtitle?: string;
   slug: string;
-  author?: string;
+  author?: Author;
   category: string;
   layoutType: LayoutType;
   date: string;
@@ -96,13 +114,23 @@ export interface NewsPostCard {
 // GROQ QUERIES
 // ═══════════════════════════════════════════════════════════════════════════
 
+// Query for fetching all categories
+const CATEGORIES_QUERY = `*[_type == "category"] | order(order asc) {
+  "id": _id,
+  title,
+  "slug": slug.current,
+  description,
+  order
+}`;
+
 // Query for listing page (cards only - minimal data)
 // Excludes drafts to only show published documents
+// Uses coalesce to handle both old string-based categories and new reference-based categories
 const NEWS_LIST_QUERY = `*[_type == "news" && !(_id in path("drafts.**"))] | order(_createdAt desc) {
   "id": _id,
   title,
   "slug": slug.current,
-  category,
+  "category": coalesce(category->title, category, "Uncategorized"),
   layoutType,
   "date": _createdAt,
   readTime,
@@ -114,13 +142,20 @@ const NEWS_LIST_QUERY = `*[_type == "news" && !(_id in path("drafts.**"))] | ord
 
 // Full query for detail page (all fields based on layoutType)
 // Excludes drafts to only show published documents
+// Uses coalesce to handle both old string-based categories and new reference-based categories
 const NEWS_DETAIL_QUERY = `*[_type == "news" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
   "id": _id,
   title,
   subtitle,
   "slug": slug.current,
-  author,
-  category,
+  "author": author->{
+    name,
+    role,
+    isTeamAlias,
+    "imageUrl": image.asset->url,
+    linkedinUrl
+  },
+  "category": coalesce(category->title, category, "Uncategorized"),
   layoutType,
   "date": publishedAt,
   readTime,
@@ -160,11 +195,12 @@ const NEWS_DETAIL_QUERY = `*[_type == "news" && slug.current == $slug && !(_id i
 
 // Related posts query
 // Excludes drafts to only show published documents
-const RELATED_POSTS_QUERY = `*[_type == "news" && category == $category && _id != $excludeId && !(_id in path("drafts.**"))] | order(_createdAt desc)[0...$limit] {
+// Uses coalesce to handle both old string-based categories and new reference-based categories
+const RELATED_POSTS_QUERY = `*[_type == "news" && (category->title == $category || category == $category) && _id != $excludeId && !(_id in path("drafts.**"))] | order(_createdAt desc)[0...$limit] {
   "id": _id,
   title,
   "slug": slug.current,
-  category,
+  "category": coalesce(category->title, category, "Uncategorized"),
   layoutType,
   "date": _createdAt,
   readTime,
@@ -176,6 +212,13 @@ const RELATED_POSTS_QUERY = `*[_type == "news" && category == $category && _id !
 // ═══════════════════════════════════════════════════════════════════════════
 // FALLBACK MOCK DATA
 // ═══════════════════════════════════════════════════════════════════════════
+
+const FALLBACK_CATEGORIES: Category[] = [
+  { id: '1', title: 'Strategy', slug: 'strategy', order: 1 },
+  { id: '2', title: 'Engineering', slug: 'engineering', order: 2 },
+  { id: '3', title: 'Management', slug: 'management', order: 3 },
+  { id: '4', title: 'Resources', slug: 'resources', order: 4 },
+];
 
 const FALLBACK_POSTS: NewsPostCard[] = [
   {
@@ -316,7 +359,7 @@ const FALLBACK_DETAIL_POSTS: Record<string, NewsPost> = {
     title: 'Audit Protocol v2.0',
     subtitle: 'Our battle-tested methodology for assessing technical debt',
     slug: 'audit-protocol-v2',
-    author: 'Gimmir Engineering',
+    author: { name: 'Gimmir Engineering', role: 'Engineering Team', isTeamAlias: true },
     category: 'Engineering',
     layoutType: 'technical',
     date: '2025-02-28',
@@ -339,7 +382,7 @@ const FALLBACK_DETAIL_POSTS: Record<string, NewsPost> = {
     title: 'Due Diligence Checklist',
     subtitle: 'The exact framework VCs use to evaluate your tech',
     slug: 'due-diligence-checklist',
-    author: 'Gimmir Strategy',
+    author: { name: 'Gimmir Strategy', role: 'Strategy Team', isTeamAlias: true },
     category: 'Resources',
     layoutType: 'magnet',
     date: '2025-01-01',
@@ -361,7 +404,7 @@ const FALLBACK_DETAIL_POSTS: Record<string, NewsPost> = {
     title: 'The Hidden Cost of Outsourcing',
     subtitle: 'Why the cheapest option is rarely the most economical',
     slug: 'hidden-cost-of-outsourcing',
-    author: 'Gimmir Strategy',
+    author: { name: 'Gimmir Strategy', role: 'Strategy Team', isTeamAlias: true },
     category: 'Strategy',
     layoutType: 'standard',
     date: '2025-03-12',
@@ -375,6 +418,29 @@ const FALLBACK_DETAIL_POSTS: Record<string, NewsPost> = {
 // ═══════════════════════════════════════════════════════════════════════════
 // DATA FETCHING FUNCTIONS
 // ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Fetches all categories for the news filter
+ * @returns Array of Category objects
+ */
+export async function getCategories(): Promise<Category[]> {
+  try {
+    const categories = await client.fetch<Category[]>(
+      CATEGORIES_QUERY,
+      {},
+      { next: { revalidate: 300 } }
+    );
+
+    if (!categories || categories.length === 0) {
+      return FALLBACK_CATEGORIES;
+    }
+
+    return categories;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return FALLBACK_CATEGORIES;
+  }
+}
 
 /**
  * Fetches all news posts for the listing page (cards only)
@@ -461,22 +527,20 @@ export async function getRelatedPosts(
 
 /**
  * Fetches posts by category
- * @param category - The category to filter by
+ * @param category - The category title to filter by
  * @returns Array of NewsPostCard objects
  */
 export async function getPostsByCategory(category: string): Promise<NewsPostCard[]> {
-  const query = `*[_type == "news" && category == $category] | order(publishedAt desc) {
+  const query = `*[_type == "news" && (category->title == $category || category == $category)] | order(publishedAt desc) {
     "id": _id,
     title,
     "slug": slug.current,
-    category,
+    "category": coalesce(category->title, category, "Uncategorized"),
     layoutType,
     "date": publishedAt,
     readTime,
     description,
     "imageUrl": mainImage.asset->url,
-    icon,
-    accentColor,
     tags
   }`;
 

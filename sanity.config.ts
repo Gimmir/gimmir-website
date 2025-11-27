@@ -5,6 +5,7 @@ import { codeInput } from '@sanity/code-input';
 
 import { apiVersion, dataset, projectId } from './sanity/env';
 import { schema } from './sanity/schemaTypes';
+import { structure } from './sanity/structure';
 
 export default defineConfig({
   name: 'default',
@@ -16,7 +17,7 @@ export default defineConfig({
   basePath: '/gadmin',
   
   plugins: [
-    structureTool(),
+    structureTool({ structure }),
     visionTool({ defaultApiVersion: apiVersion }),
     codeInput(),
   ],

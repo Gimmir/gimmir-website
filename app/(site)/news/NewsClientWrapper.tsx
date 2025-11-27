@@ -20,14 +20,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 // --- 0. Types ---
 
-type Category = 'All' | 'Strategy' | 'Engineering' | 'Resources' | 'Management';
 type LayoutType = 'standard' | 'technical' | 'magnet';
 
 export interface NewsPost {
   id: string;
   title: string;
   slug: string;
-  category: Category | string;
+  category: string;
   layoutType: LayoutType;
   date: string;
   readTime?: string;
@@ -37,8 +36,17 @@ export interface NewsPost {
   resourceFileUrl?: string;
 }
 
+export interface Category {
+  id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  order: number;
+}
+
 interface NewsClientWrapperProps {
   initialPosts: NewsPost[];
+  categories: Category[];
 }
 
 // --- 1. Fixed Layout Styles ---
@@ -125,7 +133,6 @@ function SectionHeader({
 
 // --- 3. Constants ---
 
-const CATEGORIES: Category[] = ['All', 'Strategy', 'Engineering', 'Management', 'Resources'];
 const POSTS_PER_PAGE = 12;
 
 // --- 4. Date Formatter ---
@@ -179,14 +186,19 @@ const SearchBar = ({
 
 const FilterBar = ({
   active,
-  onChange
+  onChange,
+  categories
 }: {
-  active: Category;
-  onChange: (c: Category) => void;
+  active: string;
+  onChange: (c: string) => void;
+  categories: Category[];
 }) => {
+  // Create category list with "All" option
+  const categoryOptions = ['All', ...categories.map(c => c.title)];
+  
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-      {CATEGORIES.map((cat) => (
+      {categoryOptions.map((cat) => (
         <button
           key={cat}
           onClick={() => onChange(cat)}
@@ -462,9 +474,9 @@ const Pagination = ({
 
 // --- 6. Main Client Component ---
 
-export default function NewsClientWrapper({ initialPosts }: NewsClientWrapperProps) {
+export default function NewsClientWrapper({ initialPosts, categories }: NewsClientWrapperProps) {
   const [posts] = useState<NewsPost[]>(initialPosts);
-  const [activeCategory, setActiveCategory] = useState<Category>('All');
+  const [activeCategory, setActiveCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -518,7 +530,7 @@ export default function NewsClientWrapper({ initialPosts }: NewsClientWrapperPro
 
         {/* Search & Filter */}
         <SearchBar value={searchQuery} onChange={setSearchQuery} />
-        <FilterBar active={activeCategory} onChange={setActiveCategory} />
+        <FilterBar active={activeCategory} onChange={setActiveCategory} categories={categories} />
 
         {/* Grid with Framer Motion */}
         <div className="min-h-[600px]">

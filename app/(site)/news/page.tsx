@@ -1,4 +1,4 @@
-import { getPosts } from '@/sanity/sanity-utils';
+import { getPosts, getCategories } from '@/sanity/sanity-utils';
 import NewsClientWrapper from './NewsClientWrapper';
 
 // --- Metadata ---
@@ -9,7 +9,10 @@ export const metadata = {
 
 // --- Page Component (Server Component) ---
 export default async function NewsPage() {
-  const initialPosts = await getPosts();
+  const [initialPosts, categories] = await Promise.all([
+    getPosts(),
+    getCategories(),
+  ]);
 
-  return <NewsClientWrapper initialPosts={initialPosts} />;
+  return <NewsClientWrapper initialPosts={initialPosts} categories={categories} />;
 }
