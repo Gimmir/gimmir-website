@@ -21,9 +21,23 @@ export function Footer() {
               Wilmington, DE • USA
             </p>
             <div className="flex items-center gap-4 pt-2">
-              <a href="#" className="text-slate-500 hover:text-white transition-colors"><Linkedin size={18} /></a>
-              <a href="#" className="text-slate-500 hover:text-white transition-colors"><Github size={18} /></a>
-            </div>
+            <a 
+              href="https://www.linkedin.com/company/gimmir/" 
+              target="_blank" // Додано для відкриття в новій вкладці
+              rel="noopener noreferrer" // Рекомендовано для безпеки
+              className="text-slate-500 hover:text-white transition-colors"
+             >
+            <Linkedin size={18} />
+             </a>
+    <a 
+        href="#" 
+        target="_blank" // Додано для відкриття в новій вкладці
+        rel="noopener noreferrer" // Рекомендовано для безпеки
+        className="text-slate-500 hover:text-white transition-colors"
+    >
+        <Github size={18} />
+    </a>
+</div>
           </div>
 
           {FOOTER_LINKS.map((section) => (
