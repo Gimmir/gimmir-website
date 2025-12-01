@@ -10,6 +10,7 @@
     "typegen": "sanity schema extract && sanity typegen generate"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@portabletext/react": "^5.0.0",
     "@portabletext/to-html": "^4.0.1",
     "@portabletext/types": "^3.0.0",
@@ -22,8 +23,10 @@
     "next-sanity": "11.7.0-canary.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.67.0",
     "sanity": "^4.13.0",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.13",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
