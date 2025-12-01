@@ -13,7 +13,7 @@ export function ContactInquiryFormSection() {
     const [isDragging, setIsDragging] = useState(false); 
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement> | React.DragEvent<HTMLDivElement>) => {
-        let newFiles: FileList | undefined;
+        let newFiles: FileList | null = null;
 
         if ('dataTransfer' in e) {
             e.preventDefault();
