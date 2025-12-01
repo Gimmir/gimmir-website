@@ -142,44 +142,46 @@ const AuthorCard = ({
   };
   
   return (
-    <div className="flex items-center gap-4 py-4">
-      {linkedinUrl ? (
-        <a 
-          href={linkedinUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="hover:opacity-80 transition-opacity"
-          title={`View ${authorName}'s LinkedIn profile`}
-        >
-          {renderAvatar()}
-        </a>
-      ) : (
-        renderAvatar()
-      )}
-      <div className="flex-1">
+    <div className="flex flex-col sm:flex-row sm:items-center gap-4 py-4">
+      <div className="flex items-center gap-4 flex-1">
         {linkedinUrl ? (
           <a 
             href={linkedinUrl} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-white font-semibold hover:text-[#0062d1] transition-colors"
+            className="hover:opacity-80 transition-opacity flex-shrink-0"
+            title={`View ${authorName}'s LinkedIn profile`}
           >
-            {authorName}
+            {renderAvatar()}
           </a>
         ) : (
-          <div className="text-white font-semibold">{authorName}</div>
+          <div className="flex-shrink-0">{renderAvatar()}</div>
         )}
-        <div className="text-slate-500 text-sm">{authorRole}</div>
+        <div className="flex-1 min-w-0">
+          {linkedinUrl ? (
+            <a 
+              href={linkedinUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white font-semibold hover:text-[#0062d1] transition-colors block truncate"
+            >
+              {authorName}
+            </a>
+          ) : (
+            <div className="text-white font-semibold truncate">{authorName}</div>
+          )}
+          <div className="text-slate-500 text-sm">{authorRole}</div>
+        </div>
       </div>
-      <div className="flex flex-col items-end gap-1 text-xs font-mono text-slate-500">
+      <div className="flex flex-row sm:flex-col items-start sm:items-end gap-2 sm:gap-1 text-xs font-mono text-slate-500">
         <div className="flex items-center gap-1.5">
           <Calendar size={12} />
-          {formatDate(date)}
+          <span className="whitespace-nowrap">{formatDate(date)}</span>
         </div>
         {readTime && (
           <div className="flex items-center gap-1.5">
             <Clock size={12} />
-            {readTime}
+            <span className="whitespace-nowrap">{readTime}</span>
           </div>
         )}
       </div>
@@ -245,24 +247,24 @@ const StandardLayout = ({ article, relatedPosts }: ArticleClientProps) => {
   return (
     <article className="max-w-2xl mx-auto">
       {/* Header */}
-      <header className="mb-12">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-xs font-mono text-[#0062d1] bg-[#0062d1]/10 border border-[#0062d1]/20 px-3 py-1 rounded-full uppercase tracking-wider">
+      <header className="mb-8 sm:mb-12">
+        <div className="flex items-center gap-3 mb-4 sm:mb-6">
+          <span className="text-[10px] sm:text-xs font-mono text-[#0062d1] bg-[#0062d1]/10 border border-[#0062d1]/20 px-2.5 sm:px-3 py-1 rounded-full uppercase tracking-wider">
             {article.category}
           </span>
         </div>
 
-        <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight">
           {article.title}
         </h1>
 
         {article.subtitle && (
-          <p className="text-xl text-slate-300 font-medium mb-4">
+          <p className="text-lg sm:text-xl text-slate-300 font-medium mb-3 sm:mb-4">
             {article.subtitle}
           </p>
         )}
 
-        <p className="text-xl text-slate-400 font-light leading-relaxed mb-8">
+        <p className="text-base sm:text-xl text-slate-400 font-light leading-relaxed mb-6 sm:mb-8">
           {article.description}
         </p>
 
@@ -280,7 +282,7 @@ const StandardLayout = ({ article, relatedPosts }: ArticleClientProps) => {
       </header>
 
       {/* Hero Image */}
-      <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden mb-12 bg-gradient-to-br from-[#0062d1]/20 to-cyan-500/10 border border-white/10">
+      <div className="relative h-48 sm:h-64 md:h-80 rounded-xl sm:rounded-2xl overflow-hidden mb-8 sm:mb-12 bg-gradient-to-br from-[#0062d1]/20 to-cyan-500/10 border border-white/10">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
         {article.imageUrl ? (
           <img 
@@ -290,8 +292,8 @@ const StandardLayout = ({ article, relatedPosts }: ArticleClientProps) => {
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm">
-              <FileText size={40} className="text-slate-400" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm">
+              <FileText size={32} className="text-slate-400 sm:w-10 sm:h-10" />
             </div>
           </div>
         )}
@@ -299,18 +301,19 @@ const StandardLayout = ({ article, relatedPosts }: ArticleClientProps) => {
 
       {/* Body Content */}
       <div
-        className="prose prose-invert prose-lg max-w-none
+        className="prose prose-invert prose-base sm:prose-lg max-w-none
           prose-headings:font-bold prose-headings:text-white
-          prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:border-l-4 prose-h2:border-[#0062d1] prose-h2:pl-4
-          prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-h3:text-slate-200
+          prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:mt-8 sm:prose-h2:mt-12 prose-h2:mb-4 sm:prose-h2:mb-6 prose-h2:border-l-4 prose-h2:border-[#0062d1] prose-h2:pl-3 sm:prose-h2:pl-4
+          prose-h3:text-lg sm:prose-h3:text-xl prose-h3:mt-6 sm:prose-h3:mt-8 prose-h3:mb-3 sm:prose-h3:mb-4 prose-h3:text-slate-200
           prose-p:text-slate-400 prose-p:leading-relaxed prose-p:font-light
           prose-a:text-[#0062d1] prose-a:no-underline hover:prose-a:underline
           prose-strong:text-white prose-strong:font-semibold
-          prose-blockquote:border-l-[#0062d1] prose-blockquote:bg-white/[0.02] prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic
-          prose-code:text-cyan-400 prose-code:bg-white/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
-          prose-pre:bg-[#080c14] prose-pre:border prose-pre:border-white/10 prose-pre:rounded-lg
+          prose-blockquote:border-l-[#0062d1] prose-blockquote:bg-white/[0.02] prose-blockquote:py-3 sm:prose-blockquote:py-4 prose-blockquote:px-4 sm:prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic
+          prose-code:text-cyan-400 prose-code:bg-white/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-xs sm:prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
+          prose-pre:bg-[#080c14] prose-pre:border prose-pre:border-white/10 prose-pre:rounded-lg prose-pre:text-xs sm:prose-pre:text-sm prose-pre:overflow-x-auto
           prose-ul:text-slate-400 prose-ol:text-slate-400
-          prose-li:marker:text-[#0062d1]"
+          prose-li:marker:text-[#0062d1]
+          prose-img:rounded-lg sm:prose-img:rounded-xl"
         dangerouslySetInnerHTML={{ __html: article.body }}
       />
 
@@ -361,10 +364,10 @@ const TechnicalLayout = ({ article, relatedPosts }: ArticleClientProps) => {
 
   return (
     <div className="grid lg:grid-cols-[280px_1fr] gap-8 lg:gap-12">
-      {/* Sidebar - Table of Contents */}
+      {/* Sidebar - Table of Contents - Hidden on mobile */}
       {tableOfContents && tableOfContents.length > 0 && (
         <aside className="hidden lg:block">
-          <div className="sticky top-32">
+          <div className="sticky top-24 lg:top-32">
             <div className="bg-[#080c14] border border-white/10 rounded-2xl p-6">
               {/* Terminal Header */}
               <div className="flex items-center gap-2 mb-6 pb-4 border-b border-white/10">
@@ -421,47 +424,47 @@ const TechnicalLayout = ({ article, relatedPosts }: ArticleClientProps) => {
       )}
 
       {/* Main Content */}
-      <article className={tableOfContents && tableOfContents.length > 0 ? 'max-w-4xl' : 'max-w-3xl mx-auto'}>
+      <article className={`${tableOfContents && tableOfContents.length > 0 ? 'max-w-4xl' : 'max-w-3xl mx-auto'} min-w-0 overflow-hidden`}>
         {/* Terminal Style Header */}
-        <header className="mb-12">
-          <div className="bg-[#080c14] border border-white/10 rounded-2xl overflow-hidden">
+        <header className="mb-8 sm:mb-12">
+          <div className="bg-[#080c14] border border-white/10 rounded-xl sm:rounded-2xl overflow-hidden">
             {/* Terminal Bar */}
-            <div className="h-10 bg-[#050810] border-b border-white/5 flex items-center px-4 gap-2">
+            <div className="h-8 sm:h-10 bg-[#050810] border-b border-white/5 flex items-center px-3 sm:px-4 gap-2">
               <div className="flex gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-red-500/60"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-green-500/60"></div>
+                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-red-500/60"></div>
+                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-yellow-500/60"></div>
+                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-green-500/60"></div>
               </div>
-              <span className="text-[10px] font-mono text-slate-600 ml-auto uppercase tracking-widest">
+              <span className="text-[8px] sm:text-[10px] font-mono text-slate-600 ml-auto uppercase tracking-widest hidden sm:inline">
                 /// GIMMIR_ENGINEERING_DOCS
               </span>
             </div>
 
-            <div className="p-8 md:p-12">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                  <Terminal size={24} className="text-emerald-400" />
+            <div className="p-4 sm:p-8 md:p-12">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4 sm:mb-6">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                  <Terminal size={20} className="text-emerald-400 sm:w-6 sm:h-6" />
                 </div>
-                <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider">
+                <span className="text-[10px] sm:text-xs font-mono text-emerald-400 uppercase tracking-wider break-all">
                   {article.category} // Protocol Document
                 </span>
               </div>
 
-              <h1 className="text-2xl md:text-4xl font-bold text-white mb-4 font-mono leading-tight">
+              <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-3 sm:mb-4 font-mono leading-tight break-words">
                 <span className="text-slate-600">$ </span>
                 {article.title}
               </h1>
 
-              <p className="text-slate-400 font-mono text-sm leading-relaxed border-l-2 border-emerald-500/50 pl-4 py-2 bg-emerald-500/5 rounded-r">
+              <p className="text-slate-400 font-mono text-xs sm:text-sm leading-relaxed border-l-2 border-emerald-500/50 pl-3 sm:pl-4 py-2 bg-emerald-500/5 rounded-r">
                 {article.description}
               </p>
 
               {article.tags && article.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-6">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-4 sm:mt-6">
                   {article.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded"
+                      className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded whitespace-nowrap"
                     >
                       {tag}
                     </span>
@@ -474,18 +477,19 @@ const TechnicalLayout = ({ article, relatedPosts }: ArticleClientProps) => {
 
         {/* Body Content */}
         <div
-          className="prose prose-invert prose-lg max-w-none
+          className="prose prose-invert prose-base sm:prose-lg max-w-none overflow-hidden
             prose-headings:font-mono prose-headings:text-white
-            prose-h2:text-xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-3 prose-h2:border-b prose-h2:border-white/10
-            prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-4 prose-h3:text-emerald-400
+            prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:mt-8 sm:prose-h2:mt-12 prose-h2:mb-4 sm:prose-h2:mb-6 prose-h2:pb-2 sm:prose-h2:pb-3 prose-h2:border-b prose-h2:border-white/10
+            prose-h3:text-lg sm:prose-h3:text-xl prose-h3:mt-6 sm:prose-h3:mt-8 prose-h3:mb-3 sm:prose-h3:mb-4 prose-h3:text-emerald-400
             prose-p:text-slate-400 prose-p:leading-relaxed
-            prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:underline
+            prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:underline prose-a:break-words
             prose-strong:text-white prose-strong:font-semibold
-            prose-blockquote:border-l-emerald-500 prose-blockquote:bg-emerald-500/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:font-mono prose-blockquote:text-sm
-            prose-code:text-cyan-300 prose-code:bg-[#0a0e17] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm prose-code:border prose-code:border-white/5 prose-code:before:content-none prose-code:after:content-none
-            prose-pre:bg-[#080c14] prose-pre:border prose-pre:border-white/10 prose-pre:rounded-xl prose-pre:shadow-2xl
+            prose-blockquote:border-l-emerald-500 prose-blockquote:bg-emerald-500/5 prose-blockquote:py-3 sm:prose-blockquote:py-4 prose-blockquote:px-4 sm:prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:font-mono prose-blockquote:text-sm
+            prose-code:text-cyan-300 prose-code:bg-[#0a0e17] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-xs sm:prose-code:text-sm prose-code:border prose-code:border-white/5 prose-code:before:content-none prose-code:after:content-none prose-code:break-all
+            prose-pre:bg-[#080c14] prose-pre:border prose-pre:border-white/10 prose-pre:rounded-lg prose-pre:shadow-2xl prose-pre:text-xs sm:prose-pre:text-sm prose-pre:overflow-x-auto prose-pre:max-w-full prose-pre:-mx-4 sm:prose-pre:mx-0 prose-pre:rounded-none sm:prose-pre:rounded-lg
             prose-ul:text-slate-400 prose-ol:text-slate-400
-            prose-li:marker:text-emerald-500"
+            prose-li:marker:text-emerald-500
+            prose-img:rounded-lg sm:prose-img:rounded-xl prose-img:max-w-full"
           dangerouslySetInnerHTML={{ __html: article.body }}
         />
 
@@ -527,20 +531,20 @@ const MagnetLayout = ({ article, relatedPosts }: ArticleClientProps) => {
   };
 
   return (
-    <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-start">
       {/* Left Column - Value Proposition */}
       <div>
-        <header className="mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-wider mb-6">
-            <AlertTriangle size={14} />
+        <header className="mb-8 sm:mb-10">
+          <div className="inline-flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6">
+            <AlertTriangle size={12} className="sm:w-3.5 sm:h-3.5" />
             <span>Free Resource</span>
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6 leading-tight">
             {article.title}
           </h1>
 
-          <p className="text-lg text-slate-400 font-light leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-400 font-light leading-relaxed">
             {article.description}
           </p>
         </header>
@@ -593,22 +597,22 @@ const MagnetLayout = ({ article, relatedPosts }: ArticleClientProps) => {
       </div>
 
       {/* Right Column - Conversion Form */}
-      <div className="lg:sticky lg:top-32">
-        <div className="bg-[#080c14] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+      <div className="lg:sticky lg:top-24 xl:top-32">
+        <div className="bg-[#080c14] border border-white/10 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
           {/* Form Header */}
-          <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-b border-white/10 p-6">
+          <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-b border-white/10 p-4 sm:p-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
-                <Download size={24} className="text-amber-400" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center flex-shrink-0">
+                <Download size={20} className="text-amber-400 sm:w-6 sm:h-6" />
               </div>
-              <div>
-                <h3 className="text-white font-bold">Get Instant Access</h3>
-                <p className="text-slate-500 text-sm">Free download, no credit card required</p>
+              <div className="min-w-0">
+                <h3 className="text-white font-bold text-sm sm:text-base">Get Instant Access</h3>
+                <p className="text-slate-500 text-xs sm:text-sm">Free download, no credit card required</p>
               </div>
             </div>
           </div>
 
-          <div className="p-6 md:p-8">
+          <div className="p-4 sm:p-6 md:p-8">
             <AnimatePresence mode="wait">
               {!submitted ? (
                 <motion.form
@@ -741,7 +745,7 @@ export default function ArticleClient({ article, relatedPosts }: ArticleClientPr
         <div className="absolute top-1/2 left-0 w-[300px] h-[600px] bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none z-0"></div>
       )}
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Back Button */}
         <BackButton />
 

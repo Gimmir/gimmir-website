@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link'; // Додаємо імпорт Link
 import { Settings2, PlayCircle, ShieldCheck, FileKey, Globe } from 'lucide-react';
 
 export function HeroSection() {
@@ -28,10 +29,15 @@ export function HeroSection() {
           <Settings2 size={18} className="group-hover:rotate-180 transition-transform duration-500" />
           <span>Start Project Configurator</span>
         </button>
-        <button className="w-full sm:w-auto px-8 py-4 bg-[#0f121a] hover:bg-[#1a1f2e] border border-white/10 text-slate-300 font-medium rounded-full transition-all active:scale-95 flex items-center justify-center gap-2 group">
+        
+        {/* Кнопка замінена на Link */}
+        <Link 
+          href="/company/how-we-work"
+          className="w-full sm:w-auto px-8 py-4 bg-[#0f121a] hover:bg-[#1a1f2e] border border-white/10 text-slate-300 font-medium rounded-full transition-all active:scale-95 flex items-center justify-center gap-2 group"
+        >
           <PlayCircle size={18} className="text-[#0062d1]" />
           <span>How We Audit Code</span>
-        </button>
+        </Link>
       </div>
 
       <div className="flex flex-wrap justify-center gap-x-6 gap-y-4 md:gap-12 mb-16 sm:mb-20 px-2 animate-fade-in-up opacity-0" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>

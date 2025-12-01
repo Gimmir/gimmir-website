@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { Menu, X, ChevronDown, Linkedin, Github, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getCalApi } from "@calcom/embed-react"; // Імпорт бібліотеки
 import { NAV_LINKS } from '@/lib/constants';
 
 export function Navbar() {
@@ -14,6 +15,21 @@ export function Navbar() {
   const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
   const [activeDesktopDropdown, setActiveDesktopDropdown] = useState<string | null>(null);
   const pathname = usePathname();
+
+  // Ініціалізація Cal.com
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi({ "namespace": "first-touch" });
+      cal("ui", { 
+        "cssVarsPerTheme": { 
+          "light": { "cal-brand": "#0162d1" },
+          "dark": { "cal-brand": "#0162d1" }
+        }, 
+        "hideEventTypeDetails": false, 
+        "layout": "month_view" 
+      });
+    })();
+  }, []);
 
   // Close menus on route change
   useEffect(() => {
@@ -112,7 +128,15 @@ export function Navbar() {
           </div>
 
           <div className="hidden lg:flex items-center gap-3 shrink-0">
-             <button className="px-5 py-2 text-white text-sm font-semibold rounded-full border border-white/20 hover:bg-white/10 transition-colors whitespace-nowrap">Book a Meet</button>
+             {/* Desktop Button: Оновлено для Cal.com */}
+             <button 
+               data-cal-namespace="first-touch"
+               data-cal-link="nazar-moroz/first-touch"
+               data-cal-config='{"layout":"month_view"}'
+               className="px-5 py-2 text-white text-sm font-semibold rounded-full border border-white/20 hover:bg-white/10 transition-colors whitespace-nowrap"
+             >
+               Book a Meet
+             </button>
              <button className="px-5 py-2 bg-white text-black text-sm font-semibold rounded-full hover:bg-slate-200 transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)] whitespace-nowrap">Estimate Project</button>
           </div>
           
@@ -200,7 +224,15 @@ export function Navbar() {
                 transition={{ delay: 0.3 }}
                 className="mt-auto space-y-4 pb-8"
               >
-                <button className="w-full py-4 text-white font-bold text-lg rounded-xl border border-white/20 hover:bg-white/10 transition-colors">Book a Meet</button>
+                {/* Mobile Button: Оновлено для Cal.com */}
+                <button 
+                  data-cal-namespace="first-touch"
+                  data-cal-link="nazar-moroz/first-touch"
+                  data-cal-config='{"layout":"month_view"}'
+                  className="w-full py-4 text-white font-bold text-lg rounded-xl border border-white/20 hover:bg-white/10 transition-colors"
+                >
+                  Book a Meet
+                </button>
                 <button className="w-full py-4 bg-[#0062d1] rounded-xl font-bold text-lg text-white active:bg-[#0052b3] shadow-lg shadow-blue-900/20">Estimate Project</button>
                 <div className="flex justify-center gap-8 pt-6 opacity-60">
                    <a href="#" className="text-slate-400 hover:text-white"><Linkedin size={24} /></a>

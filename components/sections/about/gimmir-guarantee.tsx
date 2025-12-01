@@ -1,7 +1,8 @@
 "use client";
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { Shield, Clock, Lock, DollarSign as MoneyIcon, ArrowRight } from 'lucide-react';
+import { getCalApi } from "@calcom/embed-react";
 
 interface LocalSectionHeaderProps {
   title: ReactNode;
@@ -41,6 +42,21 @@ function LocalSectionHeader({
 }
 
 export function GimmirGuaranteeSection() {
+    // Ініціалізація Cal.com
+    useEffect(() => {
+        (async function () {
+            const cal = await getCalApi({ "namespace": "first-touch" });
+            cal("ui", {
+                "cssVarsPerTheme": {
+                    "light": { "cal-brand": "#0162d1" },
+                    "dark": { "cal-brand": "#0162d1" }
+                },
+                "hideEventTypeDetails": false,
+                "layout": "month_view",
+            });
+        })();
+    }, []);
+
     const guarantees = [
         { 
             title: "2-Week Trial", 
@@ -92,7 +108,12 @@ export function GimmirGuaranteeSection() {
                 </div>
                 
                 <div className="mt-16 text-center">
-                    <button className="px-6 py-3 sm:px-8 sm:py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-full transition-all shadow-[0_0_20px_-5px_rgba(52,211,153,0.5)] hover:shadow-[0_0_30px_-5px_rgba(52,211,153,0.6)] flex items-center justify-center gap-2 group mx-auto text-base sm:text-lg">
+                    <button 
+                        data-cal-namespace="first-touch"
+                        data-cal-link="nazar-moroz/first-touch"
+                        data-cal-config='{"layout":"month_view"}'
+                        className="px-6 py-3 sm:px-8 sm:py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-full transition-all shadow-[0_0_20px_-5px_rgba(52,211,153,0.5)] hover:shadow-[0_0_30px_-5px_rgba(52,211,153,0.6)] flex items-center justify-center gap-2 group mx-auto text-base sm:text-lg"
+                    >
                         Get Started Risk-Free <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </button>
                 </div>

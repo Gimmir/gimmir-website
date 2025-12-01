@@ -1,9 +1,25 @@
 'use client';
 
 import { ArrowDown, Calendar, Globe, MessageSquare, Radio } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react'; // Додано useEffect
+import { getCalApi } from "@calcom/embed-react"; // Додано getCalApi
 
 export function ContactHeroSection() {
+  // Ініціалізація Cal.com
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi({ "namespace": "first-touch" });
+      cal("ui", {
+        "cssVarsPerTheme": {
+          "light": { "cal-brand": "#0162d1" },
+          "dark": { "cal-brand": "#0162d1" }
+        },
+        "hideEventTypeDetails": false,
+        "layout": "month_view",
+      });
+    })();
+  }, []);
+  
   const scrollToForm = () => {
     const formSection = document.getElementById('inquiry-form');
     if (formSection) {
@@ -52,18 +68,18 @@ export function ContactHeroSection() {
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full justify-center animate-fade-in-up opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
             
-            {/* Primary CTA: Cal.com */}
-            <a 
-              href="https://cal.com/" 
-              target="_blank" 
-              rel="noopener noreferrer"
+            {/* Primary CTA: Cal.com (Оновлено з <a> на <button>) */}
+            <button
+              data-cal-namespace="first-touch"
+              data-cal-link="nazar-moroz/first-touch"
+              data-cal-config='{"layout":"month_view"}'
               className="w-full sm:w-auto px-8 py-4 bg-[#0062d1] hover:bg-[#0052b3] text-white font-bold rounded-full transition-all shadow-[0_0_30px_-5px_rgba(0,98,209,0.5)] hover:shadow-[0_0_40px_-5px_rgba(0,98,209,0.6)] hover:scale-105 active:scale-95 flex items-center justify-center gap-3 group"
             >
               <Calendar size={18} />
               <span>Book Technical Consultation</span>
-            </a>
+            </button>
 
-            {/* Secondary CTA: Scroll to Form */}
+            {/* Secondary CTA: Scroll to Form (Залишилося без змін) */}
             <button 
               onClick={scrollToForm}
               className="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white font-medium rounded-full transition-all active:scale-95 flex items-center justify-center gap-2 group"

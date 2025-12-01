@@ -1,6 +1,25 @@
+"use client";
+
+import React, { useEffect } from 'react'; // Додано useEffect
 import { Calendar, Calculator, Zap } from 'lucide-react';
+import { getCalApi } from "@calcom/embed-react"; // Додано getCalApi
 
 export function ContactEfficiencyLoopSection() {
+  // Ініціалізація Cal.com
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi({ "namespace": "first-touch" });
+      cal("ui", {
+        "cssVarsPerTheme": {
+          "light": { "cal-brand": "#0162d1" },
+          "dark": { "cal-brand": "#0162d1" }
+        },
+        "hideEventTypeDetails": false,
+        "layout": "month_view",
+      });
+    })();
+  }, []);
+    
   return (
     <section className="relative py-24 px-6 border-t border-white/5 bg-[#050A14] overflow-hidden">
         {/* Background effects */}
@@ -29,15 +48,16 @@ export function ContactEfficiencyLoopSection() {
                     <span>Start Project Simulator</span>
                 </a>
                 
-                <a 
-                    href="https://cal.com/" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                {/* Book a Meeting Now - Оновлено для Cal.com */}
+                <button 
+                    data-cal-namespace="first-touch"
+                    data-cal-link="nazar-moroz/first-touch"
+                    data-cal-config='{"layout":"month_view"}' 
                     className="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium rounded-full transition-all active:scale-95 flex items-center justify-center gap-2 group"
                 >
                     <Calendar size={18} className="text-slate-400 group-hover:text-white transition-colors" />
                     <span>Book a Meeting Now</span>
-                </a>
+                </button>
             </div>
         </div>
     </section>

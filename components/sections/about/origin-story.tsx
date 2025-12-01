@@ -1,7 +1,8 @@
 "use client";
 
 import React, { ReactNode } from 'react';
-import { DollarSign, Shield, CheckCircle2, Lightbulb } from 'lucide-react';
+import Link from 'next/link'; // Додано імпорт Link
+import { DollarSign, Shield, CheckCircle2, Lightbulb, ArrowRight } from 'lucide-react'; // Додано ArrowRight
 
 interface LocalSectionHeaderProps {
   title: ReactNode;
@@ -133,9 +134,13 @@ export function OriginStorySection() {
         
         {/* CTA focused on next step */}
         <div className="mt-16 text-center">
-            <button className="px-6 py-3 sm:px-8 sm:py-4 bg-[#0062d1] hover:bg-[#0052b3] text-white font-bold rounded-full transition-all shadow-[0_0_20px_-5px_rgba(0,98,209,0.5)] hover:shadow-[0_0_30px_-5px_rgba(0,98,209,0.6)] flex items-center justify-center gap-2 group mx-auto text-base sm:text-lg">
+            <Link 
+                href="/company/how-we-work"
+                className="px-6 py-3 sm:px-8 sm:py-4 bg-[#0062d1] hover:bg-[#0052b3] text-white font-bold rounded-full transition-all shadow-[0_0_20px_-5px_rgba(0,98,209,0.5)] hover:shadow-[0_0_30px_-5px_rgba(0,98,209,0.6)] flex items-center justify-center gap-2 group mx-auto text-base sm:text-lg w-fit"
+            >
                 See How We Deliver Assets
-            </button>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
         </div>
       </div>
     </section>

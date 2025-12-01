@@ -23,6 +23,46 @@
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
+/* Article prose code block mobile fixes */
+@layer components {
+  .prose pre {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .prose pre code {
+    display: block;
+    min-width: max-content;
+    padding: 1rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  
+  @media (min-width: 640px) {
+    .prose pre code {
+      font-size: 0.875rem;
+      padding: 1.25rem;
+    }
+  }
+  
+  /* Prevent long words/URLs from breaking layout */
+  .prose p,
+  .prose li,
+  .prose blockquote {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+  
+  /* Inline code should wrap */
+  .prose :not(pre) > code {
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+}
+
 @keyframes fadeInUp {
   from { opacity: 0; transform: translate3d(0, 20px, 0); }
   to { opacity: 1; transform: translate3d(0, 0, 0); }
