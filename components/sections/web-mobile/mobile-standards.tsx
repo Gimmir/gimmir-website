@@ -9,7 +9,7 @@ export function MobileStandardsSection() {
     <section className="py-16 sm:py-24 px-6 border-t border-white/5 bg-[#050A14] relative overflow-hidden">
       {/* Background Glow & Noise */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[500px] bg-[#0062d1]/5 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader 
@@ -50,7 +50,7 @@ export function MobileStandardsSection() {
                    
                 {/* Abstract Visual: Threading - Reponsive Fix */}
                 <div className="mt-auto p-4 rounded-xl bg-black/40 border border-white/5 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+                    <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay"></div>
                     <div className="flex gap-2 mb-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
                         <div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
@@ -95,7 +95,7 @@ export function MobileStandardsSection() {
 
                 {/* Abstract Visual: Bridge - Responsive Fix */}
                 <div className="mt-auto p-4 rounded-xl bg-black/40 border border-white/5 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+                    <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay"></div>
                     <div className="flex gap-2 mb-3">
                         <div className="w-1.5 h-1.5 rounded-full bg-slate-700"></div>
                         <div className="w-1.5 h-1.5 rounded-full bg-slate-700"></div>

@@ -134,7 +134,7 @@ export function ContactDirectAccessSection() {
             
             {/* Phone Card */}
             <div className="p-8 rounded-2xl border border-[#0062d1]/30 bg-[#0062d1]/5 flex flex-col justify-center h-full relative overflow-hidden group">
-              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-10 pointer-events-none"></div>
               <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-[#0062d1]/20 rounded-full blur-[50px]"></div>
               
               <div className="relative z-10">

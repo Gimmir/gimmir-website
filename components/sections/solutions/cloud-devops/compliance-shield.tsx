@@ -77,7 +77,7 @@ export function ComplianceShieldSection() {
 
                 {/* Central Shield */}
                 <div className="relative z-10 w-64 h-72 bg-gradient-to-b from-[#0B0F19] to-[#050810] border border-white/10 rounded-[3rem] flex flex-col items-center justify-center shadow-2xl shadow-blue-900/20">
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay rounded-[3rem]"></div>
+                    <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay rounded-[3rem]"></div>
                     
                     {/* Shield Logo / Icon */}
                     <div className="w-20 h-20 bg-[#0062d1] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30 mb-6 relative overflow-hidden">

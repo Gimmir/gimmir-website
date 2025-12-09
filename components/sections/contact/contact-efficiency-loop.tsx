@@ -23,7 +23,7 @@ export function ContactEfficiencyLoopSection() {
   return (
     <section className="relative py-24 px-6 border-t border-white/5 bg-[#050A14] overflow-hidden">
         {/* Background effects */}
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-10 pointer-events-none"></div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono uppercase tracking-wider mb-6">

@@ -58,7 +58,6 @@ export const FOOTER_LINKS = [
     title: 'Company', 
     items: [
       { name: 'About Us', href: '/company/about' },
-      { name: 'Success Stories', href: '/success-stories' },
       { name: 'How We Work', href: '/company/how-we-work' },
       { name: 'Global Hubs', href: '/#global-contact' },
       { name: 'Contact Us', href: '/contact-us' }

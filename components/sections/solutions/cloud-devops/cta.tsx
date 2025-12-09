@@ -9,7 +9,7 @@ export function CTASection() {
       {/* Subtle Background Gradient */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-[#0062d1]/10 via-[#050A14] to-[#050A14] opacity-50 pointer-events-none"></div>
       {/* Noise Texture */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none"></div>
       
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">

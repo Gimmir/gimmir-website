@@ -122,7 +122,7 @@ export default function TermsOfServiceClient({ terms, formattedDate }: TermsOfSe
       <section className="relative pt-32 pb-20 px-6 border-b border-white/5 overflow-hidden">
         {/* Background Effects */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#0062d1]/5 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto relative z-10">

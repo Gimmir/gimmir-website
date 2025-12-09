@@ -9,7 +9,7 @@ export function HeroSection() {
       {/* Background Effects */}
       <div className="absolute top-0 right-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-sky-500 rounded-full blur-[100px] sm:blur-[200px] opacity-[0.12] pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#0062d1] rounded-full blur-[120px] opacity-[0.1] pointer-events-none"></div>
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"></div>
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#050A14]/90 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">

@@ -117,7 +117,7 @@ export function StandardCard({ post }: { post: InsightPost }) {
           ) : (
             <div className="w-full h-full bg-[#020408] relative">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#0062d1]/20 via-transparent to-transparent opacity-60"></div>
-              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+              <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay"></div>
               
               <div className="absolute inset-0 flex items-center justify-center z-20">
                 <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm shadow-xl transform group-hover:scale-110 transition-transform duration-500 group-hover:border-[#0062d1]/30 group-hover:bg-[#0062d1]/10">
@@ -234,7 +234,7 @@ export function MagnetCard({ post }: { post: InsightPost }) {
   return (
     <Link href={`/news/${post.slug}`} className="block h-full">
       <div className={`group relative flex flex-col h-full bg-[#0B0F19] border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 ${styles.borderHover}`}>
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-10 pointer-events-none"></div>
         <div className={`absolute -top-32 -right-32 w-64 h-64 ${styles.glowColor} opacity-10 rounded-full blur-[80px] group-hover:opacity-20 transition-opacity duration-500`}></div>
 
         <div className="p-6 sm:p-8 flex flex-col flex-grow relative z-10">

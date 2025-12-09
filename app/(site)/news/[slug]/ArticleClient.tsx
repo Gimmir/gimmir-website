@@ -283,7 +283,7 @@ const StandardLayout = ({ article, relatedPosts }: ArticleClientProps) => {
 
       {/* Hero Image */}
       <div className="relative h-48 sm:h-64 md:h-80 rounded-xl sm:rounded-2xl overflow-hidden mb-8 sm:mb-12 bg-gradient-to-br from-[#0062d1]/20 to-cyan-500/10 border border-white/10">
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20"></div>
         {article.imageUrl ? (
           <img 
             src={article.imageUrl} 

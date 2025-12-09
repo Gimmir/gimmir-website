@@ -7,7 +7,7 @@ export function Footer() {
     <footer className="relative z-20 bg-[#050A14] border-t border-white/5 pt-16 pb-8 px-6 text-sm overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(#ffffff03_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none opacity-50"></div>
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 mix-blend-overlay pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-5 mix-blend-overlay pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-16">
@@ -59,8 +59,8 @@ export function Footer() {
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
           <div>2025 © All Rights Reserved.</div>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-white transition-colors">PRIVACY_POLICY</Link>
-            <Link href="#" className="hover:text-white transition-colors">TERMS_OF_SERVICE</Link>
+            <Link href="/company/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/company/terms" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>
