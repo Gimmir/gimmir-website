@@ -1,34 +1,13 @@
 import type { Metadata } from 'next';
 import { urlForImage } from '@/sanity/lib/image';
-import type { Image } from 'sanity';
+import type { SanitySeo, SiteSettings, SanityImage } from '@/sanity/sanity-utils';
+
+// Re-export for convenience
+export type { SanitySeo, SiteSettings };
 
 // ═══════════════════════════════════════════════════════════════════════════
 // TYPES
 // ═══════════════════════════════════════════════════════════════════════════
-
-/**
- * SEO object from Sanity schema
- */
-export interface SanitySeo {
-  metaTitle?: string;
-  metaDescription?: string;
-  openGraphImage?: Image & { alt?: string };
-  noIndex?: boolean;
-  canonicalUrl?: string;
-}
-
-/**
- * Global settings from Sanity
- */
-export interface SiteSettings {
-  siteTitle: string;
-  titleTemplate: string;
-  siteUrl: string;
-  defaultMetaDescription: string;
-  defaultOgImage?: Image & { alt?: string };
-  twitterHandle?: string;
-  facebookAppId?: string;
-}
 
 /**
  * Document with potential SEO fields
@@ -37,7 +16,7 @@ export interface SeoableDocument {
   title?: string;
   description?: string;
   excerpt?: string;
-  mainImage?: Image & { alt?: string };
+  mainImage?: SanityImage;
   seo?: SanitySeo;
   slug?: string;
   publishedAt?: string;
@@ -77,7 +56,7 @@ function getAbsoluteUrl(baseUrl: string, path?: string): string {
  * Get image URL with dimensions for Open Graph
  */
 function getOgImageUrl(
-  image: (Image & { alt?: string }) | undefined,
+  image: SanityImage | undefined,
   width = 1200,
   height = 630
 ): { url: string; width: number; height: number; alt?: string } | null {

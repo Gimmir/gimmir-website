@@ -1,26 +1,23 @@
-'use client';
+import type { Metadata } from 'next';
+import { getSeoByPath, getSettings } from '@/sanity/sanity-utils';
+import { generateStaticPageMetadata } from '@/lib/seo-utils';
+import WebMobileClient from './WebMobileClient';
 
-import React from 'react';
-import { HeroSection } from '@/components/sections/web-mobile/hero';
-import { ArchitectureSection } from '@/components/sections/web-mobile/architecture';
-import { MobileStandardsSection } from '@/components/sections/web-mobile/mobile-standards';
-import { ScalabilitySection } from '@/components/sections/web-mobile/scalability';
-import { SecuritySection } from '@/components/sections/web-mobile/security';
-import { DeliverablesSection } from '@/components/sections/web-mobile/deliverables';
-import { QualitySection } from '@/components/sections/web-mobile/quality';
-import { FinalCTA } from '@/components/sections/web-mobile/final-cta';
+export async function generateMetadata(): Promise<Metadata> {
+  const [routeSeo, settings] = await Promise.all([
+    getSeoByPath('/solutions/web-mobile'),
+    getSettings(),
+  ]);
+
+  return generateStaticPageMetadata({
+    seo: routeSeo?.seo,
+    fallbackTitle: 'Web & Mobile Development',
+    fallbackDescription: 'Full-stack web and mobile application development with modern technologies and best practices.',
+    settings,
+    path: '/solutions/web-mobile',
+  });
+}
 
 export default function WebMobilePage() {
-  return (
-    <div className="bg-[#020408] min-h-screen">
-      <HeroSection />
-      <ArchitectureSection />
-      <MobileStandardsSection />
-      <ScalabilitySection />
-      <SecuritySection />
-      <DeliverablesSection />
-      <QualitySection />
-      <FinalCTA />
-    </div>
-  );
+  return <WebMobileClient />;
 }

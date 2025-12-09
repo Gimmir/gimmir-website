@@ -1,22 +1,23 @@
-'use client';
+import type { Metadata } from 'next';
+import { getSeoByPath, getSettings } from '@/sanity/sanity-utils';
+import { generateStaticPageMetadata } from '@/lib/seo-utils';
+import HowWeWorkClient from './HowWeWorkClient';
 
-import React from 'react';
-import { HeroSection } from '@/components/sections/how-we-work/hero';
-import { CoreProblemSection } from '@/components/sections/how-we-work/core-problem';
-import { PhaseOneSection } from '@/components/sections/how-we-work/phase-one';
-import { PhaseTwoSection } from '@/components/sections/how-we-work/phase-two';
-import { PhaseThreeSection } from '@/components/sections/how-we-work/phase-three';
-import { FinalCTASection } from '@/components/sections/how-we-work/final-cta';
+export async function generateMetadata(): Promise<Metadata> {
+  const [routeSeo, settings] = await Promise.all([
+    getSeoByPath('/company/how-we-work'),
+    getSettings(),
+  ]);
+
+  return generateStaticPageMetadata({
+    seo: routeSeo?.seo,
+    fallbackTitle: 'How We Work',
+    fallbackDescription: 'Our proven methodology for delivering production-ready software that passes technical due diligence.',
+    settings,
+    path: '/company/how-we-work',
+  });
+}
 
 export default function HowWeWorkPage() {
-  return (
-    <div className="bg-[#020408] min-h-screen selection:bg-[#0062d1] selection:text-white">
-      <HeroSection />
-      <CoreProblemSection />
-      <PhaseOneSection />
-      <PhaseTwoSection />
-      <PhaseThreeSection />
-      <FinalCTASection />
-    </div>
-  );
+  return <HowWeWorkClient />;
 }

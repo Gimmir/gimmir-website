@@ -1,24 +1,23 @@
-'use client';
+import type { Metadata } from 'next';
+import { getSeoByPath, getSettings } from '@/sanity/sanity-utils';
+import { generateStaticPageMetadata } from '@/lib/seo-utils';
+import CloudDevOpsClient from './CloudDevOpsClient';
 
-import React from 'react';
-import { HeroSection } from '@/components/sections/solutions/cloud-devops/hero';
-import { RootAccessProtocolSection } from '@/components/sections/solutions/cloud-devops/root-access-protocol';
-import { ServicePillarsSection } from '@/components/sections/solutions/cloud-devops/service-pillars';
-import { ComplianceShieldSection } from '@/components/sections/solutions/cloud-devops/compliance-shield';
-import { TechStackSection } from '@/components/sections/solutions/cloud-devops/tech-stack';
-import { CaseStudySection } from '@/components/sections/solutions/cloud-devops/case-study';
-import { CTASection } from '@/components/sections/solutions/cloud-devops/cta';
+export async function generateMetadata(): Promise<Metadata> {
+  const [routeSeo, settings] = await Promise.all([
+    getSeoByPath('/solutions/cloud-devops'),
+    getSettings(),
+  ]);
+
+  return generateStaticPageMetadata({
+    seo: routeSeo?.seo,
+    fallbackTitle: 'Cloud & DevOps',
+    fallbackDescription: 'Enterprise cloud infrastructure and DevOps solutions for scalable, secure, and compliant deployments.',
+    settings,
+    path: '/solutions/cloud-devops',
+  });
+}
 
 export default function CloudDevOpsPage() {
-  return (
-    <div className="bg-[#020408] min-h-screen selection:bg-sky-500/30">
-      <HeroSection />
-      <RootAccessProtocolSection />
-      <ServicePillarsSection />
-      <ComplianceShieldSection />
-      <TechStackSection />
-      <CaseStudySection />
-      <CTASection />
-    </div>
-  );
+  return <CloudDevOpsClient />;
 }

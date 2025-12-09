@@ -1,24 +1,23 @@
-'use client';
+import type { Metadata } from 'next';
+import { getSeoByPath, getSettings } from '@/sanity/sanity-utils';
+import { generateStaticPageMetadata } from '@/lib/seo-utils';
+import CodeRescueClient from './CodeRescueClient';
 
-import React from 'react';
-import { HeroSection } from '@/components/sections/solutions/code-rescue/hero';
-import { RedFlagsSection } from '@/components/sections/solutions/code-rescue/red-flags';
-import { ForensicAuditSection } from '@/components/sections/solutions/code-rescue/forensic-audit';
-import { RescueMethodologySection } from '@/components/sections/solutions/code-rescue/rescue-methodology';
-import { GuaranteeSection } from '@/components/sections/solutions/code-rescue/guarantee';
-import { ForensicToolkitSection } from '@/components/sections/solutions/code-rescue/forensic-toolkit';
-import { FinalCTASection } from '@/components/sections/solutions/code-rescue/final-cta';
+export async function generateMetadata(): Promise<Metadata> {
+  const [routeSeo, settings] = await Promise.all([
+    getSeoByPath('/solutions/code-rescue'),
+    getSettings(),
+  ]);
+
+  return generateStaticPageMetadata({
+    seo: routeSeo?.seo,
+    fallbackTitle: 'Code Rescue',
+    fallbackDescription: 'Emergency code rescue and technical debt resolution services to save troubled software projects.',
+    settings,
+    path: '/solutions/code-rescue',
+  });
+}
 
 export default function CodeRescuePage() {
-  return (
-    <div className="bg-[#020408] min-h-screen selection:bg-[#0062d1] selection:text-white">
-      <HeroSection />
-      <RedFlagsSection />
-      <ForensicAuditSection />
-      <RescueMethodologySection />
-      <GuaranteeSection />
-      <ForensicToolkitSection />
-      <FinalCTASection />
-    </div>
-  );
+  return <CodeRescueClient />;
 }
