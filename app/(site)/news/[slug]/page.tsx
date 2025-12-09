@@ -5,7 +5,9 @@ import {
   getPostBySlug, 
   getRelatedPosts, 
   getAllSlugs,
+  getSettings,
 } from '@/sanity/sanity-utils';
+import { generateSeoMetadata } from '@/lib/seo-utils';
 import ArticleClient, { type ArticleData } from './ArticleClient';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -104,45 +106,36 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  
+  // Fetch post and settings in parallel for optimal performance
+  const [post, settings] = await Promise.all([
+    getPostBySlug(slug),
+    getSettings(),
+  ]);
 
   if (!post) {
     return {
-      title: 'Article Not Found | Gimmir',
+      title: 'Article Not Found',
       description: 'The requested article could not be found.',
     };
   }
 
-  // Build OG image array if main image exists
-  const ogImages = post.ogImage?.url 
-    ? [{
-        url: post.ogImage.url,
-        width: post.ogImage.width || 1200,
-        height: post.ogImage.height || 630,
-        alt: post.ogImage.alt || post.title,
-      }]
-    : undefined;
-
-  return {
-    title: `${post.title} | Gimmir`,
-    description: post.description,
-    openGraph: {
+  // Use the SEO utility to generate metadata with intelligent fallbacks
+  return generateSeoMetadata({
+    document: {
       title: post.title,
       description: post.description,
-      type: 'article',
-      publishedTime: post.date,
-      authors: post.author?.name ? [post.author.name] : ['Gimmir Team'],
+      mainImage: post.mainImage,
+      seo: post.seo,
+      slug: post.slug,
+      publishedAt: post.date,
+      author: post.author,
       tags: post.tags,
-      images: ogImages,
-      siteName: 'Gimmir',
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: post.title,
-      description: post.description,
-      images: ogImages?.map(img => img.url),
-    },
-  };
+    settings,
+    type: 'article',
+    path: `/news/${post.slug}`,
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

@@ -9,7 +9,9 @@ import {
   DownloadIcon,
   CodeBlockIcon,
   DocumentsIcon,
-  LockIcon
+  LockIcon,
+  EarthGlobeIcon,
+  LinkIcon
 } from '@sanity/icons';
 
 /**
@@ -92,6 +94,21 @@ export const structure = (S: StructureBuilder) =>
       S.divider(),
 
       // ═══════════════════════════════════════════════════════════════════
+      // STATIC PAGES SEO
+      // ═══════════════════════════════════════════════════════════════════
+      S.listItem()
+        .title('Static Pages SEO')
+        .id('static-pages-seo')
+        .icon(LinkIcon)
+        .child(
+          S.documentTypeList('routeSeo')
+            .title('Static Pages SEO')
+            .defaultOrdering([{ field: 'pathname.current', direction: 'asc' }])
+        ),
+
+      S.divider(),
+
+      // ═══════════════════════════════════════════════════════════════════
       // LEGAL DOCUMENTS (SINGLETONS)
       // ═══════════════════════════════════════════════════════════════════
       S.listItem()
@@ -143,6 +160,21 @@ export const structure = (S: StructureBuilder) =>
           S.list()
             .title('Configuration & Settings')
             .items([
+              // Global SEO Settings (Singleton)
+              S.listItem()
+                .title('Site Settings (SEO)')
+                .id('site-settings')
+                .icon(EarthGlobeIcon)
+                .child(
+                  S.editor()
+                    .id('settings')
+                    .schemaType('settings')
+                    .documentId('settings')
+                    .title('Site Settings')
+                ),
+
+              S.divider(),
+
               // Author Profiles
               S.listItem()
                 .title('Author Profiles')

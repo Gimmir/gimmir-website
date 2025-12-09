@@ -7,6 +7,7 @@ export const newsType = defineType({
   groups: [
     { name: 'content', title: 'Content', default: true },
     { name: 'meta', title: 'Metadata' },
+    { name: 'seo', title: 'SEO' },
     { name: 'technical', title: 'Technical Layout' },
     { name: 'magnet', title: 'Lead Magnet' },
   ],
@@ -121,6 +122,16 @@ export const newsType = defineType({
       initialValue: 'standard',
       group: 'content',
       validation: (Rule) => Rule.required(),
+    }),
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SEO SETTINGS
+    // ═══════════════════════════════════════════════════════════════════════
+    defineField({
+      name: 'seo',
+      title: 'SEO Settings',
+      type: 'seo',
+      group: 'seo',
     }),
 
     // ═══════════════════════════════════════════════════════════════════════

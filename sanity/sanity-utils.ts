@@ -7,6 +7,26 @@ import type { PortableTextBlock } from '@portabletext/types';
 
 export type LayoutType = 'standard' | 'technical' | 'magnet';
 
+// SEO object type (matches Sanity schema)
+export interface SanitySeo {
+  metaTitle?: string;
+  metaDescription?: string;
+  openGraphImage?: SanityImage;
+  noIndex?: boolean;
+  canonicalUrl?: string;
+}
+
+// Site Settings type (matches Sanity singleton)
+export interface SiteSettings {
+  siteTitle: string;
+  titleTemplate: string;
+  siteUrl: string;
+  defaultMetaDescription: string;
+  defaultOgImage?: SanityImage;
+  twitterHandle?: string;
+  facebookAppId?: string;
+}
+
 export interface TableOfContentsItem {
   title: string;
   id: string;
@@ -73,6 +93,8 @@ export interface NewsPostBase {
   tags?: string[];
   body?: PortableTextBlock[];
   ogImage?: OgImage;
+  mainImage?: SanityImage;
+  seo?: SanitySeo;
 }
 
 // Standard layout (Magazine View)
@@ -141,6 +163,7 @@ export interface TermsOfService {
   acceptableUseIntro?: string;
   acceptableUseList?: string[];
   liabilityBody?: PortableTextBlock[];
+  seo?: SanitySeo;
 }
 
 // Privacy Policy document type
@@ -189,6 +212,14 @@ export interface PrivacyPolicy {
   contactTitle?: string;
   contactDescription?: string;
   dpoEmail?: string;
+  seo?: SanitySeo;
+}
+
+// Route SEO type for static pages
+export interface RouteSeo {
+  title: string;
+  pathname: string;
+  seo?: SanitySeo;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -279,7 +310,22 @@ const NEWS_DETAIL_QUERY = `*[_type == "news" && slug.current == $slug && !(_id i
   magnetBenefits,
   resourceType,
   fileSize,
-  downloadCount
+  downloadCount,
+
+  // SEO fields
+  seo {
+    metaTitle,
+    metaDescription,
+    openGraphImage {
+      asset->{
+        _ref,
+        url
+      },
+      alt
+    },
+    noIndex,
+    canonicalUrl
+  }
 }`;
 
 // Related posts query
@@ -318,6 +364,23 @@ const LATEST_INSIGHTS_QUERY = `*[_type == "news" && !(_id in path("drafts.**"))]
 // LEGAL DOCUMENTS QUERIES
 // ═══════════════════════════════════════════════════════════════════════════
 
+// Site Settings singleton query (Global SEO)
+const SETTINGS_QUERY = `*[_type == "settings"][0] {
+  siteTitle,
+  titleTemplate,
+  siteUrl,
+  defaultMetaDescription,
+  defaultOgImage {
+    asset->{
+      _ref,
+      url
+    },
+    alt
+  },
+  twitterHandle,
+  facebookAppId
+}`;
+
 // Terms of Service singleton query
 const TERMS_OF_SERVICE_QUERY = `*[_type == "termsOfService"][0] {
   title,
@@ -335,7 +398,20 @@ const TERMS_OF_SERVICE_QUERY = `*[_type == "termsOfService"][0] {
   governingLawBody,
   acceptableUseIntro,
   acceptableUseList,
-  liabilityBody
+  liabilityBody,
+  seo {
+    metaTitle,
+    metaDescription,
+    openGraphImage {
+      asset->{
+        _ref,
+        url
+      },
+      alt
+    },
+    noIndex,
+    canonicalUrl
+  }
 }`;
 
 // Privacy Policy singleton query
@@ -367,7 +443,39 @@ const PRIVACY_POLICY_QUERY = `*[_type == "privacyPolicy"][0] {
   cookiesList,
   contactTitle,
   contactDescription,
-  dpoEmail
+  dpoEmail,
+  seo {
+    metaTitle,
+    metaDescription,
+    openGraphImage {
+      asset->{
+        _ref,
+        url
+      },
+      alt
+    },
+    noIndex,
+    canonicalUrl
+  }
+}`;
+
+// Static Route SEO query - fetch SEO for hardcoded Next.js routes
+const ROUTE_SEO_QUERY = `*[_type == "routeSeo" && pathname.current == $pathname][0] {
+  title,
+  "pathname": pathname.current,
+  seo {
+    metaTitle,
+    metaDescription,
+    openGraphImage {
+      asset->{
+        _ref,
+        url
+      },
+      alt
+    },
+    noIndex,
+    canonicalUrl
+  }
 }`;
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -665,6 +773,105 @@ const FALLBACK_PRIVACY_POLICY: PrivacyPolicy = {
 // DATA FETCHING FUNCTIONS
 // ═══════════════════════════════════════════════════════════════════════════
 
+// Default settings fallback
+const FALLBACK_SETTINGS: SiteSettings = {
+  siteTitle: 'Gimmir',
+  titleTemplate: '%s | Gimmir',
+  siteUrl: 'https://gimmir.com',
+  defaultMetaDescription: 'Engineering digital assets that pass due diligence.',
+};
+
+/**
+ * Fetches global site settings (SEO defaults)
+ * @returns SiteSettings object
+ */
+export async function getSettings(): Promise<SiteSettings> {
+  try {
+    const settings = await client.fetch<SiteSettings | null>(
+      SETTINGS_QUERY,
+      {},
+      { next: { revalidate: 300 } }
+    );
+
+    if (!settings) {
+      return FALLBACK_SETTINGS;
+    }
+
+    return settings;
+  } catch (error) {
+    console.error('Error fetching settings:', error);
+    return FALLBACK_SETTINGS;
+  }
+}
+
+/**
+ * Fetches SEO data for a static route (hardcoded Next.js pages)
+ * @param pathname - The URL path (e.g., "/", "/contact-us", "/solutions/mvp-development")
+ * @returns RouteSeo object or null if not found
+ */
+export async function getSeoByPath(pathname: string): Promise<RouteSeo | null> {
+  try {
+    const routeSeo = await client.fetch<RouteSeo | null>(
+      ROUTE_SEO_QUERY,
+      { pathname },
+      { next: { revalidate: 300 } }
+    );
+
+    return routeSeo;
+  } catch (error) {
+    console.error(`Error fetching SEO for path "${pathname}":`, error);
+    return null;
+  }
+}
+
+/**
+ * Fetches SEO data from Terms of Service singleton
+ * @returns Object with title and seo fields, or null
+ */
+export async function getTermsSeo(): Promise<{ title: string; seo?: SanitySeo } | null> {
+  try {
+    const terms = await client.fetch<TermsOfService | null>(
+      TERMS_OF_SERVICE_QUERY,
+      {},
+      { next: { revalidate: 300 } }
+    );
+
+    if (!terms) return null;
+    
+    return {
+      title: terms.title,
+      seo: terms.seo,
+    };
+  } catch (error) {
+    console.error('Error fetching Terms SEO:', error);
+    return null;
+  }
+}
+
+/**
+ * Fetches SEO data from Privacy Policy singleton
+ * @returns Object with title and seo fields, or null
+ */
+export async function getPrivacySeo(): Promise<{ title: string; seo?: SanitySeo } | null> {
+  try {
+    const privacy = await client.fetch<PrivacyPolicy | null>(
+      PRIVACY_POLICY_QUERY,
+      {},
+      { next: { revalidate: 300 } }
+    );
+
+    if (!privacy) return null;
+    
+    return {
+      title: privacy.title,
+      seo: privacy.seo,
+    };
+  } catch (error) {
+    console.error('Error fetching Privacy SEO:', error);
+    return null;
+  }
+}
+
 /**
  * Fetches all categories for the news filter
  * @returns Array of Category objects
@@ -873,6 +1080,39 @@ export async function getAllSlugs(): Promise<string[]> {
   } catch (error) {
     console.error('Error fetching slugs:', error);
     return FALLBACK_POSTS.map(p => p.slug);
+  }
+}
+
+// Sitemap entry type
+export interface SitemapEntry {
+  slug: string;
+  updatedAt: string;
+  noIndex?: boolean;
+}
+
+/**
+ * Fetches all news posts for sitemap generation
+ * Excludes posts where noIndex is true
+ * @returns Array of SitemapEntry objects
+ */
+export async function getAllIndexableNews(): Promise<SitemapEntry[]> {
+  const query = `*[_type == "news" && !(_id in path("drafts.**")) && (seo.noIndex != true || !defined(seo.noIndex))] | order(publishedAt desc) {
+    "slug": slug.current,
+    "updatedAt": coalesce(_updatedAt, publishedAt, _createdAt),
+    "noIndex": seo.noIndex
+  }`;
+
+  try {
+    const posts = await client.fetch<SitemapEntry[]>(
+      query,
+      {},
+      { next: { revalidate: 3600 } } // Revalidate every hour for sitemap
+    );
+
+    return posts || [];
+  } catch (error) {
+    console.error('Error fetching indexable news for sitemap:', error);
+    return [];
   }
 }
 
