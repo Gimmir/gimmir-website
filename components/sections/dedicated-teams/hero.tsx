@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users2, ArrowRight } from 'lucide-react';
+import { Users2, ArrowRight, Clock, Shield } from 'lucide-react';
 
 export function DedicatedHero() {
   return (
@@ -12,20 +12,40 @@ export function DedicatedHero() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
         {/* Text Content */}
         <div className="text-center lg:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 animate-fade-in-up opacity-0 shadow-lg shadow-black/20">
-            <Users2 size={14} className="text-[#0062d1]" />
-            <span className="text-xs font-mono text-slate-300 tracking-wider uppercase">Dedicated Engineering Units</span>
+          {/* Timezone Badge */}
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md animate-fade-in-up opacity-0 shadow-lg shadow-black/20">
+              <Users2 size={14} className="text-[#0062d1]" />
+              <span className="text-xs font-mono text-slate-300 tracking-wider uppercase">Dedicated Engineering Units</span>
+            </div>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-md animate-fade-in-up opacity-0 shadow-lg shadow-black/20" style={{ animationDelay: '0.05s' }}>
+              <Clock size={14} className="text-emerald-400" />
+              <span className="text-xs font-semibold text-emerald-300 tracking-wide">US/EU Timezone Overlap</span>
+            </div>
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-[1.1] tracking-tight animate-fade-in-up opacity-0 drop-shadow-2xl" style={{ animationDelay: '0.1s' }}>
             Direct Access to <br className="hidden lg:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0062d1] to-cyan-400">Senior Units.</span> <br />
-            No Middle-man Lag.
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0062d1] to-cyan-400">Senior Engineers.</span> <br />
+            Free CTO Oversight.
           </h1>
 
-          <p className="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed mb-8 animate-fade-in-up opacity-0" style={{ animationDelay: '0.2s' }}>
-             Scale your engineering capacity with pre-vetted talent. Direct integration into your Slack/Jira. We handle the HR, you manage the code.
+          <p className="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed mb-6 animate-fade-in-up opacity-0" style={{ animationDelay: '0.2s' }}>
+             Scale your engineering capacity with pre-vetted talent. Direct integration into your Slack/Jira. We handle HR, payroll, and provide fractional CTO oversight — at no extra cost.
           </p>
+
+          {/* Value Proposition Highlights */}
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8 animate-fade-in-up opacity-0" style={{ animationDelay: '0.25s' }}>
+            <div className="flex items-center gap-2 text-slate-300 text-sm">
+              <Shield size={16} className="text-[#0062d1]" />
+              <span>Not Staffing — Engineering Partners</span>
+            </div>
+            <div className="hidden sm:block w-px h-4 bg-slate-700"></div>
+            <div className="flex items-center gap-2 text-slate-300 text-sm">
+              <Clock size={16} className="text-emerald-400" />
+              <span>4-8hr Daily Overlap Guaranteed</span>
+            </div>
+          </div>
 
           <div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 animate-fade-in-up opacity-0" style={{ animationDelay: '0.3s' }}>
             <button className="w-full sm:w-auto px-8 py-4 bg-[#0062d1] hover:bg-[#0052b3] text-white font-bold rounded-full transition-all shadow-[0_0_30px_-5px_rgba(0,98,209,0.4)] hover:scale-105 active:scale-95">

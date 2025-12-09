@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link'; // Додаємо імпорт Link
-import { Settings2, PlayCircle, ShieldCheck, FileKey, Globe } from 'lucide-react';
+import { Calculator, PlayCircle, ShieldCheck, FileKey, Globe } from 'lucide-react';
 
 export function HeroSection() {
   return (
@@ -26,8 +26,8 @@ export function HeroSection() {
 
       <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full justify-center mb-12 sm:mb-16 px-4 animate-fade-in-up opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
         <button className="w-full sm:w-auto px-8 py-4 bg-[#0062d1] hover:bg-[#0052b3] text-white font-semibold rounded-full shadow-[0_0_40px_-10px_rgba(0,98,209,0.5)] transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 group">
-          <Settings2 size={18} className="group-hover:rotate-180 transition-transform duration-500" />
-          <span>Start Project Configurator</span>
+          <Calculator size={18} className="group-hover:scale-110 transition-transform duration-300" />
+          <span>Simulate Your Project</span>
         </button>
         
         {/* Кнопка замінена на Link */}

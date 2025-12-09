@@ -1,6 +1,6 @@
 'use client';
 
-import { UserX, Layers, MessageSquareWarning, CheckCircle2 } from 'lucide-react';
+import { UserX, Layers, MessageSquareWarning, CheckCircle2, Quote } from 'lucide-react';
 import { SectionHeader } from '../ui/section-header';
 
 export function PainSection() {
@@ -18,12 +18,29 @@ export function PainSection() {
           badge="Market Analysis"
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 relative z-10">
+          {/* Card 1 - Bait & Switch with Social Proof */}
           <div className="group relative flex flex-col h-full bg-[#0B0F19]/60 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-[#0062d1]/40 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/10" data-card>
             <div className="p-6 sm:p-8 sm:pb-6 relative flex-grow">
                <div className="absolute top-4 right-4 text-slate-700 font-bold text-5xl sm:text-6xl opacity-10 group-hover:opacity-20 transition-opacity select-none">01</div>
                <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center mb-4 border border-red-500/20 group-hover:bg-red-500/20 transition-colors"><UserX className="text-red-400" size={20} /></div>
                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">The "Bait & Switch"</h3>
                <p className="text-slate-400 text-sm leading-relaxed">Agencies sell you Seniors on the call, but hand off code to Juniors learning on your dime.</p>
+            </div>
+            {/* Social Proof Testimonial */}
+            <div className="mx-6 sm:mx-8 mb-4 p-4 bg-slate-800/50 border border-slate-700/50 rounded-xl relative">
+               <Quote className="absolute top-3 left-3 text-[#0062d1]/30" size={20} />
+               <p className="text-slate-300 text-xs italic leading-relaxed pl-6 mb-3">
+                 "We spent 3 months with an agency only to find out the senior dev we hired was actually a junior. Gimmir gave us direct access immediately."
+               </p>
+               <div className="flex items-center gap-2 pl-6">
+                 <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#0062d1] to-cyan-500 flex items-center justify-center text-[10px] font-bold text-white">C</div>
+                 <div>
+                   <p className="text-white text-[11px] font-medium">CTO, FinTech Series A</p>
+                   <p className="text-emerald-400 text-[10px] flex items-center gap-1">
+                     <CheckCircle2 size={10} /> Verified Client
+                   </p>
+                 </div>
+               </div>
             </div>
             <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-0 shrink-0"></div>
             <div className="px-6 py-5 sm:px-8 sm:py-6 bg-white/[0.02] group-hover:bg-[#0062d1]/[0.05] transition-colors shrink-0">

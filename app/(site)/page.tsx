@@ -7,6 +7,7 @@ import { CaseStudiesSection } from "@/components/sections/case-studies";
 import { ProjectSimulatorSection } from "@/components/sections/project-simulator";
 import { LeadMagnetSection } from "@/components/sections/lead-magnet";
 import { InsightsSection } from "@/components/sections/insights";
+import { AgencyPartnershipSection } from "@/components/sections/agency-partnership";
 import { getLatestInsights, getSeoByPath, getSettings } from "@/sanity/sanity-utils";
 import { generateStaticPageMetadata } from "@/lib/seo-utils";
 
@@ -47,6 +48,7 @@ export default async function Home() {
       <ProjectSimulatorSection />
       <LeadMagnetSection />
       <InsightsSection posts={latestPosts} />
+      <AgencyPartnershipSection />
     </div>
   );
 }
